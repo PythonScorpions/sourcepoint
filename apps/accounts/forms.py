@@ -9,6 +9,7 @@ class RegisterForm(forms.ModelForm):
     email = forms.EmailField()
     password1 = forms.CharField(label=("Password"), widget=forms.PasswordInput)
     password2 = forms.CharField(label=("Confirm Password"), widget=forms.PasswordInput)
+    terms = forms.BooleanField(required=True,initial=False)
 
     class Meta:
         model = UserProfiles
