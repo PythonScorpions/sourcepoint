@@ -27,13 +27,13 @@
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Requirement Title <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.title }}{{ form.title.errors.as_text }}
+                      {{ form.title }}<span style="color: red"> {{ form.title.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Description <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.description }}{{ form.description.errors.as_text }}
+                      {{ form.description }}<span style="color: red"> {{ form.description.errors.as_text }}</span>
                     </div>
                   </div>
                 </fieldset>
@@ -41,13 +41,13 @@
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Upload Document <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.file }}{{ form.file.errors.as_text }}
+                      {{ form.file }}<span style="color: red"> {{ form.file.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Category <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.category }}{{ form.category.errors.as_text }}
+                      {{ form.category }}<span style="color: red"> {{ form.category.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
@@ -59,7 +59,7 @@
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Price <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.prices }}{{ form.prices.errors.as_text }}
+                      {{ form.prices }}<span style="color: red"> {{ form.prices.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
