@@ -104,10 +104,10 @@ SITE_ID=1
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'source_point',
-        'USER': 'root',                      # Not used with sqlite3.
+        'NAME': 'sourcecodepoint$source_point',
+        'USER': 'sourcecodepoint',                      # Not used with sqlite3.
         'PASSWORD': 'root',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': 'mysql.server',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',
     }
 }
