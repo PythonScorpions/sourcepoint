@@ -51,12 +51,12 @@
     <!-- BEGIN NAVIGATION -->
     <div class="header-navigation pull-left font-transform-inherit">
       <ul>
-        <li class="active"><a  href="/">Home</a></li>
-        <li><a href="about-us.html">About Us</a></li>
-        <li><a href="contact-us.html">Contact Us</a></li>
+        <li {% ifequal request.path '/' %}class="active"{% endifequal %}><a  href="/">Home</a></li>
+        <li {% ifequal request.path '/accounts/about/' %}class="active"{% endifequal %}><a href="{% url 'about' %}">About Us</a></li>
+        <li {% ifequal request.path '/accounts/contact/' %}class="active"{% endifequal %}><a href="{% url 'contact' %}">Contact Us</a></li>
           {% if not request.user.is_authenticated %}
-        <li><a href="{% url 'register' %}">Sign Up</a></li>
-        <li><a href="{% url 'login' %}">Sign In</a></li>
+        <li {% ifequal request.path '/accounts/register/' %}class="active"{% endifequal %}><a href="{% url 'register' %}">Sign Up</a></li>
+        <li {% ifequal request.path '/accounts/login/' %}class="active"{% endifequal %}><a href="{% url 'login' %}">Sign In</a></li>
           {% endif %}
       </ul>
     </div>
