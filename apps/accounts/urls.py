@@ -16,5 +16,7 @@ urlpatterns = patterns("apps.accounts.views",
                        url(r'save-setings', 'save_settings', name='save-settings'),
                        url(r'logout/$','user_logout', name='user_logout'),
                        url(r'change-plan/$', ChangePlan.as_view(), name='change-plan'),
-                       url(r'change-password/$', ChangePassword.as_view(), name='change-password')
+                       url(r'change-password/$', ChangePassword.as_view(), name='change-password'),
+                       url(r'about/$', About.as_view(), name='about'),
+                       url(r'contact/$', Contact.as_view(), name='contact')
                        )

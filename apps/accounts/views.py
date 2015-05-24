@@ -236,5 +236,10 @@ class ChangePassword(TemplateView):
             messages.success(request, 'Please Make Sure Two password Fields are Same')
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
 
+class About(TemplateView):
+    template_name = 'about-us.html'
+
+class Contact(TemplateView):
+    template_name = 'contact-us.html'
 
 
