@@ -15,19 +15,19 @@
                   <div class="form-group">
                     <label for="firstname" class="col-lg-4 control-label">First Name <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.first_name }}{{ form.first_name.errors.as_text }}
+                      {{ form.first_name }}<span style="color: red" >{{ form.first_name.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="lastname" class="col-lg-4 control-label">Last Name <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.last_name }}{{ form.last_name.errors.as_text }}
+                      {{ form.last_name }}<span style="color: red" >{{ form.last_name.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="email" class="col-lg-4 control-label">Email <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.email }}{{ form.email.errors.as_text }}
+                      {{ form.email }}<span style="color: red" >{{ form.email.errors.as_text }}</span>
                     </div>
                   </div>
                 </fieldset>
@@ -35,31 +35,37 @@
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Mobile <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.mobile }}{{ form.mobile.errors.as_text }}
+                      {{ form.mobile }}<span style="color: red" >{{ form.mobile.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Skype Id <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.skypeid }}{{ forms.skypeid.errors.as_text }}
+                      {{ form.skypeid }}<span style="color: red" >{{ forms.skypeid.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Country <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.country }}{{ form.country.errors.as_text }}
+                      {{ form.country }}<span style="color: red" >{{ form.country.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="password" class="col-lg-4 control-label">Password <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.password1 }} {{ form.password1.errors.as_text }}
+                      {{ form.password1 }} <span style="color: red" >{{ form.password1.errors.as_text }}</span>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="confirm-password" class="col-lg-4 control-label">Confirm password <span class="require">*</span></label>
                     <div class="col-lg-6">
-                      {{ form.password2 }}{{ form.password2.errors.as_text }}
+                      {{ form.password2 }}<span style="color: red" >{{ form.password2.errors.as_text }}</span>
+                    </div>
+                  </div>
+                    <div class="form-group">
+                    <label for="confirm-password" class="col-lg-4 control-label">Accept Terms & Conidtions <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.terms }}<span style="color: red" >{{ form.terms.errors.as_text }}</span>
                     </div>
                   </div>
                 </fieldset>
