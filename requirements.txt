@@ -1,0 +1,8 @@
+Django==1.8.1
+MySQL-python==1.2.5
+argparse==1.2.1
+django-countries==3.3
+django-extensions==1.5.5
+pygraphviz==1.2
+six==1.9.0
+wsgiref==0.1.2

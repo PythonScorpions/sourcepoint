@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="main">
+  <div class="container ">
+
+          <!-- BEGIN CONTENT -->
+          <div class="col-md-12 col-sm-12">
+
+            <div class="content-page">
+              <div class="row margin-bottom-30  ">
+                <!-- BEGIN INFO BLOCK -->
+
+                <div class="sidebar col-md-3 col-sm-3">
+            <ul class="list-group margin-bottom-25 sidebar-menu">
+              <li class="list-group-item clearfix "><a class="" href="{% url 'update-profile' %}"><i class="fa fa-angle-right"></i> My Profile</a></li>
+              <li class="list-group-item clearfix "><a href="{% url 'my-plan' %}"><i class="fa fa-angle-right"></i> My Plan</a></li>
+              <li class="list-group-item clearfix {% ifequal request.path '/accounts/settings/' %}active{% endifequal %}"><a href=""><i class="fa fa-angle-right"></i> Setting</a></li>
+            </ul>
+          </div>
+
+                <div class="col-md-9 col-sm-9">
+                    <span id="msg" style="color: green"></span>
+<h2>My Settings</h2>
+<hr>
+
+            <div class="pricing hover-effect">
+                    <ul class="pricing-content list-unstyled">
+{#                      <li>SMS Alert <span class="label btn-primary pull-right"><input type="radio"> OFF </span>#}
+{#                          <span class="label btn-success pull-right">#}
+{#                              <input type="radio" checked> On </span></li>#}
+                        <form method="post" id="alert-form">{% csrf_token %}
+                      <li>Email Alert <span class="label btn-primary pull-right">
+                          <input type="radio" name="email" id="emailoff" value="off" {% if staffs == False %}checked{% endif %}> OFF</span>
+                          <span class="label btn-success pull-right">
+                              <input type="radio" name="email" id="emailon" value="on" {% if staffs == True %}checked{% endif %}> On </span></li>
+                            </form>
+
+
+                    </ul>
+
+                  </div>
+
+          </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  </div>
+
+{% endblock %}
+{% block extra_scripts %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $("#alert-form").click(function() {
+            if ($('#emailon').is(':checked'))
+            {
+            emailon = document.getElementById('emailon').value;
+                }
+            else{
+                emailon = ''
+            }
+            if ($('#emailoff').is(':checked'))
+            {
+            emailoff = document.getElementById('emailoff').value;
+                }
+            else{
+                emailoff = ''
+            }
+            $.ajax({
+                url: "{% url 'settings' %}",
+                type: "post",
+                data:{
+                    emailon:emailon,
+                    emailoff:emailoff,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function(response)
+                {
+                    console.log(response.status)
+                    if (response.status=='success'){
+                        $('#msg').html(response.message);
+                    }
+                    else if(response.status=='failure'){
+                        alert('asas')
+
+                    }
+                },
+                error: function(response) {
+                    alert("Got an error dude");
+                }
+            });
+        })
+    })
+</script>
+{% endblock %}

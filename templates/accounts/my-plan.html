@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="main">
+  <div class="container ">
+
+          <!-- BEGIN CONTENT -->
+          <div class="col-md-12 col-sm-12">
+
+            <div class="content-page">
+              <div class="row margin-bottom-30  ">
+                <!-- BEGIN INFO BLOCK -->
+
+                <div class="sidebar col-md-3 col-sm-3">
+            <ul class="list-group margin-bottom-25 sidebar-menu">
+              <li class="list-group-item clearfix "><a class="" href="{% url 'update-profile' %}"><i class="fa fa-angle-right"></i> My Profile</a></li>
+              <li class="list-group-item clearfix {% ifequal request.path '/accounts/myplan/' %}active{% endifequal %}"><a href="my-plan.html"><i class="fa fa-angle-right"></i> My Plan</a></li>
+              <li class="list-group-item clearfix"><a href="{% url 'settings' %}"><i class="fa fa-angle-right"></i> Setting</a></li>
+            </ul>
+          </div>
+
+                <div class="col-md-9 col-sm-9">
+<h2>{{ plan.title }} <a href="{% url 'change-plan' %}" class="btn btn-primary pull-right">Change Plan</a></h2>
+<hr>
+
+            <div class="pricing hover-effect">
+                    <ul class="pricing-content list-unstyled">
+                      <li>Post requirement<span class="label label-success pull-right">{{ plan.post_requirement }}</span></li>
+                      <li>View requirement<span class="label label-success pull-right">{{ plan.view_requirement }}</span></li>
+                      <li>Post requirement<span class="label label-success pull-right">{{ plan.post_requirement }}</span></li>
+                      <li>View contact <span class="label label-success pull-right">{{ plan.view_contact }}</span></li>
+                      <li>Show Interest<span class="label label-success pull-right">{{ plan.show_interest }}</span></li>
+
+                                      <li>Contact detail view
+
+of interested shown
+
+person <span class="label label-success pull-right">{% if plan.contact == False %}No{% else %}Yes{% endif %}</span></li>
+
+                    </ul>
+
+                  </div>
+
+          </div>
+                </div>
+                <!-- END INFO BLOCK -->
+
+
+              </div>
+            </div>
+          </div>
+          <!-- END CONTENT -->
+
+
+    <!-- BEGIN SIDEBAR & CONTENT -->
+
+  </div>
+
+{% endblock %}

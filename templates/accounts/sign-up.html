@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="search-result-item border-box">
+          <div class="row">
+            <div class="col-md-8">
+              <legend>Registration Form<br>
+              <br>
+              </legend>
+              <form class="form-horizontal" role="form" method="post" action=".">{% csrf_token %}
+                <fieldset>
+                  <div class="form-group">
+                    <label for="firstname" class="col-lg-4 control-label">First Name <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.first_name }}{{ form.first_name.errors.as_text }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="lastname" class="col-lg-4 control-label">Last Name <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.last_name }}{{ form.last_name.errors.as_text }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="email" class="col-lg-4 control-label">Email <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.email }}{{ form.email.errors.as_text }}
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Mobile <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.mobile }}{{ form.mobile.errors.as_text }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Skype Id <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.skypeid }}{{ forms.skypeid.errors.as_text }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Country <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.country }}{{ form.country.errors.as_text }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="col-lg-4 control-label">Password <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.password1 }} {{ form.password1.errors.as_text }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="confirm-password" class="col-lg-4 control-label">Confirm password <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.password2 }}{{ form.password2.errors.as_text }}
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="form-group">
+<label for="confirm-password" class="col-lg-4 control-label">&nbsp;</label>
+                  <div class="col-lg-6 ">
+{#                    <a href="pricing-plan.html" class="btn btn-primary">Create an account</a>#}
+                      <button type="submit">Submit</button>
+                    <button type="button" class="btn btn-default">Cancel</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+            <div class="col-md-4 col-sm-4 pull-right">
+              <div class="form-info"> <br>
+                <h2><em>Important</em> Information</h2>
+                <p>Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore </p>
+                <p>Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore</p>
+                <p>Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore Lorem ipsum dolor ut sit ame dolore </p>
+                <button type="button" class="btn btn-default">More details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+
+    <!-- BEGIN SIDEBAR & CONTENT -->
+
+  </div>
+</div>
+{% endblock %}

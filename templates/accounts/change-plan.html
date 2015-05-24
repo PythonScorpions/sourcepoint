@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="main">
+  <div class="container ">
+
+    <!-- BEGIN CONTENT -->
+
+      <div class="content-page">
+        <div class="row margin-bottom-30 search-result-item">
+          <!-- BEGIN INFO BLOCK -->
+          <h2 class="margin-bottom-30">Select Subscription Plan</h2>
+          <hr>
+          <div class="col-md-12">
+
+          {% for plan in plans %}
+          <div class="col-md-3">
+          <form action="." method="post">{% csrf_token %}
+                  <div class="pricing hover-effect">
+                    <div class="pricing-head">
+                      <h3>{{ plan.title }}</h3>
+                    </div>
+                    <ul class="pricing-content list-unstyled">
+                      <li>Post requirement<span class="label label-success pull-right">{{ plan.post_requirement }}</span></li>
+                      <li>View requirement<span class="label label-success pull-right">{{ plan.view_requirement }}</span></li>
+                      <li>Post requirement<span class="label label-success pull-right">{{ plan.post_requirement }}</span></li>
+                      <li>View contact <span class="label label-success pull-right">{{ plan.view_contact }}  Posting</span></li>
+                      <li>Show Interest<span class="label label-success pull-right">{{ plan.show_interest }}  Posting</span></li>
+
+                    </ul>
+                    <div class="pricing-footer pricing-head">
+                      <p>
+
+
+Contact detail view
+
+of interested shown
+
+person
+
+      </p>
+<p>                      <span class="label label-success">No</span> </p>
+                        <input type="hidden" name="plan" value="{{ plan.id }}">
+
+{#                      <a href="" class="btn btn-primary">Select</a>#}
+                        <input type="submit" value="Select" class="btn btn-primary">
+                    </div>
+                  </div>
+              </form>
+                </div>
+        {% endfor %}
+
+
+
+
+          </div>
+          <!-- END LISTS -->
+
+
+
+        </div>
+        <!-- END INFO BLOCK -->
+
+      </div>
+
+  </div>
+  <!-- END CONTENT -->
+
+
+{% endblock %}
