@@ -17,7 +17,7 @@ class UserProfiles(models.Model):
     otp = models.IntegerField('OTP',null=True,blank=True)
     token = models.CharField('Token',max_length=200,null=True,blank=True)
 
-    def __unicode(self):
+    def __unicode__(self):
         return u'%s' %(self.user)
 
     def random_key(self):

@@ -45,6 +45,11 @@ def register(request):
         if form.is_valid():
             user = form.save()
             request.session['token'] = user.token
+            t = loader.get_template('accounts/verify.txt')
+            site = Site.objects.get(pk=1)
+            c = Context({'name': user.user.first_name, 'email':user.user.email, 'site': site.name, 'token': user.token})
+            send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.user.email], fail_silently=False)
+            messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
             return redirect('/accounts/verification/%s/' % user.token)
             messages.success(request, 'OTP has send to number')
         else:
@@ -75,6 +80,30 @@ class Verification(TemplateView):
             user.user.save()
             return redirect('/accounts/subscribe/')
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
+
+class EmailVerification(TemplateView):
+    template_name = 'accounts/login.html'
+
+    def get(self, request, *args, **kwargs):
+        token = kwargs['key']
+        if UserProfiles.objects.filter(token=token).exists():
+            user = UserProfiles.objects.get(token=token)
+            user.user.is_active = True
+            user.save()
+            success = 'Email has been Verified,Please Login'
+            return redirect('/accounts/login/')
+        return render_to_response(self.template_name,{'success': success},context_instance=RequestContext(request),)
+
+def email_verification(request, key):
+    print "key",key
+    template_name = 'accounts/login.html'
+    user = UserProfiles.objects.get(token=key)
+    if user:
+        user.user.is_active = True
+        user.user.save()
+        messages.success(request, 'Please Login')
+        return redirect('/accounts/login/')
+    return render_to_response(template_name, context_instance=RequestContext(request),)
 
 class Thankyou(TemplateView):
 
