@@ -9,7 +9,7 @@ from apps.posts.models import *
 class UserProfiles(models.Model):
 
     user = models.OneToOneField(User,related_name='user_profiles')
-    mobile = models.IntegerField('Mobile', null=True, blank=True)
+    mobile = models.BigIntegerField('Mobile', null=True, blank=True)
     skypeid = models.CharField(('Skype ID'),max_length=150, null=True, blank=True)
     country = CountryField()
     smsalert = models.BooleanField('Sms Alert', default=False)
