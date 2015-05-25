@@ -70,6 +70,7 @@
                         {{ request.user.email }}  Hide </p>
                     </div>
                   </div>
+                    {% if not user.mobile == None %}
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Mobile Number </label>
                     <div class="col-lg-6">
@@ -78,6 +79,17 @@
                         {{ user.mobile }} </p>
                     </div>
                   </div>
+                    {% endif %}
+                {% if not user.skypeid == None %}
+                    <div class="form-group">
+                    <label  class="col-lg-4 control-label">Skype Id </label>
+                    <div class="col-lg-6">
+                      <p >
+                        {{ form.skypeid }}
+                        {{ user.skypeid }} </p>
+                    </div>
+                  </div>
+                {% endif %}
                 </fieldset>
                 <div class="row">
                   <div class="col-lg-6 col-md-offset-4 padding-top-20">
