@@ -15,16 +15,16 @@ class TechnologyTags(models.Model):
 
 class Posts(models.Model):
 
-    PRICES=(
-        ('1','< $10'),
-        ('2','$10 to $50'),
-        ('3','$50 to $100'),
-        ('4','$100 to 200'),
-        ('5','$200 to $300'),
-        ('6','$300 to $500'),
-        ('7','$500 to $750'),
-        ('8','$750 to $1000'),
-        ('9','$1000 to $5000'),
+    PRICES = (
+        ('1', '< $10'),
+        ('2', '$10 to $50'),
+        ('3', '$50 to $100'),
+        ('4', '$100 to 200'),
+        ('5', '$200 to $300'),
+        ('6', '$300 to $500'),
+        ('7', '$500 to $750'),
+        ('8', '$750 to $1000'),
+        ('9', '$1000 to $5000'),
     )
 
     user = models.ForeignKey(User, related_name='user_posts')
@@ -33,6 +33,7 @@ class Posts(models.Model):
     description = models.TextField('Description')
     file = models.FileField('File',upload_to='files/')
     mobile = models.BooleanField('Hide Mobile', default=False)
+    skypeid = models.BooleanField('SkypeId', default=False)
     prices = models.CharField('Prices',choices=PRICES,max_length=150)
     email = models.BooleanField('Hide Email', default=False)
     tags = models.ManyToManyField(TechnologyTags,null=True,blank=True)
