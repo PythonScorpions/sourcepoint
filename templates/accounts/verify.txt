@@ -1,0 +1,10 @@
+Dear {{ name }},
+
+{{ name }} has submitted a Foregot Password Request,
+
+Click the link below to reset your password
+
+{{ site }}/accounts/email-verification/{{ token }}/
+
+Regards,
+{{ site }}

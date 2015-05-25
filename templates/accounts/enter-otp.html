@@ -7,6 +7,9 @@
     <div class="row">
       <div class="col-md-12">
         <div class="search-result-item padding-bottom-0 border-box">
+            {% for message in messages %}
+                <span style="color: green">{{ message }}</span>
+            {% endfor %}
           <div class="row">
             <div class="col-md-8">
 <h2>Enter OTP to verify your mobile number</h2>
@@ -27,6 +30,7 @@
 {#                        <a href="index-after-login.html" class="btn btn-primary">Submit</a>#}
                           <input type="submit" value="Submit" class="btn btn-primary">
                           <a href="verify-mobile-number.html" class="btn btn-default">Resend OTP</a>
+                          <a href="{% url 'subscribe' %}" class="btn btn-default">Skip</a>
                       </div>
                     </div>
 

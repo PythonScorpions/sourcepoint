@@ -17,6 +17,9 @@
                         <span style="color: red;margin-left: 238px">{{ message }}</span>
                     {% endfor %}
                 {% endif %}
+            {% if success %}
+               <span style="color: green;margin-left: 238px"> {{ success }}</span>
+            {% endif %}
                   <form class="form-horizontal form-without-legend" role="form" method="post" action=".">
                       {% csrf_token %}
                     <div class="form-group">
