@@ -27,13 +27,14 @@ class Loginpage(TemplateView):
             email = request.POST['email']
             password = request.POST['password']
             user = authenticate(username=email, password=password)
-            messages.success(request, "Invalid Username or Password")
             if user is not None:
                 if user.is_active:
                     login(request, user)
                     return redirect('/')
                 else:
                     messages.success(request, "Your account is not activated yet, please check your email")
+            else:
+                messages.success(request, "Invalid Username or Password")
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
 
 
