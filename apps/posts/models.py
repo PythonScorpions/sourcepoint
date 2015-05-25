@@ -25,6 +25,7 @@ class Posts(models.Model):
         ('7', '$500 to $750'),
         ('8', '$750 to $1000'),
         ('9', '$1000 to $5000'),
+        ('10', 'Not Fixed')
     )
 
     user = models.ForeignKey(User, related_name='user_posts')
