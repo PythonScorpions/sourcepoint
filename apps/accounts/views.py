@@ -49,10 +49,7 @@ def register(request):
             t = loader.get_template('accounts/verify.txt')
             site = Site.objects.get(pk=1)
             c = Context({'name': user.user.first_name, 'email':user.user.email, 'site': site.name, 'token': user.token})
-            try:
-                send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.user.email], fail_silently=False)
-            except:
-                pass
+            send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.user.email], fail_silently=False)
             messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
             return redirect('/accounts/verification/%s/' % user.token)
             messages.success(request, 'OTP has send to number')
