@@ -12,12 +12,18 @@
                </div>
                <div class="details">
                   <h2>Thank You </h2>
+                   {% if request.GET.type == 'free' %}
                   <p>
+                     Your Registration was Successful, <a href="{% url 'update-profile' %}">Click Here</a> to go to Account
+                  </p>
+                   {% else %}
+                       <p>
                      Your Registration was Successful
 We will contact You Shortly and verify Please Select Your Payment Option<br>
                      <a href="../payment-process-debit-credit-card.html" class="btn btn-success margin-top-35 " style="color:#FFF;"><i class="fa fa-credit-card"></i> Credit / Debit Card</a>
                                           <a href="../payment-process-paypal.html" class="btn btn-primary margin-top-35"><i class="fa fa-paypal"></i> Paypal</a>
                   </p>
+                   {% endif %}
                </div>
             </div>
           </div>
