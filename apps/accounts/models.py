@@ -48,6 +48,7 @@ class SubscriptionPlan(models.Model):
     view_contact = models.IntegerField('View Contact')
     show_interest = models.IntegerField('Show Interest')
     contact = models.BooleanField('Displays Contact Detail of Person who Showed Interest',default=False)
+    free_plan = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title

@@ -51,8 +51,14 @@ def register(request):
             c = Context({'name': user.user.first_name, 'email':user.user.email, 'site': site.name, 'token': user.token})
             send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.user.email], fail_silently=False)
             messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
-            return redirect('/accounts/verification/%s/' % user.token)
-            messages.success(request, 'OTP has send to number')
+            email = request.POST['email']
+            password = request.POST['password2']
+            user = authenticate(username=email, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/accounts/verification/%s/' % request.session['token'])
+                    messages.success(request, 'OTP has send to number')
         else:
             print "errors", form.errors
     return render_to_response(template_name, {'form': form}, context_instance=RequestContext(request),)
@@ -80,7 +86,10 @@ def subscribe(request):
         subscribe.plan = plan
         subscribe.expiry_date = datetime.datetime.now()
         subscribe.save()
-        return redirect('/accounts/thanku/')
+        if plan.free_plan == True:
+            return redirect('/accounts/thanku/?type=free')
+        else:
+            return redirect('/accounts/thanku/?type=paid')
      return render_to_response(template_name, {'plans': plans}, context_instance=RequestContext(request),)
 
 class Verification(TemplateView):
