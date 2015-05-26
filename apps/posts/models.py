@@ -42,6 +42,11 @@ class Posts(models.Model):
     expiry_date = models.DateField('Expiry Date',null=True,blank=True)
     sell_code = models.BooleanField(default=False)
     buy_code = models.BooleanField(default=False)
+    publish = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'Post'
+        verbose_name_plural = 'Posts'

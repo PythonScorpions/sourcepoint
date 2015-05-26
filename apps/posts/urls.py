@@ -4,5 +4,5 @@ from apps.posts.views import *
 
 urlpatterns = patterns("apps.posts.views",
                        url(r'^$', Homepage.as_view(), name='home'),
-                       url(r'posts/add-post/$', 'addpost', name='add-post')
-                       )
+                       url(r'posts/add-post/$', 'addpost', name='add-post'),
+                       url(r'^posts/preview/(?P<id>\d+)/$', Preview.as_view(), name='preview'),)

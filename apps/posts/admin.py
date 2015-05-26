@@ -3,9 +3,9 @@ from django.contrib import admin
 
 class PostAdmin(admin.ModelAdmin):
 
-    list_display = ('title', 'user', 'category')
-    # list_editable = ('mobile','email',)
+    list_display = ('title', 'user', 'category','publish',)
     filter_horizontal = ('tags',)
+    list_editable = ('publish', )
 
 admin.site.register(Posts, PostAdmin)
 admin.site.register(Category)

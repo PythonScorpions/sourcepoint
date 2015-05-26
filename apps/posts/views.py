@@ -1,9 +1,7 @@
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import TemplateView, FormView
-from apps.accounts.forms import RegisterForm
 from apps.accounts.models import *
 from apps.posts.forms import PostForm
 from apps.posts.models import *
@@ -37,7 +35,16 @@ def addpost(request):
             for s in saved_tags:
                 post.tags.add(s)
             messages.success(request, 'Post Successfully Submitted')
+            return redirect('/posts/preview/%s' % post.id)
         else:
             print "error", form.errors
     return render_to_response(template_name, {'form': form, 'user': user, 'tech_tags': tech_tags}, context_instance = RequestContext(request))
+
+class Preview(TemplateView):
+    template_name = 'posts/my-posting-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Preview, self).get_context_data(**kwargs)
+        context['post'] = Posts.objects.get(id=kwargs['id'])
+        return context
 
