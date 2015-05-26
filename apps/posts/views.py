@@ -33,7 +33,7 @@ def addpost(request):
                 saved_tags.append(tag)
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(user=obj,type=type)
+            post = form.save(user=obj, type=type)
             for s in saved_tags:
                 post.tags.add(s)
             messages.success(request, 'Post Successfully Submitted')

@@ -3,6 +3,7 @@ from apps.posts.models import Posts
 
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(max_length=500)
 
     class Meta:
         model = Posts
@@ -16,6 +17,7 @@ class PostForm(forms.ModelForm):
         self.fields['file'].widget.attrs['class'] = 'form-control'
         self.fields['category'].widget.attrs['class'] = 'form-control'
         self.fields['prices'].widget.attrs['class'] = 'form-control'
+        self.fields['tags'].widget.attrs['class'] = 'form-control'
 
     def save(self, **kwargs):
         user = kwargs.pop('user', False)

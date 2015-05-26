@@ -32,7 +32,7 @@ class Posts(models.Model):
     category = models.ForeignKey(Category)
     title = models.CharField('Post Title',max_length=150)
     description = models.TextField('Description')
-    file = models.FileField('File',upload_to='files/')
+    file = models.FileField('File',upload_to='files/', null=True, blank=True)
     mobile = models.BooleanField('Hide Mobile', default=False)
     skypeid = models.BooleanField('SkypeId', default=False)
     prices = models.CharField('Prices',choices=PRICES,max_length=150)
