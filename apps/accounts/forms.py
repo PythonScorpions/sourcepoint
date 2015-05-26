@@ -48,10 +48,8 @@ class RegisterForm(forms.ModelForm):
        user.username = self.cleaned_data.get("email",False)
        user.email = self.cleaned_data.get("email",False)
        password = self.cleaned_data.get("password2",False)
-       print "pass",password
-       user.is_active = False
+       user.is_active = True
        user.password = make_password(password)
-       print "password:",user.password
        user.save()
        proform.user = user
        proform.save()

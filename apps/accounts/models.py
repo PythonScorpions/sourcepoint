@@ -16,6 +16,8 @@ class UserProfiles(models.Model):
     emailalert = models.BooleanField('Email Alert', default=False)
     otp = models.IntegerField('OTP',null=True,blank=True)
     token = models.CharField('Token',max_length=200,null=True,blank=True)
+    email_verify = models.BooleanField('Email Verified', default=False)
+    mobile_verify = models.BooleanField('Mobile Verified', default=False)
 
     def __unicode__(self):
         return u'%s' %(self.user)

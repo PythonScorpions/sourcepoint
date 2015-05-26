@@ -57,6 +57,18 @@ def register(request):
             print "errors", form.errors
     return render_to_response(template_name, {'form': form}, context_instance=RequestContext(request),)
 
+def mail_sent(request):
+    template_name= 'accounts/my-profile.html'
+    t = loader.get_template('accounts/verify.txt')
+    user = UserProfiles.objects.get(user=request.user)
+    site = Site.objects.get(pk=1)
+    c = Context({'name': user.user.first_name, 'email':user.user.email, 'site': site.name, 'token': user.token})
+    send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.user.email], fail_silently=False)
+    messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
+    return redirect('/accounts/update-profile/')
+    return render_to_response(template_name, context_instance=RequestContext(request),)
+
+
 def subscribe(request):
      template_name = 'accounts/pricing-plan.html'
      plans = SubscriptionPlan.objects.all()
@@ -87,23 +99,26 @@ class EmailVerification(TemplateView):
 
     def get(self, request, *args, **kwargs):
         token = kwargs['key']
+        success = ''
         if UserProfiles.objects.filter(token=token).exists():
             user = UserProfiles.objects.get(token=token)
-            user.user.is_active = True
+            user.email_verify = True
             user.save()
             success = 'Email has been Verified,Please Login'
             return redirect('/accounts/login/')
         return render_to_response(self.template_name,{'success': success},context_instance=RequestContext(request),)
 
 def email_verification(request, key):
-    print "key",key
     template_name = 'accounts/login.html'
     user = UserProfiles.objects.get(token=key)
     if user:
-        user.user.is_active = True
-        user.user.save()
-        messages.success(request, 'Please Login')
-        return redirect('/accounts/login/')
+        user.email_verify = True
+        user.save()
+        if not request.user.is_authenticated():
+            messages.success(request, 'Please Login')
+            return redirect('/accounts/login/')
+        else:
+            return redirect('/accounts/update-profile/')
     return render_to_response(template_name, context_instance=RequestContext(request),)
 
 class Thankyou(TemplateView):
@@ -140,7 +155,7 @@ class ResetPassword(TemplateView):
         user = UserProfiles.objects.get(token=kwargs['key'])
         if user and request.POST['password1'] == request.POST['password2']:
             user.user.set_password(request.POST['password2'])
-            user.save()
+            user.user.save()
             return redirect('/accounts/login/')
         else:
             messages.success(request, 'Please Make Sure Two password Fields are Same')
@@ -156,7 +171,7 @@ class UpdateProfile(UpdateView):
         id = user.id
         form = self.form_class({'first_name': profile.user.first_name, 'last_name': profile.user.last_name, 'email': profile.user.email,
                                 'country': profile.country, 'mobile': profile.mobile, 'skypeid': profile.skypeid})
-        return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request),)
+        return render_to_response(self.template_name, {'form': form, 'id': id, 'profile': profile}, context_instance=RequestContext(request),)
 
     def post(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user)
