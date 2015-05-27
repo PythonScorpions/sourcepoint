@@ -5,4 +5,6 @@ from apps.posts.views import *
 urlpatterns = patterns("apps.posts.views",
                        url(r'^$', Homepage.as_view(), name='home'),
                        url(r'posts/add-post/$', 'addpost', name='add-post'),
-                       url(r'^posts/preview/(?P<id>\d+)/$', Preview.as_view(), name='preview'),)
+                       url(r'^posts/preview/(?P<id>\d+)/$', Preview.as_view(), name='preview'),
+                       url(r'post-edit/(?P<id>\d+)/$',PostEdit.as_view(), name='edit-post')
+                       )
