@@ -55,6 +55,14 @@ class Preview(TemplateView):
         context['tags'] = self.get_tags()
         return context
 
+    def post(self, request, *args ,**kwargs):
+        if request.POST.get('publish'):
+            posts = Posts.objects.get(id=kwargs['id'])
+            posts.publish = True
+            posts.save()
+            return redirect('/')
+        return render_to_response(self.template_name, context_instance = RequestContext(request))
+
 class PostEdit(UpdateView):
     template_name = 'posts/update-post.html'
     form_class = PostForm
@@ -84,6 +92,8 @@ class PostEdit(UpdateView):
             post = form.save(user=obj, type=type)
             for s in saved_tags:
                 post.tags.add(s)
+            posts.publish = True
+            posts.save()
             messages.success(request, 'Posts Editted Successfully.')
             return redirect('/post-edit/21/')
         else:
