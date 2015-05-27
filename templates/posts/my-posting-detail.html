@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="main">
+    <div class="main" xmlns="http://www.w3.org/1999/html">
   <div class="container ">
 <!-- BEGIN CONTENT -->
       <div class="content-page">
         <div class="row margin-bottom-30 search-result-item border-box">
           <!-- BEGIN INFO BLOCK -->
-          <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'edit-post' post.id %}"> <span class="btn-danger btn-lg" >to Buy</span></a> </span></h2>
+          <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'edit-post' post.id %}"> <span class="btn-danger btn-lg" >Edit</span></a> </span></h2>
           <hr>
           <div class="col-md-12">
 
@@ -35,6 +35,7 @@
           </div>
           <!-- END LISTS -->
 
+
           <div class="testimonials-v1 ">
             <div>
               <h3>Description</h3>
@@ -42,9 +43,15 @@
 
               <hr>
             </div>
-          </div>
 
+          </div>
+<form action="." method="post">{% csrf_token %}
+{#<span class="pull-right"><a href=""> <span class="btn-primary btn-lg" >Publish</span></a></span>#}
+    <span class="pull-right"><input type="submit" value="Publish" name="publish" class="btn-primary btn-lg"></span>
+        </form>
         </div>
+
+
         <!-- END INFO BLOCK -->
 
       </div>
