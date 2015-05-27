@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="search-result-item border-box">
+          <div class="row">
+
+            <div class="col-md-8">
+              <legend>Post Your Requiremen<br>
+              <br>
+              </legend>
+                {% for message in messages %}
+              <span style="color: green;margin-left: 240px">{{ message }}</span>
+              {% endfor %}
+              <form class="form-horizontal" role="form" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+                <fieldset>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Requirement Type <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      <input type="radio" name="code" value="sell" {% if post.sell_code == True %}checked{% endif %}>
+                      Want to sell source code  &nbsp;
+                      <input type="radio" name="code" value="buy"{% if post.buy_code == True %}checked{% endif %}>
+                      Want to buy source code </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Requirement Title <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.title }}<span style="color: red"> {{ form.title.errors.as_text }}</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Description <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.description }}<span style="color: red"> {{ form.description.errors.as_text }}</span>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Upload Document <span class="require"></span></label>
+                    <div class="col-lg-6">
+                      {{ form.file }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Category <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.category }}<span style="color: red"> {{ form.category.errors.as_text }}</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Technology Tags <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.tags }}<span style="color: red"> {{ form.tags.errors.as_text }}</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Price <span class="require">*</span></label>
+                    <div class="col-lg-6">
+                      {{ form.prices }}<span style="color: red"> {{ form.prices.errors.as_text }}</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Email Id</label>
+                    <div class="col-lg-6">
+                      <p >
+                        {{ form.email }}
+                        {{ request.user.email }}  Hide </p>
+                    </div>
+                  </div>
+                    {% if not user.mobile == None %}
+                  <div class="form-group">
+                    <label  class="col-lg-4 control-label">Mobile Number </label>
+                    <div class="col-lg-6">
+                      <p >
+                        {{ form.mobile }}
+                        {{ user.mobile }} </p>
+                    </div>
+                  </div>
+                    {% endif %}
+                {% if not user.skypeid == '' %}
+                    <div class="form-group">
+                    <label  class="col-lg-4 control-label">Skype Id </label>
+                    <div class="col-lg-6">
+                      <p >
+                        {{ form.skypeid }}
+                        {{ user.skypeid }} </p>
+                    </div>
+                  </div>
+                {% endif %}
+                </fieldset>
+                <div class="row">
+                  <div class="col-lg-6 col-md-offset-4 padding-top-20">
+                    <button type="submit" class="btn btn-primary">Save & Publish</button>
+                    <button type="button" class="btn btn-default">Cancel</button>
+                  </div>
+                </div>
+              </form>
+              <p>&nbsp;</p>
+            </div>
+            <div class="col-md-4 col-sm-4 pull-right">
+              <div class="form-info"> <br>
+                <img src="/static/img/stockfresh_343625_holding-a-new-life_sizeS.png"  class="img-responsive" alt=""></div>
+            </div>
+          </div>
+        </div>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+
+    <!-- BEGIN SIDEBAR & CONTENT -->
+
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+  $(function() {
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#tags" ).autocomplete({
+      source: availableTags
+    });
+  });
+  </script>
+
+{% endblock %}
