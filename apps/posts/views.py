@@ -95,7 +95,7 @@ class PostEdit(UpdateView):
             posts.publish = True
             posts.save()
             messages.success(request, 'Posts Editted Successfully.')
-            return redirect('/post-edit/21/')
+            return redirect('/')
         else:
             print "errors",form.errors
         return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request))
