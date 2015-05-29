@@ -10,6 +10,43 @@ from apps.posts.models import *
 class Homepage(TemplateView):
     template_name = 'index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(Homepage, self).get_context_data(**kwargs)
+        context['posts_sell'] = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date')
+        context['sell'] = 'sell'
+        context['buy'] = 'buy'
+        context['posts_buy'] = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date')
+        return context
+
+
+class CategoryList(TemplateView):
+    template_name = 'posts/category-posts.html'
+
+    def get_posts(self,*args, **kwargs):
+        type = self.kwargs['type']
+        print "asasasas",Category.objects.get(slug=self.kwargs['category'])
+        categories = Category.objects.get(slug=self.kwargs['category'])
+        if type == 'sell':
+            posts = Posts.objects.filter(category=categories,publish=True,sell_code=True)
+        elif type == 'buy':
+            posts = Posts.objects.filter(category=categories,publish=True,buy_code=True)
+        else:
+            posts = ''
+        return posts
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryList, self).get_context_data(**kwargs)
+        context['posts'] = self.get_posts()
+        context['sell'] = 'sell'
+        context['buy'] = 'buy'
+        context['selected_cat'] = self.kwargs['category']
+        context['type'] = self.kwargs['type']
+        return context
+
+class PostDetail(TemplateView):
+    template_name = 'posts/job-detail-after-login.html'
+
+
 
 def addpost(request):
     template_name = 'posts/post-your-requarment.html'

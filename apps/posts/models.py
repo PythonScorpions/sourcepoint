@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from autoslug import AutoSlugField
 
 class Category(models.Model):
     name = models.CharField('Category',max_length=100)
+    slug = AutoSlugField(populate_from='name')
 
     def __unicode__(self):
         return self.name
@@ -39,6 +41,7 @@ class Posts(models.Model):
     email = models.BooleanField('Hide Email', default=False)
     tags = models.ManyToManyField(TechnologyTags,null=True,blank=True)
     created_date = models.DateField('Created Date',auto_now=True)
+    slug = AutoSlugField(populate_from='title')
     expiry_date = models.DateField('Expiry Date',null=True,blank=True)
     sell_code = models.BooleanField(default=False)
     buy_code = models.BooleanField(default=False)
