@@ -8,21 +8,21 @@
       <div class="content-page">
         <div class="row margin-bottom-30 search-result-item border-box">
           <!-- BEGIN INFO BLOCK -->
-          <h2 class="margin-bottom-30">I want to sell e-Learning system source code.....</h2>
+          <h2 class="margin-bottom-30">{{ post.title }}</h2>
           <hr>
           <div class="col-md-12">
 
             <!-- BEGIN LISTS -->
             <div class="row front-lists-v1 ">
               <ul class="list-unstyled margin-bottom-20">
-                <li><strong>Category:</strong> Web Application</li>
-                <li> <strong>Technology Tags:</strong> .Net, HTML, Website, CSS
+                <li><strong>Category:</strong> {{ post.category.name }}</li>
+                <li> <strong>Technology Tags:</strong> {{ post.tags.all|join:", " }}
 
-                  e-Learning, CMS</li>
-                <li> <strong>Price:</strong> $500 to $750 </li>
-                <li> <strong>Posted On:</strong> 21st March 2015 </li>
-                <li> <strong>Email ID:</strong> Verified </li>
-                <li> <strong>Mobile Number:</strong> Not Verified</li>
+                  </li>
+                <li> <strong>Price:</strong> {{ post.get_prices_display }} </li>
+                <li> <strong>Posted On:</strong> {{ post.created_date }} </li>
+                <li> <strong>Email ID:</strong> {% if post.user.user_profiles.email_verify == True %} Verified {% else %} Not Verified{% endif %}</li>
+                <li> <strong>Mobile Number:</strong>{% if post.user.user_profiles.mobile_verify == True %} Verified {% else %} Not Verified{% endif %}</li>
               </ul>
               <div class="row">
                 <div class="col-md-6 margin-top-20">
@@ -47,7 +47,7 @@
           <div class="testimonials-v1 margin-top-20">
             <div>
               <h3>Discription</h3>
-              <p>I would like to sell one e-Leaning system source code, having following</p>
+              <p>{{ post.description }}</p>
               <strong>features:</strong>
               <ul class="list-style-none">
                 <li>1. Someon who wants to teach something, can create his profile and can create his / her course, can manage courses.</li>
@@ -56,7 +56,6 @@
                 <li>4. Someone who wants to learn something can create his / her profile and can check various courses available, and can join courses, can view course wise itesm (video, images, documents)</li>
                 <li>5. Users can pay for courses</li>
               </ul>
-              <p>And many more.......</p>
               <h3 class="margin-bottom-30">Upload Document: Non </h3>
             </div>
           </div>
