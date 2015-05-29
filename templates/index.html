@@ -1,7 +1,9 @@
+
 {% extends 'base.html' %}
+{% load category_list %}
 {% block content %}
 <!-- Header END -->
-
+{% list_category as categories %}
 <div class="main">
   <div class="container">
     <div class="row">
@@ -32,12 +34,9 @@
               <div class="sub-menu-tab">
                 <ul class="nav nav-tabs">
                   <li class="active"> <a href="#" >All</a></li>
-                  <li class=""> <a href="#" >Script & Code</a></li>
-                  <li class=""><a href="#" >Mobile Apps</a></li>
-                  <li class=""><a href="#" >Web Apps</a></li>
-                  <li class=""><a href="#" >Web Apps & Mobiles Apps</a></li>
-                  <li class=""><a href="#" >Plugins</a></li>
-                  <li class=""><a href="#" >Themes</a></li>
+                    {% for category in categories %}
+                  <li class=""> <a href="{% url 'category-post' category.slug sell %}" >{{ category }}</a></li>
+                    {% endfor %}
                   <li class=""><a href="#" >Other</a></li>
                 </ul>
               </div>
@@ -45,79 +44,19 @@
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12">
                   <div class="">
+                      {% for post in posts_sell %}
                     <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
+                    <a href="{% url 'post-detail' post.id %}">
+                      <h4>{{ post.title }}</h4>
+                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
                         <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
+                        <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
+                        <li class="pull-right"><i class="fa fa-tag"></i>{{ post.tags.all|join:", " }}</li>
                       </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
+                      <p>{{ post.description }}
 
                     </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
-
+                      {% endfor %}
                     <div class="row margin-top-10">
                 <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
                 <div class="col-md-8 col-sm-8">
@@ -140,12 +79,9 @@
             <div class="tab-pane fontawesome-demo" id="tab_1_2"> <div class="sub-menu-tab">
                 <ul class="nav nav-tabs">
                   <li class="active"> <a href="#" >All</a></li>
-                  <li class=""> <a href="#" >Script & Code</a></li>
-                  <li class=""><a href="#" >Mobile Apps</a></li>
-                  <li class=""><a href="#" >Web Apps</a></li>
-                  <li class=""><a href="#" >Web Apps & Mobiles Apps</a></li>
-                  <li class=""><a href="#" >Plugins</a></li>
-                  <li class=""><a href="#" >Themes</a></li>
+                    {% for category in categories %}
+                  <li class=""> <a href="{% url 'category-post' category.slug buy %}" >{{ category.name }}</a></li>
+                    {% endfor %}
                   <li class=""><a href="#" >Other</a></li>
                 </ul>
               </div>
@@ -153,66 +89,19 @@
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12">
                   <div class="">
-<div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
+ {% for post in posts_buy %}
                     <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
+                    <a href="{% url 'post-detail' post.id %}">
+                      <h4>{{ post.title }}</h4>
+                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
                         <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
+                        <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
+                        <li class="pull-right"><i class="fa fa-tag"></i>{{ post.tags.all|join:", " }}</li>
                       </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
+                      <p>{{ post.description }}
 
                     </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
-                    <div class="search-result-item">
-                    <a href="job-detail-after-login.html">
-                      <h4>Requirement Title Place Holder...........</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> 25/07/2014</li> <li><i class="fa fa-dollar"></i> 200</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> Mobile Application</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i> IOS, Android, Windows</li>
-                      </ul>
-                      <p>Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content Discription lorem ipsum dolor site demo content</p>
-                      http://www.yourwebsite.com
-
-                    </a> </div>
+                      {% endfor %}
 
 
                     <div class="row margin-top-10">
