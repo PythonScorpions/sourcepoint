@@ -46,6 +46,11 @@ class CategoryList(TemplateView):
 class PostDetail(TemplateView):
     template_name = 'posts/job-detail-after-login.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PostDetail, self).get_context_data(**kwargs)
+        context['post'] = Posts.objects.get(id=self.kwargs['id'])
+        return context
+
 
 
 def addpost(request):
