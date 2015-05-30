@@ -112,7 +112,7 @@ class PostEdit(UpdateView):
     def get(self, request, *args, **kwargs):
         posts = Posts.objects.get(id=kwargs['id'])
         form = self.form_class(instance = posts)
-        return render_to_response(self.template_name, {'form': form, 'post':posts}, context_instance=RequestContext(request),)
+        return render_to_response(self.template_name, {'form': form, 'post': posts}, context_instance=RequestContext(request),)
 
     def post(self, request, *args, **kwargs):
         posts = Posts.objects.get(id=kwargs['id'])
@@ -148,8 +148,8 @@ class MyPosting(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MyPosting, self).get_context_data(**kwargs)
-        context['posts_buy'] = Posts.objects.filter(user=self.request.user,buy_code=True)
-        context['posts_sell'] = Posts.objects.filter(user=self.request.user,sell_code=True)
+        context['posts_buy'] = Posts.objects.filter(user=self.request.user, buy_code=True)
+        context['posts_sell'] = Posts.objects.filter(user=self.request.user, sell_code=True)
         context['today_date'] = datetime.datetime.now().date()
         return context
 
@@ -167,8 +167,8 @@ def postdelete(request,id):
     if Posts.objects.filter(id=id).exists():
         post = Posts.objects.get(id=id).delete()
         return redirect('/my-posting/')
-        messages.success(request,'Post Deleted Successfully')
-    return render_to_response(template_name,context_instance=RequestContext(request))
+        messages.success(request, 'Post Deleted Successfully')
+    return render_to_response(template_name, context_instance=RequestContext(request))
 
 
 
