@@ -35,7 +35,7 @@
                 <ul class="nav nav-tabs">
                   <li class="active"> <a href="#" >All</a></li>
                     {% for category in categories %}
-                  <li class=""> <a href="" >{{ category }}</a></li>
+                  <li class=""> <a href="{% url 'category-post' category.slug sell %}" >{{ category }}</a></li>
                     {% endfor %}
                   <li class=""><a href="#" >Other</a></li>
                 </ul>
@@ -80,7 +80,7 @@
                 <ul class="nav nav-tabs">
                   <li class="active"> <a href="#" >All</a></li>
                     {% for category in categories %}
-                  <li class=""> <a href="" >{{ category.name }}</a></li>
+                  <li class=""> <a href="{% url 'category-post' category.slug buy %}" >{{ category.name }}</a></li>
                     {% endfor %}
                   <li class=""><a href="#" >Other</a></li>
                 </ul>
