@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="main">
+  <div class="container ">
+<!-- BEGIN CONTENT -->
+      <div class="content-page">
+        <div class="row margin-bottom-30 search-result-item border-box">
+          <!-- BEGIN INFO BLOCK -->
+          <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'my-posting' %}" ><span class="btn-danger btn-lg" >Back</span></a> </span></h2>
+          <hr>
+          <div class="col-md-12">
+
+            <!-- BEGIN LISTS -->
+            <div class="row front-lists-v1 ">
+              <ul class="list-unstyled margin-bottom-20">
+                <li><strong>Category:</strong> {{ post.category }}</li>
+                <li> <strong>Technology Tags:</strong> {{ post.tags.all|join:", " }}
+
+                  </li>
+                <li> <strong>Price:</strong> {{ post.get_prices_display }} </li>
+                <li> <strong>Posted On:</strong> {{ post.get_prices_display }} </li>
+                <li> <strong>Email ID:</strong> {% if user.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+                <li> <strong>Mobile Number:</strong> {% if user.mobile_verify == True %}Verified{% else %}Not Verified{% endif %}</li>
+              </ul>
+              <div class="row">
+                <div class="col-md-6 margin-top-20">
+                  <blockquote class="border-left-none">
+                    <ul class="list-unstyled margin-bottom-0">
+                      <li><strong>Email Id:</strong> {{ request.user.email }}</li>
+                      <li> <strong>Mobile Number:</strong> {{ user.mobile }} </li>
+                      <li> <strong>Skype ID:</strong> {{ user.skype }} </li>
+                    </ul>
+                  </blockquote>
+                </div>
+             </div>
+            </div>
+          </div>
+          <!-- END LISTS -->
+
+          <div class="testimonials-v1 ">
+            <div>
+              <h3>Discription</h3>
+              <p>{{ post.description }}</p>
+              <hr>
+              <h5 class="margin-bottom-10">Contact Viewed By: 45 persons</h5>
+              <h3>Interest Shown By: 10 persons</h3>
+            </div>
+          </div>
+          <div class="row front-lists-v1  ">
+            <div class="col-md-4">
+              <blockquote class="border-left-none">
+                <ul class="list-unstyled margin-bottom-0">
+                  <li><strong>Email Id:</strong> arpit.harsola@gmail.com</li>
+                  <li> <strong>Mobile Number:</strong> +91-7878288663 </li>
+                  <li> <strong>Skype ID:</strong> scalableapp </li>
+                </ul>
+              </blockquote>
+            </div>
+            <div class="col-md-4">
+              <blockquote class="border-left-none">
+                <ul class="list-unstyled margin-bottom-0">
+                  <li><strong>Email Id:</strong> arpit.harsola@gmail.com</li>
+                  <li> <strong>Mobile Number:</strong> +91-7878288663 </li>
+                  <li> <strong>Skype ID:</strong> scalableapp </li>
+                </ul>
+              </blockquote>
+            </div>
+            <div class="col-md-4">
+              <blockquote class="border-left-none">
+                <ul class="list-unstyled margin-bottom-0">
+                  <li><strong>Email Id:</strong> arpit.harsola@gmail.com</li>
+                  <li> <strong>Mobile Number:</strong> +91-7878288663 </li>
+                  <li> <strong>Skype ID:</strong> scalableapp </li>
+                </ul>
+              </blockquote>
+            </div>
+            <div class="col-md-4">
+              <blockquote class="border-left-none">
+                <ul class="list-unstyled margin-bottom-0">
+                  <li><strong>Email Id:</strong> arpit.harsola@gmail.com</li>
+                  <li> <strong>Mobile Number:</strong> +91-7878288663 </li>
+                  <li> <strong>Skype ID:</strong> scalableapp </li>
+                </ul>
+              </blockquote>
+            </div>
+            <div class="col-md-4">
+              <blockquote class="border-left-none">
+                <ul class="list-unstyled margin-bottom-0">
+                  <li><strong>Email Id:</strong> arpit.harsola@gmail.com</li>
+                  <li> <strong>Mobile Number:</strong> +91-7878288663 </li>
+                  <li> <strong>Skype ID:</strong> scalableapp </li>
+                </ul>
+              </blockquote>
+            </div>
+            <div class="col-md-4">
+              <blockquote class="border-left-none">
+                <ul class="list-unstyled margin-bottom-0">
+                  <li><strong>Email Id:</strong> arpit.harsola@gmail.com</li>
+                  <li> <strong>Mobile Number:</strong> +91-7878288663 </li>
+                  <li> <strong>Skype ID:</strong> scalableapp </li>
+                </ul>
+              </blockquote>
+            </div>
+            <p class="clearfix">&nbsp;</p>
+          </div>
+        </div>
+        <!-- END INFO BLOCK -->
+
+      </div>
+  </div>
+{% endblock %}
