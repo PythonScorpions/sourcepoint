@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from django.views.generic import TemplateView, FormView, UpdateView
+from django.views.generic import TemplateView, FormView, UpdateView, DetailView
 from apps.accounts.models import *
 from apps.posts.forms import PostForm
 from apps.posts.models import *
@@ -141,4 +141,34 @@ class PostEdit(UpdateView):
         else:
             print "errors",form.errors
         return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request))
+
+
+class MyPosting(TemplateView):
+    template_name = 'posts/my-posting.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPosting, self).get_context_data(**kwargs)
+        context['posts_buy'] = Posts.objects.filter(user=self.request.user,buy_code=True)
+        context['posts_sell'] = Posts.objects.filter(user=self.request.user,sell_code=True)
+        context['today_date'] = datetime.datetime.now().date()
+        return context
+
+class MyPostDetail(TemplateView):
+    template_name = 'posts/post-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPostDetail, self).get_context_data(**kwargs)
+        context['post'] = Posts.objects.get(id=self.kwargs['id'])
+        context['user'] = UserProfiles.objects.get(user=self.request.user)
+        return context
+
+def postdelete(request,id):
+    template_name = 'posts/my-posting.html'
+    if Posts.objects.filter(id=id).exists():
+        post = Posts.objects.get(id=id).delete()
+        return redirect('/my-posting/')
+        messages.success(request,'Post Deleted Successfully')
+    return render_to_response(template_name,context_instance=RequestContext(request))
+
+
 
