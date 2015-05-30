@@ -52,6 +52,12 @@
     <div class="header-navigation pull-left font-transform-inherit">
       <ul>
         <li {% ifequal request.path '/' %}class="active"{% endifequal %}><a  href="/">Home</a></li>
+      {% if request.user.is_authenticated %}
+          <li><a href="{% url 'my-posting' %}">My Posting</a></li>
+          <li><a href="my-interest.html">My Interest</a></li>
+          <li {% ifequal request.path '/accounts/update-profile/' %}class="active"{% endifequal %}><a  href="{% url 'update-profile' %}">My Account</a></li>
+
+      {% endif %}
         <li {% ifequal request.path '/accounts/about/' %}class="active"{% endifequal %}><a href="{% url 'about' %}">About Us</a></li>
         <li {% ifequal request.path '/accounts/contact/' %}class="active"{% endifequal %}><a href="{% url 'contact' %}">Contact Us</a></li>
           {% if not request.user.is_authenticated %}
