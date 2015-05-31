@@ -111,7 +111,8 @@ class PostEdit(UpdateView):
 
     def get(self, request, *args, **kwargs):
         posts = Posts.objects.get(id=kwargs['id'])
-        form = self.form_class(instance = posts)
+        form = self.form_class(instance=posts)
+        print "sadasdad",request.GET.get('redirect')
         return render_to_response(self.template_name, {'form': form, 'post': posts}, context_instance=RequestContext(request),)
 
     def post(self, request, *args, **kwargs):
@@ -121,6 +122,7 @@ class PostEdit(UpdateView):
         obj = User.objects.get(username=request.user)
         type = request.POST.get('code')
         tags = request.POST.get('tags')
+        data = request.GET.get('redirect')
         split_tags = tags.split(',')
         saved_tags = []
         for t in split_tags:
@@ -137,7 +139,10 @@ class PostEdit(UpdateView):
             posts.publish = True
             posts.save()
             messages.success(request, 'Posts Editted Successfully.')
-            return redirect('/')
+            if data == 'true':
+                return redirect('/my-posting/')
+            else:
+                return redirect('/')
         else:
             print "errors",form.errors
         return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request))
@@ -169,6 +174,41 @@ def postdelete(request,id):
         return redirect('/my-posting/')
         messages.success(request, 'Post Deleted Successfully')
     return render_to_response(template_name, context_instance=RequestContext(request))
+
+class PostContact(TemplateView):
+    template_name = 'posts/job-detail-contact-info.html'
+
+    def get_client_ip(self,  *args, **kwargs):
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
+        return ip
+
+
+    def get(self, request, *args, **kwargs):
+        ip = self.get_client_ip()
+        post = Posts.objects.get(slug=kwargs['slug'])
+        print "posts", post
+        try:
+            tracker = IpTracker.objects.get(user=request.user)
+            visted_posts = tracker.posts.all()
+            if post in visted_posts:
+                pass
+            else:
+                tracker.view_count +=1
+                tracker.save()
+                tracker.posts.add(post)
+        except IpTracker.DoesNotExist:
+            track = IpTracker()
+            track.user = User.objects.get(id=request.user.id)
+            track.ip = self.get_client_ip()
+            track.view_count += 1
+            track.save()
+            track.posts.add(post)
+        return render_to_response(self.template_name, {'post':post}, context_instance=RequestContext(request))
+
 
 
 

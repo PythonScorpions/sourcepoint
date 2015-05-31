@@ -46,6 +46,7 @@ class Posts(models.Model):
     sell_code = models.BooleanField(default=False)
     buy_code = models.BooleanField(default=False)
     publish = models.BooleanField(default=False)
+    user_contacted = models.ManyToManyField(User, null=True, blank=True)
 
     def __unicode__(self):
         return self.title
@@ -53,3 +54,10 @@ class Posts(models.Model):
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
+
+class UserInterests(models.Model):
+    posts = models.OneToOneField(User, related_name= 'user_interests')
+    users = models.ManyToManyField(User)
+
+    def __unicode__(self):
+        return u'%s' % self.posts
