@@ -16,6 +16,7 @@ class UserProfiles(models.Model):
     emailalert = models.BooleanField('Email Alert', default=False)
     otp = models.IntegerField('OTP',null=True,blank=True)
     token = models.CharField('Token',max_length=200,null=True,blank=True)
+    contact_viewes = models.BigIntegerField('Total Contact Viewes', null=True, blank=True)
     email_verify = models.BooleanField('Email Verified', default=False)
     mobile_verify = models.BooleanField('Mobile Verified', default=False)
 
@@ -34,12 +35,6 @@ class UserProfiles(models.Model):
     class Meta:
         verbose_name = 'User Profile'
 
-class UserInterests(models.Model):
-    user = models.OneToOneField(User,related_name='user_interests')
-    interests = models.ManyToManyField(Posts)
-
-    def __unicode__(self):
-        return u'%s'%(self.user)
 
 class SubscriptionPlan(models.Model):
     title = models.CharField('Name',max_length=100)
@@ -61,3 +56,13 @@ class UserSubscriptions(models.Model):
 
     def __unicode__(self):
         return u'%s'%(self.user)
+
+class IpTracker(models.Model):
+    ip = models.IPAddressField()
+    user = models.ForeignKey(User,related_name='user_track')
+    posts = models.ManyToManyField(Posts, related_name='post_track')
+    view_count = models.IntegerField('View Count', default=0)
+
+    def __unicode__(self):
+        return u'%s' % self.user
+
