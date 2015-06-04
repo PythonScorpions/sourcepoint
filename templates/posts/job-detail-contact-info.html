@@ -54,7 +54,7 @@
 Click here to send your contact detail to user, to show your interest, user will soon contact you
 </p>
 
-<a href="#" class="fancybox-button btn btn-primary"  data-rel="fancybox-button">Show Interest</a></blockquote>
+<a href="#" class="fancybox-button btn btn-primary"  data-rel="fancybox-button" onclick="showinterest()">Show Interest</a></blockquote>
 
 
 
@@ -132,4 +132,19 @@ Click here to send your contact detail to user, to show your interest, user will
     <!-- BEGIN SIDEBAR & CONTENT -->
 
   </div>
+{% endblock %}
+{% block extra_scripts %}
+    <script>
+function showinterest() {
+    var x;
+    if (confirm("Sure you want to Show Interest") == true) {
+        x = "You pressed OK!";
+        window.location.href = "/send-contact/{{ post.slug }}/"
+    } else {
+        x = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = x;
+}
+</script>
+
 {% endblock %}

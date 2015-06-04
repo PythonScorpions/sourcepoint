@@ -32,12 +32,23 @@
                       information of usre
 
                       (Email ID, Mobile number & Skype ID) </p>
-                    <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a></blockquote>
+                      {% if tracker.view_count == plan.plan.view_contact %}
+                          <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
+                      {% else %}
+                    <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
+                      {% endif %}
+                  </blockquote>
                 </div>
                 <div class="col-md-6 padding-left-0 margin-top-20">
                   <blockquote>
                     <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
-                    <a href="#" class="fancybox-button btn btn-primary"  data-rel="fancybox-button">Show Interest</a> </blockquote>
+                      {% if tracker.interest_count == plan.plan.show_interest %}
+
+                    <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
+                      {% else %}
+                          <a href="#" class="fancybox-button btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                      {% endif %}
+                  </blockquote>
                 </div>
               </div>
             </div>
@@ -67,12 +78,22 @@
                   information of usre
 
                   (Email ID, Mobile number & Skype ID) </p>
-                <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a></blockquote>
+                {% if tracker.view_count == plan.plan.view_contact %}
+                          <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
+                      {% else %}
+                    <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
+                      {% endif %}
+              </blockquote>
             </div>
             <div class="col-md-6">
               <blockquote>
                 <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
-                <a href="" class="fancybox-button btn btn-primary"  data-rel="fancybox-button">Show Interest</a></blockquote>
+                {% if tracker.interest_count == plan.plan.show_interest %}
+                    <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
+                      {% else %}
+                          <a href="#" class="fancybox-button btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                      {% endif %}
+              </blockquote>
             </div>
           </div>
         </div>
@@ -86,4 +107,20 @@
   <!-- BEGIN SIDEBAR & CONTENT -->
 
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+function showinterest() {
+    var x;
+    if (confirm("Are you sure do you want to show interest in this posting?") == true) {
+        x = "You pressed OK!";
+        window.location.href = "/send-contact/{{ post.slug }}/"
+    } else {
+        x = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = x;
+}
+</script>
+
 {% endblock %}
