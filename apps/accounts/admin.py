@@ -7,6 +7,6 @@ admin.site.register(SubscriptionPlan)
 admin.site.register(UserSubscriptions)
 
 class IpAdmin(admin.ModelAdmin):
-    filter_horizontal = ('posts',)
+    filter_horizontal = ('posts', 'intersets')
 
 admin.site.register(IpTracker, IpAdmin)
