@@ -48,7 +48,9 @@ class PostDetail(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
-        context['post'] = Posts.objects.get(id=self.kwargs['id'])
+        context['post'] = Posts.objects.get(slug=self.kwargs['slug'])
+        context['plan'] = UserSubscriptions.objects.get(user=self.request.user)
+        context['tracker'] = IpTracker.objects.get(user=self.request.user)
         return context
 
 
@@ -188,9 +190,9 @@ class PostContact(TemplateView):
 
 
     def get(self, request, *args, **kwargs):
+        plan = UserSubscriptions.objects.get(user=request.user)
         ip = self.get_client_ip()
         post = Posts.objects.get(slug=kwargs['slug'])
-        print "posts", post
         try:
             tracker = IpTracker.objects.get(user=request.user)
             visted_posts = tracker.posts.all()
@@ -207,7 +209,40 @@ class PostContact(TemplateView):
             track.view_count += 1
             track.save()
             track.posts.add(post)
+        return render_to_response(self.template_name, {'post': post, 'tracker': tracker, 'plan': plan}, context_instance=RequestContext(request))
+
+class SendContact(TemplateView):
+    template_name = 'posts/job-detail-contact-info.html'
+
+    def get_client_ip(self,  *args, **kwargs):
+        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = self.request.META.get('REMOTE_ADDR')
+        return ip
+
+    def get(self, request, *args, **kwargs):
+        ip = self.get_client_ip()
+        post = Posts.objects.get(slug=kwargs['slug'])
+        try:
+            tracker = IpTracker.objects.get(user=request.user)
+
+            if not tracker.intersets.filter(id=post.id).exists():
+                tracker.interest_count += 1
+                tracker.save()
+                tracker.intersets.add(post)
+        except IpTracker.DoesNotExist:
+            track = IpTracker()
+            track.user = User.objects.get(id=request.user.id)
+            track.ip = self.get_client_ip()
+            track.interest_count += 1
+            track.save()
+            track.intersets.add(post)
         return render_to_response(self.template_name, {'post':post}, context_instance=RequestContext(request))
+
+
+
 
 
 
