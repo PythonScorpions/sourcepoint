@@ -1,6 +1,23 @@
 
 {% extends 'base.html' %}
 {% load category_list %}
+{% block extra_css %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+{% endblock %}
+{% block extra_scripts %}
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        data = {{ keywords|safe }}
+        var data = data;
+  $(function() {
+    var availableTags =  data;
+    $( "#search" ).autocomplete({
+      source: availableTags
+    });
+  });
+  </script>
+{% endblock %}
 {% block content %}
 <!-- Header END -->
 {% list_category as categories %}
@@ -10,9 +27,11 @@
       <div class="col-md-9">
         <form action="#" class="content-search-view2">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search...">
+              <form action="{% url 'search' %}" method="get">
+            <input type="text" class="form-control" placeholder="Search..." id="search" name="search">
             <span class="input-group-btn">
             <button type="submit" class="btn btn-primary">Search</button>
+                </form>
             </span> </div>
         </form>
       </div>
