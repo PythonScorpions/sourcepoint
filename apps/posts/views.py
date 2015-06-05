@@ -242,6 +242,38 @@ class SendContact(TemplateView):
         return render_to_response(self.template_name, {'post':post}, context_instance=RequestContext(request))
 
 
+class MyInterests(TemplateView):
+    template_name = 'posts/my-interest.html'
+
+    def get_interests(self, *args, **kwargs):
+        interests = []
+        interests1 = []
+        posts_contacted = []
+        interest_shown = []
+        posts = IpTracker.objects.get(user=self.request.user)
+        for p in posts.posts.all():
+            posts_contacted.append(p)
+        for i in posts.intersets.all():
+            interest_shown.append(i)
+        interests = posts_contacted + interest_shown
+        final_posts = list(set(interests))
+        return final_posts
+
+    def get_context_data(self, **kwargs):
+        context = super(MyInterests, self).get_context_data(**kwargs)
+        context['final_posts'] = self.get_interests()
+        return context
+
+class MyInterestDetail(TemplateView):
+    template_name = 'posts/my-interest-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyInterestDetail, self).get_context_data(**kwargs)
+        context['post'] = Posts.objects.get(slug = self.kwargs['slug'])
+        return context
+
+
+
 
 
 
