@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="main">
+  <div class="container ">
+
+          <!-- BEGIN CONTENT -->
+            <div class="content-page">
+              <div class="row margin-bottom-30 search-result-item border-box">
+                <!-- BEGIN INFO BLOCK -->
+                <h2 class="margin-bottom-30">{{ post.title }}<span class="pull-right"><span class="btn-danger btn-lg" >on Sell</span> <span class="btn-success btn-lg" >New</span></span></h2>
+                <hr>
+                <div class="col-md-12">
+
+
+                  <!-- BEGIN LISTS -->
+                  <div class="row front-lists-v1 ">
+
+                   <ul class="list-unstyled margin-bottom-20">
+                        <li><strong>Category:</strong>  {{ post.category }}</li>
+
+                         <li> <strong>Technology Tags:</strong> {{ post.tags.all|join:", " }}</li>
+                        <li> <strong>Price:</strong> {{ post.get_prices_display }} </li>
+                            <li> <strong>Posted On:</strong> {{ post.created_date|date }}  </li>
+                        <li> <strong>Email ID:</strong> {% if user.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+
+
+                        <li> <strong>Mobile Number:</strong> {% if user.mobile_verify == True %}Verified{% else %}Not Verified{% endif %}</li>
+                      </ul>
+                   <div class="row"> <div class="col-md-6 margin-top-20">
+
+
+
+<blockquote class="border-left-none">
+
+<ul class="list-unstyled margin-bottom-0">
+                        <li><strong>Name:</strong> {{ post.user.first_name }} {{ post.user.last_name }}</li>
+                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
+                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
+                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
+                      </ul>
+</blockquote>
+                    </div>
+
+                    <div class="col-md-6 padding-left-0 margin-top-20">
+                    </div></div>
+                    </div>
+
+
+                  </div>
+<div class="testimonials-v1 margin-top-20">
+
+<div>
+<h3>Discription</h3>
+<p>{{ post.description }}</p>
+<strong>features:</strong>
+<ul class="list-style-none">
+<li>1. Someon who wants to teach something, can create his profile and can create his / her course, can manage courses.</li>
+<li>2. Uplaoded training items, documents, video, images etc...</li>
+<li>3. Can charge fee for course training</li>
+<li>4. Someone who wants to learn something can create his / her profile and can check various courses available, and can join courses, can view course wise itesm (video, images, documents)</li>
+<li>5. Users can pay for courses</li>
+</ul>
+
+<p>And many more.......</p>
+<h3 class="margin-bottom-30">Upload Document: Non
+</h3>
+</div></div>
+
+
+
+           <div class="row front-lists-v1  ">
+                    <div class="col-md-6">
+                     <blockquote class="border-left-none">
+
+<ul class="list-unstyled margin-bottom-0">
+                        <li><strong>Name:</strong> {{ post.user.first_name }} {{ post.user.last_name }}</li>
+                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
+                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
+                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
+                      </ul>
+</blockquote>
+
+                    </div>
+
+
+                  </div>
+
+
+
+                </div>
+                <!-- END INFO BLOCK -->
+
+
+              </div>
+            </div>
+          </div>
+{% endblock %}

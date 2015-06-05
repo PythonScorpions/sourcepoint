@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="main">
+  <div class="container ">
+
+  <div class="row">
+      <div class="col-md-12">
+        <div>
+{#          <div class="main-tab">#}
+{#            <ul class="nav nav-tabs">#}
+{#              <li class="active"> <a href="#tab_1_1" data-toggle="tab" aria-expanded="true"> Want to sell source code</a> </li>#}
+{#              <li class=""> <a href="#tab_1_2" data-toggle="tab" aria-expanded="false"> Want to buy source code</a> </li>#}
+{#            </ul>#}
+{#          </div>#}
+          <div class="tab-content margin-top-15">
+            <div class="tab-pane fontawesome-demo active" id="tab_1_1">
+
+<div class="">
+    {% for post in final_posts %}
+        <div class="search-result-item">
+          <a href="{% url 'interest-detail' post.slug %}"><h4>{{ post.title }}</h4>
+          <ul class="blog-info">
+            <li><i class="fa fa-calendar"></i> {{ post.created_date|date }}</li>
+            <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
+            <li><i class="fa fa-envelope"></i> {% if user.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li><i class="fa fa-phone"></i> {% if user.mobile_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
+            <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
+          </ul>
+          <p>{{ post.description }}<span class="label label-success "> New </span></a>
+          <div class="posting-icon">  <a href="#" class="red"><i class="fa fa-bitbucket"></i> Delete</a> </div>
+        </div>
+    {% endfor %}
+        <div class="row margin-top-15">
+<div class="margin-top-10">                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
+                <div class="col-md-8 col-sm-8">
+                  <ul class="pagination pull-right">
+                    <li><a href="#">«</a></li>
+                    <li><span>1</span></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">»</a></li>
+                  </ul>
+                </div></div>
+              </div>
+        </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- END CONTENT -->
+
+  <!-- BEGIN SIDEBAR & CONTENT -->
+
+</div>
+{% endblock %}
