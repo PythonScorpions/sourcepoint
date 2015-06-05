@@ -272,6 +272,16 @@ class MyInterestDetail(TemplateView):
         context['post'] = Posts.objects.get(slug = self.kwargs['slug'])
         return context
 
+def delete_interest(request, slug):
+    template_name = 'posts/my-interest.html'
+    if IpTracker.objects.filter(user=request.user).exists():
+        tracker = IpTracker.objects.get(user=request.user)
+        post = Posts.objects.get(slug=slug)
+        obj = tracker.intersets.get(id=post.id)
+        obj.delete()
+        return redirect('/my-interests/')
+    return render_to_response(template_name, context_instance=RequestContext(request))
+
 
 
 
