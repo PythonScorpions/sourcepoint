@@ -64,6 +64,7 @@ class IpTracker(models.Model):
     view_count = models.IntegerField('View Count', default=0)
     intersets = models.ManyToManyField(Posts, null=True, blank=True)
     interest_count = models.IntegerField('Total Interest Shown', default=0)
+    date = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
         return u'%s' % self.user
