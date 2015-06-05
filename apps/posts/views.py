@@ -5,10 +5,19 @@ from django.views.generic import TemplateView, FormView, UpdateView, DetailView
 from apps.accounts.models import *
 from apps.posts.forms import PostForm
 from apps.posts.models import *
+import json
 
 
 class Homepage(TemplateView):
     template_name = 'index.html'
+
+    def keywords(self, *args, **kwargs):
+        keywords = []
+        for cat in Category.objects.all():
+            keywords.append(str(cat.name))
+        for tag in TechnologyTags.objects.all():
+            keywords.append(str(tag.tag))
+        return keywords
 
     def get_context_data(self, **kwargs):
         context = super(Homepage, self).get_context_data(**kwargs)
@@ -16,6 +25,7 @@ class Homepage(TemplateView):
         context['sell'] = 'sell'
         context['buy'] = 'buy'
         context['posts_buy'] = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date')
+        context['keywords'] = self.keywords()
         return context
 
 
@@ -114,8 +124,8 @@ class PostEdit(UpdateView):
     def get(self, request, *args, **kwargs):
         posts = Posts.objects.get(id=kwargs['id'])
         form = self.form_class(instance=posts)
-        print "sadasdad",request.GET.get('redirect')
-        return render_to_response(self.template_name, {'form': form, 'post': posts}, context_instance=RequestContext(request),)
+        return render_to_response(self.template_name, {'form': form, 'post': posts},
+                                  context_instance=RequestContext(request),)
 
     def post(self, request, *args, **kwargs):
         posts = Posts.objects.get(id=kwargs['id'])
@@ -281,6 +291,29 @@ def delete_interest(request, slug):
         obj.delete()
         return redirect('/my-interests/')
     return render_to_response(template_name, context_instance=RequestContext(request))
+
+class SearchResults(TemplateView):
+    template_name = 'search.html'
+
+    def keywords(self, *args, **kwargs):
+        keywords = []
+        for cat in Category.objects.all():
+            keywords.append(str(cat.name))
+        for tag in TechnologyTags.objects.all():
+            keywords.append(str(tag.tag))
+        return keywords
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResults, self).get_context_data(**kwargs)
+        context['posts_sell'] = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date')
+        context['sell'] = 'sell'
+        context['buy'] = 'buy'
+        context['posts_buy'] = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date')
+        context['keywords'] = self.keywords()
+        return context
+
+
+
 
 
 

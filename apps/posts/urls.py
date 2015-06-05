@@ -16,5 +16,6 @@ urlpatterns = patterns("apps.posts.views",
                        url(r'^send-contact/(?P<slug>[\w-]+)/$', SendContact.as_view(), name='send-contact'),
                        url(r'^my-interests/$', MyInterests.as_view(), name='my-interests'),
                        url(r'^my-interest-detail/(?P<slug>[\w-]+)/$', MyInterestDetail.as_view(), name='interest-detail'),
-                       url(r'^delete-interest/(?P<slug>[\w-]+)/$', 'delete_interest' ,name='delete-interest')
+                       url(r'^delete-interest/(?P<slug>[\w-]+)/$', 'delete_interest' ,name='delete-interest'),
+                       url(r'^search/$', SearchResults.as_view(), name='search'),
                        )
