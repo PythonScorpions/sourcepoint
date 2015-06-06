@@ -303,6 +303,22 @@ class SearchResults(TemplateView):
             keywords.append(str(tag.tag))
         return keywords
 
+    def search_results(self, *args, **kwargs):
+        results = []
+        if 'search' in self.request.GET:
+            try:
+                if Category.objects.filter(name=self.request.GET.get('search')).exists():
+                    category = Category.objects.get(name=self.request.GET.get('search'))
+                    results = Posts.objects.filter(category=category)
+                elif TechnologyTags.objects.filter(tag=self.request.GET.get('search')).exists():
+                    tags = TechnologyTags.objects.get(tag=self.request.GET.get('search'))
+                    results = Posts.objects.filter(tags=tags)
+            except:
+                pass
+        else:
+            pass
+        return results
+
     def get_context_data(self, **kwargs):
         context = super(SearchResults, self).get_context_data(**kwargs)
         context['posts_sell'] = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date')
@@ -310,7 +326,9 @@ class SearchResults(TemplateView):
         context['buy'] = 'buy'
         context['posts_buy'] = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date')
         context['keywords'] = self.keywords()
+        context['results'] = self.search_results()
         return context
+
 
 
 
