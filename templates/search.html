@@ -59,9 +59,10 @@
               </div>
               <div class="row ">
                 <!-- BEGIN CONTENT -->
+              {% if results %}
                 <div class="col-md-12">
                   <div class="">
-                      {% for post in posts_sell %}
+                      {% for post in results %}
                     <div class="search-result-item">
                     <a href="{% url 'post-detail' post.slug %}">
                       <h4>{{ post.title }}</h4>
@@ -90,55 +91,13 @@
               </div>
                   </div>
                 </div>
+              {% else %}
+              <span>No Posts Found</span>
+              {% endif %}
                 <!-- END CONTENT -->
               </div>
             </div>
-            <div class="tab-pane fontawesome-demo" id="tab_1_2"> <div class="sub-menu-tab">
-                <ul class="nav nav-tabs">
-                  <li class="active"> <a href="#" >All</a></li>
-                    {% for category in categories %}
-                  <li class=""> <a href="{% url 'category-post' category.slug buy %}" >{{ category.name }}</a></li>
-                    {% endfor %}
-                  <li class=""><a href="#" >Other</a></li>
-                </ul>
-              </div>
-              <div class="row ">
-                <!-- BEGIN CONTENT -->
-                <div class="col-md-12">
-                  <div class="">
- {% for post in posts_buy %}
-                    <div class="search-result-item">
-                    <a href="{% url 'post-detail' post.slug %}">
-                      <h4>{{ post.title }}</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
-                        <li><i class="fa fa-phone"></i> Verified </li>
-                        <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
-                        <li class="pull-right"><i class="fa fa-tag"></i>{{ post.tags.all|join:", " }}</li>
-                      </ul>
-                      <p>{{ post.description }}
 
-                    </a> </div>
-                      {% endfor %}
-
-
-                    <div class="row margin-top-10">
-                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
-                <div class="col-md-8 col-sm-8">
-                  <ul class="pagination pull-right">
-                    <li><a href="#">«</a></li>
-                    <li><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
-                  </ul>
-                </div>
-              </div>
-                    </div>
-                </div>
-                <!-- END CONTENT -->
-              </div> </div>
           </div>
         </div>
       </div>
