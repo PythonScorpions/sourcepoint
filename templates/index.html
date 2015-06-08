@@ -20,6 +20,11 @@
 {% endblock %}
 {% block content %}
 <!-- Header END -->
+    {% if messages  %}
+        {% for message in messages %}
+            <span style="color: green;margin-left: 110px">{{ message }}</span>
+        {% endfor %}
+    {% endif %}
 {% list_category as categories %}
 <div class="main">
   <div class="container">
