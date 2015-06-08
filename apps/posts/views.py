@@ -1,11 +1,13 @@
 from django.contrib import messages
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, FormView, UpdateView, DetailView
 from apps.accounts.models import *
 from apps.posts.forms import PostForm
 from apps.posts.models import *
 import json
+from django.contrib.auth.decorators import login_required
 
 
 class Homepage(TemplateView):
@@ -56,6 +58,10 @@ class CategoryList(TemplateView):
 class PostDetail(TemplateView):
     template_name = 'posts/job-detail-after-login.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PostDetail, self).dispatch(*args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
         context['post'] = Posts.objects.get(slug=self.kwargs['slug'])
@@ -71,6 +77,10 @@ def addpost(request):
     tech_tags = TechnologyTags.objects.all()
     user = UserProfiles.objects.get(user=request.user)
     saved_tags = []
+    tags = []
+    data = TechnologyTags.objects.all()
+    for d in data:
+        tags.append(str(d.tag))
     obj = User.objects.get(username=request.user)
     if request.method == 'POST':
         type = request.POST.get('code')
@@ -92,7 +102,7 @@ def addpost(request):
             return redirect('/posts/preview/%s' % post.id)
         else:
             print "error", form.errors
-    return render_to_response(template_name, {'form': form, 'user': user, 'tech_tags': tech_tags}, context_instance = RequestContext(request))
+    return render_to_response(template_name, {'form': form, 'user': user, 'tech_tags': tech_tags, 'tags':tags}, context_instance = RequestContext(request))
 
 class Preview(TemplateView):
     template_name = 'posts/my-posting-detail.html'
