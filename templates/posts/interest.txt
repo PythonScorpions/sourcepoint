@@ -1,0 +1,10 @@
+Dear {{ post_first_name }} {{ post_last_name }},
+
+{{ first_name }} {{ last_name }} has Shown interest in your post,
+
+Following is his email
+
+{{ email }}
+
+Regards
+{{ site }}
