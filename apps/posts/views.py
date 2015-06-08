@@ -1,6 +1,9 @@
 from django.contrib import messages
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
+from django.template import loader
 from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
+from django.template import RequestContext, Context
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, FormView, UpdateView, DetailView
 from apps.accounts.models import *
@@ -8,6 +11,7 @@ from apps.posts.forms import PostForm
 from apps.posts.models import *
 import json
 from django.contrib.auth.decorators import login_required
+from sourcepoint import settings
 
 
 class Homepage(TemplateView):
@@ -259,6 +263,13 @@ class SendContact(TemplateView):
             track.interest_count += 1
             track.save()
             track.intersets.add(post)
+        site = Site.objects.get(pk=1)
+        t = loader.get_template('posts/interest.txt')
+        c = Context({'first_name': request.user.first_name, 'last_name': request.user.last_name,
+                     'email': request.user.email, 'site': site.name, 'post_first_name': post.user.first_name,
+                    'post_last_name': post.user.last_name})
+        send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
+                  settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
         return render_to_response(self.template_name, {'post':post}, context_instance=RequestContext(request))
 
 
