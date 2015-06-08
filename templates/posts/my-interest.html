@@ -28,7 +28,7 @@
             <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
           </ul>
           <p>{{ post.description }}<span class="label label-success "> New </span></a>
-          <div class="posting-icon">  <a href="{% url 'delete-interest' post.slug %}" class="red"><i class="fa fa-bitbucket"></i> Delete</a> </div>
+          <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
         </div>
     {% endfor %}
         <div class="row margin-top-15">
@@ -60,4 +60,19 @@
   <!-- BEGIN SIDEBAR & CONTENT -->
 
 </div>
+{% endblock %}
+{% block extra_scripts %}
+    <script>
+function showinterest(slug) {
+    var x;
+    if (confirm("Are you sure you want delete the post?") == true) {
+        x = "You pressed OK!";
+        window.location.href = "/delete-interest/" + slug + "/"
+    } else {
+        x = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = x;
+}
+</script>
+
 {% endblock %}
