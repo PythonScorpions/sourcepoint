@@ -28,7 +28,6 @@ class Homepage(TemplateView):
     def get_sellposts(self, *args, **kwargs):
         print self.request.user
         if str(self.request.user) == 'AnonymousUser':
-            print self.request.user.is_authenticated()
             posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date')
         else:
             posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date').exclude(user=self.request.user)
@@ -46,7 +45,7 @@ class Homepage(TemplateView):
         context['posts_sell'] = self.get_sellposts()
         context['sell'] = 'sell'
         context['buy'] = 'buy'
-        context['posts_sell'] = self.get_buyposts()
+        context['posts_buy'] = self.get_buyposts()
         context['keywords'] = self.keywords()
         return context
 
