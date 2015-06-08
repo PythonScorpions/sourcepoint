@@ -23,10 +23,10 @@ class Homepage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Homepage, self).get_context_data(**kwargs)
-        context['posts_sell'] = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date')
+        context['posts_sell'] = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date').exclude(user=self.request.user)
         context['sell'] = 'sell'
         context['buy'] = 'buy'
-        context['posts_buy'] = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date')
+        context['posts_buy'] = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date').exclude(user=self.request.user)
         context['keywords'] = self.keywords()
         return context
 
@@ -39,9 +39,9 @@ class CategoryList(TemplateView):
         print "asasasas",Category.objects.get(slug=self.kwargs['category'])
         categories = Category.objects.get(slug=self.kwargs['category'])
         if type == 'sell':
-            posts = Posts.objects.filter(category=categories,publish=True,sell_code=True)
+            posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).exclude(user=self.request.user)
         elif type == 'buy':
-            posts = Posts.objects.filter(category=categories,publish=True,buy_code=True)
+            posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).exclude(user=self.request.user)
         else:
             posts = ''
         return posts
