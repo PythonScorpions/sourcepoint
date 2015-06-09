@@ -186,7 +186,7 @@ class PostEdit(UpdateView):
             if data == 'true':
                 return redirect('/my-posting/')
             else:
-                return redirect('/post-edit/20/?redirect=true')
+                return redirect('/my-posting/')
         else:
             print "errors",form.errors
         return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request))
