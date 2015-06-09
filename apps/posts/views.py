@@ -58,9 +58,15 @@ class CategoryList(TemplateView):
         print "asasasas",Category.objects.get(slug=self.kwargs['category'])
         categories = Category.objects.get(slug=self.kwargs['category'])
         if type == 'sell':
-            posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).exclude(user=self.request.user)
+            if str(self.request.user) == 'AnonymousUser':
+                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True)
+            else:
+                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).exclude(user=self.request.user)
         elif type == 'buy':
-            posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).exclude(user=self.request.user)
+            if str(self.request.user) == 'AnonymousUser':
+                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True)
+            else:
+                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).exclude(user=self.request.user)
         else:
             posts = ''
         return posts
