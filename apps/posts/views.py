@@ -159,8 +159,9 @@ class PostEdit(UpdateView):
 
     def get(self, request, *args, **kwargs):
         posts = Posts.objects.get(id=kwargs['id'])
+        user = UserProfiles.objects.get(user=request.user)
         form = self.form_class(instance=posts)
-        return render_to_response(self.template_name, {'form': form, 'post': posts},
+        return render_to_response(self.template_name, {'form': form, 'post': posts, 'user': user},
                                   context_instance=RequestContext(request),)
 
     def post(self, request, *args, **kwargs):
