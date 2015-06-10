@@ -3,6 +3,9 @@
     <div class="main" xmlns="http://www.w3.org/1999/html">
   <div class="container ">
 <!-- BEGIN CONTENT -->
+  {% for message in messages %}
+      <span style="color:green">{{ message }}</span>
+  {% endfor %}
       <div class="content-page">
         <div class="row margin-bottom-30 search-result-item border-box">
           <!-- BEGIN INFO BLOCK -->
@@ -40,6 +43,12 @@
             <div>
               <h3>Description</h3>
               <p>{{ post.description }}</p>
+                <h3>Posting Type</h3>
+                {% if post.sell_code == True %}
+                <p>I want to sell Source Code</p>
+                {% else %}
+                <p>I want to buy Source Code</p>
+                {% endif %}
 
               <hr>
             </div>
