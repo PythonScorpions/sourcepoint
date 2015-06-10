@@ -28,16 +28,16 @@ class Homepage(TemplateView):
     def get_sellposts(self, *args, **kwargs):
         print self.request.user
         if str(self.request.user) == 'AnonymousUser':
-            posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date')
+            posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_dattetime')
         else:
-            posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_date').exclude(user=self.request.user)
+            posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_dattetime').exclude(user=self.request.user)
         return posts_sell
 
     def get_buyposts(self, *args, **kwargs):
         if str(self.request.user) == 'AnonymousUser':
-            posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date')
+            posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_dattetime')
         else:
-            posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_date').exclude(user=self.request.user)
+            posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_dattetime').exclude(user=self.request.user)
         return posts_buy
 
     def get_context_data(self, **kwargs):
