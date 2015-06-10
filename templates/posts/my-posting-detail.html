@@ -27,9 +27,9 @@
                 <div class="col-md-6 margin-top-20">
                   <blockquote class="border-left-none">
                     <ul class="list-unstyled margin-bottom-0">
-                      <li><strong>Email Id:</strong> {{ request.user.email }}</li>
-                      <li> <strong>Mobile Number:</strong> {{ user.mobile }} </li>
-                      <li> <strong>Skype ID:</strong> {{ user.skypeid }} </li>
+                      <li><strong>Email Id:</strong> {% if post.email == True %}{{ request.user.email }}{% else %}Not Selected{% endif %}</li>
+                      <li> <strong>Mobile Number:</strong>{% if post.mobile == True %} {{ user.mobile }} {% else %}Not Selected{% endif %}</li>
+                      <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ user.skypeid }} {% else %}Not Selected{% endif %}</li>
                     </ul>
                   </blockquote>
                 </div>
