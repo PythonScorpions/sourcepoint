@@ -91,7 +91,10 @@ class PostDetail(TemplateView):
         context = super(PostDetail, self).get_context_data(**kwargs)
         context['post'] = Posts.objects.get(slug=self.kwargs['slug'])
         context['plan'] = UserSubscriptions.objects.get(user=self.request.user)
-        context['tracker'] = IpTracker.objects.get(user=self.request.user)
+        try:
+            context['tracker'] = IpTracker.objects.get(user=self.request.user)
+        except:
+            pass
         return context
 
 
@@ -244,6 +247,7 @@ class PostContact(TemplateView):
         plan = UserSubscriptions.objects.get(user=request.user)
         ip = self.get_client_ip()
         post = Posts.objects.get(slug=kwargs['slug'])
+        tracker = ''
         try:
             tracker = IpTracker.objects.get(user=request.user)
             visted_posts = tracker.posts.all()
