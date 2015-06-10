@@ -9,14 +9,22 @@
       <div class="content-page">
         <div class="row margin-bottom-30 search-result-item border-box">
           <!-- BEGIN INFO BLOCK -->
-          <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'edit-post' post.id %}"> <span class="btn-danger btn-lg" >Edit</span></a> </span></h2>
+          <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'edit-post' post.id %}">
+
+              <span class="btn-danger btn-lg" >Edit</span></a> </span></h2>
+
           <hr>
+{#        {% if post.sell_code == True %}#}
+{#              <span class="btn-danger btn-lg" >On Sell</span></a> </span></h2>#}
+{#                {% else %}#}
+{#                  <span class="btn-danger btn-lg" >On Buy</span></a> </span></h2>#}
+{#        {% endif %}#}
           <div class="col-md-12">
 
             <!-- BEGIN LISTS -->
             <div class="row front-lists-v1 ">
               <ul class="list-unstyled margin-bottom-20">
-                <li><strong>Category:</strong> {{ post.category }}</li>
+                <li><strong>Category:</strong> {{ post.category }}{{ request.path }}</li>
                 <li> <strong>Technology Tags:</strong>{{ post.tags.all|join:", " }}</li>
                 <li> <strong>Price:</strong> {{ post.get_prices_display }} </li>
                 <li> <strong>Posted On:</strong> {{ post.created_date|date }} </li>

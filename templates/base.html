@@ -53,7 +53,13 @@
       <ul>
         <li {% ifequal request.path '/' %}class="active"{% endifequal %}><a  href="/">Home</a></li>
       {% if request.user.is_authenticated %}
-          <li {% ifequal request.path '/my-posting/' %}class="active"{% endifequal %}><a href="{% url 'my-posting' %}">My Posting</a></li>
+          {% if request.path ==  '/my-posting/' %}
+          <li {% ifequal request.path '/my-posting/' %}class="active"{% endifequal %}>
+              <a href="{% url 'my-posting' %}">My Posting</a></li>
+              {% else %}
+              <li {% if 'posting-details' in request.path %}class="active"{% endif %}>
+              <a href="{% url 'my-posting' %}">My Posting</a></li>
+              {% endif %}
           <li {% ifequal request.path '/my-interests/' %}class="active"{% endifequal %}><a href="{% url 'my-interests' %}">My Interest</a></li>
           <li {% ifequal request.path '/accounts/update-profile/' %}class="active"{% endifequal %}><a  href="{% url 'update-profile' %}">My Account</a></li>
 

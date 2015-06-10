@@ -6,7 +6,12 @@
       <div class="content-page">
         <div class="row margin-bottom-30 search-result-item border-box">
           <!-- BEGIN INFO BLOCK -->
-          <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'my-posting' %}" ><span class="btn-danger btn-lg" >Back</span></a> </span></h2>
+          <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'my-posting' %}" >
+              {% if post.sell_code == True %}
+              <span class="btn-danger btn-lg" >On Sell</span></a> </span></h2>
+                {% else %}
+                  <span class="btn-danger btn-lg" >On Buy</span></a> </span></h2>
+        {% endif %}
           <hr>
           <div class="col-md-12">
 
