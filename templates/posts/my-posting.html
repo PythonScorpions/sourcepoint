@@ -20,7 +20,7 @@
             <div class="tab-pane fontawesome-demo active" id="tab_1_1">
 
 <div class="content-page">
-    {% for post in posts_buy %}
+    {% for post in posts_sell %}
         <div class="search-result-item">
           <a href="{% url 'posting-detail' post.id %}"><h4>{{ post.title }}</h4>
           <ul class="blog-info">
@@ -41,7 +41,7 @@
             <div class="tab-pane fontawesome-demo" id="tab_1_2"> <div class="content-page">
 
 
-         {% for post in posts_sell %}
+         {% for post in posts_buy %}
         <div class="search-result-item">
           <a href="{% url 'posting-detail' post.id %}"><h4>{{ post.title }}</h4>
           <ul class="blog-info">
