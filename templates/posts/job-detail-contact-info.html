@@ -9,7 +9,14 @@
             <div class="content-page">
               <div class="row margin-bottom-30 search-result-item border-box">
                 <!-- BEGIN INFO BLOCK -->
-                <h2 class="margin-bottom-30">{{ post.title }}<span class="pull-right"><span class="btn-success btn-lg">On Sell</span></span></h2>
+                <h2 class="margin-bottom-30">{{ post.title }}<span class="pull-right">
+                    {% if post.sell_code == True %}
+                    <span class="btn-success btn-lg">On Sell</span>
+                    {% else %}
+                    <span class="btn-success btn-lg">On Buy</span>
+                    {% endif %}
+                </span>
+                    /h2>
                 <hr>
                 <div class="col-md-12">
 
