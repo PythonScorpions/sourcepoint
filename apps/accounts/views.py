@@ -184,6 +184,8 @@ class UpdateProfile(UpdateView):
 
     def post(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user)
+        site = Site.objects.get(pk=1)
+        t = loader.get_template('accounts/verify.txt')
         profile = UserProfiles.objects.get(user=user)
         form = self.form_class(request.POST, instance=user)
         if form.is_valid():
@@ -198,6 +200,8 @@ class UpdateProfile(UpdateView):
                 profile.email_verify = False
             user.save()
             profile.save()
+            c = Context({'name': user.first_name, 'email':user.email, 'site': site.name, 'token': profile.token})
+            send_mail('[%s] %s' % (site.name, 'User Updation Profile'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
             messages.success(request, 'Profile Editted Successfully.')
             return redirect('/accounts/update-profile/')
         return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request))
