@@ -215,6 +215,9 @@ class MyPostDetail(TemplateView):
         context = super(MyPostDetail, self).get_context_data(**kwargs)
         context['post'] = Posts.objects.get(id=self.kwargs['id'])
         context['user'] = UserProfiles.objects.get(user=self.request.user)
+        context['contact_count'] = IpTracker.objects.filter(posts=Posts.objects.get(id=self.kwargs['id'])).count()
+        context['interest_count'] = IpTracker.objects.filter(intersets=Posts.objects.get(id=self.kwargs['id'])).count()
+        context['user_shown_interests'] = IpTracker.objects.filter(intersets=Posts.objects.get(id=self.kwargs['id']))
         return context
 
 def postdelete(request,id):
