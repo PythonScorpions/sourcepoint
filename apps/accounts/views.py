@@ -193,6 +193,9 @@ class UpdateProfile(UpdateView):
             user.first_name = request.POST['first_name']
             user.last_name = request.POST['last_name']
             user.email = request.POST['email']
+            user.username = request.POST['email']
+            if not str(request.user.email) == str(request.POST['email']):
+                profile.email_verify = False
             user.save()
             profile.save()
             messages.success(request, 'Profile Editted Successfully.')
