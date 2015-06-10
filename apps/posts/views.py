@@ -124,7 +124,6 @@ def addpost(request):
             post = form.save(user=obj, type=type)
             for s in saved_tags:
                 post.tags.add(s)
-            messages.success(request, 'Post Successfully Submitted')
             return redirect('/posts/preview/%s' % post.id)
         else:
             print "error", form.errors
@@ -191,9 +190,9 @@ class PostEdit(UpdateView):
             posts.save()
             messages.success(request, 'Posts Editted Successfully.')
             if data == 'true':
-                return redirect('/my-posting/')
+                return redirect('/posts/preview/%s/'%(posts.id))
             else:
-                return redirect('/my-posting/')
+                return redirect('/posts/preview/%s/'%(posts.id))
         else:
             print "errors",form.errors
         return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request))
