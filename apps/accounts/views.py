@@ -46,11 +46,12 @@ def register(request):
         if form.is_valid():
             user = form.save()
             request.session['token'] = user.token
+            print "token:",request.session['token'],user.token
             t = loader.get_template('accounts/verify.txt')
             site = Site.objects.get(pk=1)
-            c = Context({'name': user.user.first_name, 'email':user.user.email, 'site': site.name, 'token': user.token})
-            send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.user.email], fail_silently=False)
-            messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
+            # c = Context({'name': user.user.first_name, 'email':user.user.email, 'site': site.name, 'token': user.token})
+            # send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [user.user.email], fail_silently=False)
+            # messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
             email = request.POST['email']
             password = request.POST['password2']
             user = authenticate(username=email, password=password)
@@ -86,6 +87,11 @@ def subscribe(request):
         subscribe.plan = plan
         subscribe.expiry_date = datetime.datetime.now()
         subscribe.save()
+        t = loader.get_template('accounts/verify.txt')
+        site = Site.objects.get(pk=1)
+        c = Context({'name': profile.user.first_name, 'email':profile.user.email, 'site': site.name, 'token': profile.token})
+        send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [profile.user.email], fail_silently=False)
+        messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
         if plan.free_plan == True:
             return redirect('/accounts/thanku/?type=free')
         else:
@@ -96,6 +102,7 @@ class Verification(TemplateView):
     template_name = 'accounts/enter-otp.html'
 
     def post(self, request, *args, **kwargs):
+        del request.session['token']
         if UserProfiles.objects.filter(token=kwargs['key']).exists():
             user = UserProfiles.objects.get(token=kwargs['key'])
             user.user.is_active = True
