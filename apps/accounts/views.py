@@ -126,15 +126,19 @@ class EmailVerification(TemplateView):
 
 def email_verification(request, key):
     template_name = 'accounts/login.html'
-    user = UserProfiles.objects.get(token=key)
-    if user:
-        user.email_verify = True
-        user.save()
-        if not request.user.is_authenticated():
-            messages.success(request, 'Please Login')
-            return redirect('/accounts/login/')
-        else:
-            return redirect('/accounts/update-profile/')
+    if UserProfiles.objects.filter(token=key).exists():
+        user = UserProfiles.objects.get(token=key)
+        if user:
+            user.email_verify = True
+            user.save()
+            if not request.user.is_authenticated():
+                messages.success(request, 'Please Login')
+                return redirect('/accounts/login/')
+            else:
+                return redirect('/accounts/update-profile/')
+    else:
+        messages.success(request, 'This Link is Expired')
+        return redirect('/')
     return render_to_response(template_name, context_instance=RequestContext(request),)
 
 class Thankyou(TemplateView):
