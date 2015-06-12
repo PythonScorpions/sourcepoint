@@ -198,7 +198,10 @@ class UpdateProfile(UpdateView):
         profile = UserProfiles.objects.get(user=user)
         form = self.form_class(request.POST, instance=user)
         if form.is_valid():
-            profile.mobile = request.POST['mobile']
+            if form.cleaned_data['mobile'] == None:
+                profile.mobile = 0
+            else:
+                profile.mobile = request.POST.get('mobile')
             profile.skypeid = request.POST['skypeid']
             profile.country = request.POST['country']
             user.first_name = request.POST['first_name']
