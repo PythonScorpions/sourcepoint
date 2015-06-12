@@ -16,6 +16,7 @@
             <div class="tab-pane fontawesome-demo active" id="tab_1_1">
 
 <div class="">
+{% if final_posts %}
     {% for post in final_posts %}
         <div class="search-result-item">
           <a href="{% url 'interest-detail' post.slug %}"><h4>{{ post.title }}</h4>
@@ -31,6 +32,7 @@
           <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
         </div>
     {% endfor %}
+{% endif %}
         <div class="row margin-top-15">
 <div class="margin-top-10">                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
                 <div class="col-md-8 col-sm-8">
