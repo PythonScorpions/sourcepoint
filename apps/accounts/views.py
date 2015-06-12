@@ -81,7 +81,7 @@ def subscribe(request):
      if request.method == 'POST':
         plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
         subscribe = UserSubscriptions()
-        profile = UserProfiles.objects.get(token=request.session['token'])
+        profile = UserProfiles.objects.get(user=request.user)
         subscribe.user = profile.user
         subscribe.plan = plan
         subscribe.expiry_date = datetime.datetime.now()
