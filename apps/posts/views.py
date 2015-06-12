@@ -312,17 +312,22 @@ class MyInterests(TemplateView):
         interests1 = []
         posts_contacted = []
         interest_shown = []
-        posts = IpTracker.objects.get(user=self.request.user)
-        for p in posts.posts.all():
-            posts_contacted.append(p)
-        for i in posts.intersets.all():
-            interest_shown.append(i)
-        interests = posts_contacted + interest_shown
-        final_posts = list(set(interests))
+        if IpTracker.objects.filter(user=self.request.user).exists():
+            posts = IpTracker.objects.get(user=self.request.user)
+            for p in posts.posts.all():
+                posts_contacted.append(p)
+            for i in posts.intersets.all():
+                interest_shown.append(i)
+            interests = posts_contacted + interest_shown
+            final_posts = list(set(interests))
+        else:
+            final_posts = []
         return final_posts
+
 
     def get_context_data(self, **kwargs):
         context = super(MyInterests, self).get_context_data(**kwargs)
+        print "sdsd",self.get_interests()
         context['final_posts'] = self.get_interests()
         return context
 
