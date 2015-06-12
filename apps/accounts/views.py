@@ -46,7 +46,6 @@ def register(request):
         if form.is_valid():
             user = form.save()
             token = user.token
-            print "token:",request.session['token'],user.token
             t = loader.get_template('accounts/verify.txt')
             site = Site.objects.get(pk=1)
             # c = Context({'name': user.user.first_name, 'email':user.user.email, 'site': site.name, 'token': user.token})
