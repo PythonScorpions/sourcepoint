@@ -45,7 +45,7 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            request.session['token'] = user.token
+            token = user.token
             print "token:",request.session['token'],user.token
             t = loader.get_template('accounts/verify.txt')
             site = Site.objects.get(pk=1)
@@ -58,7 +58,7 @@ def register(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('/accounts/verification/%s/' % request.session['token'])
+                    return redirect('/accounts/verification/%s/' % token)
                     messages.success(request, 'OTP has send to number')
         else:
             print "errors", form.errors
@@ -102,7 +102,6 @@ class Verification(TemplateView):
     template_name = 'accounts/enter-otp.html'
 
     def post(self, request, *args, **kwargs):
-        del request.session['token']
         if UserProfiles.objects.filter(token=kwargs['key']).exists():
             user = UserProfiles.objects.get(token=kwargs['key'])
             user.user.is_active = True
