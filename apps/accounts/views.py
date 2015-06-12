@@ -286,6 +286,17 @@ class ChangePlan(TemplateView):
         context['plans'] = SubscriptionPlan.objects.all()
         return context
 
+    def post(self, request, *args, **kwargs):
+        try:
+            user = UserSubscriptions.objects.get(user=request.user)
+            plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
+            user.plan = plan
+            user.save()
+            return redirect('/accounts/update-profile/')
+        except:
+            pass
+        return render_to_response(self.template_name, context_instance = RequestContext(request))
+
 class ChangePassword(TemplateView):
     template_name = 'accounts/password-change.html'
 
