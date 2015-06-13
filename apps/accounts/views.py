@@ -77,24 +77,54 @@ def mail_sent(request):
 
 def subscribe(request):
      template_name = 'accounts/pricing-plan.html'
+     url = ''
      plans = SubscriptionPlan.objects.all()
+     if 'redirect' in request.GET and request.GET['redirect'] == 'true':
+         request.session['post'] = request.GET['post']
+     if 'profile' in request.GET and request.GET['profile'] == 'true':
+         request.session['url'] = '/accounts/update-profile/'
+
      if request.method == 'POST':
-        plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
-        subscribe = UserSubscriptions()
-        profile = UserProfiles.objects.get(user=request.user)
-        subscribe.user = profile.user
-        subscribe.plan = plan
-        subscribe.expiry_date = datetime.datetime.now()
-        subscribe.save()
-        t = loader.get_template('accounts/verify.txt')
-        site = Site.objects.get(pk=1)
-        c = Context({'name': profile.user.first_name, 'email':profile.user.email, 'site': site.name, 'token': profile.token})
-        send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [profile.user.email], fail_silently=False)
-        messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
-        if plan.free_plan == True:
-            return redirect('/accounts/thanku/?type=free')
+        if 'post' in request.session:
+            post = request.session['post']
+            del request.session['post']
+            plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
+            subscribe = UserSubscriptions()
+            profile = UserProfiles.objects.get(user=request.user)
+            subscribe.user = profile.user
+            subscribe.plan = plan
+            subscribe.expiry_date = datetime.datetime.now()
+            subscribe.save()
+            return redirect('/post-detail/%s'%(post))
+        elif 'url' in request.session:
+            url = request.session['url']
+            del request.session['url']
+            plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
+            subscribe = UserSubscriptions()
+            profile = UserProfiles.objects.get(user=request.user)
+            subscribe.user = profile.user
+            subscribe.plan = plan
+            subscribe.expiry_date = datetime.datetime.now()
+            subscribe.save()
+            return redirect(url)
         else:
-            return redirect('/accounts/thanku/?type=paid')
+            plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
+            subscribe = UserSubscriptions()
+            profile = UserProfiles.objects.get(user=request.user)
+            subscribe.user = profile.user
+            subscribe.plan = plan
+            subscribe.expiry_date = datetime.datetime.now()
+            subscribe.save()
+            t = loader.get_template('accounts/verify.txt')
+            site = Site.objects.get(pk=1)
+            c = Context({'name': profile.user.first_name, 'email':profile.user.email, 'site': site.name, 'token': profile.token})
+            send_mail('[%s] %s' % (site.name, 'New User Registration'), t.render(c), settings.DEFAULT_FROM_EMAIL, [profile.user.email], fail_silently=False)
+            messages.success(request, 'Verificatioin link has send to your mail link has sent to your email')
+            if plan.free_plan == True:
+                return redirect('/accounts/thanku/?type=free')
+            else:
+                return redirect('/accounts/thanku/?type=paid')
+
      return render_to_response(template_name, {'plans': plans}, context_instance=RequestContext(request),)
 
 class Verification(TemplateView):
@@ -222,6 +252,12 @@ class UpdateProfile(UpdateView):
 class MyPlan(TemplateView):
 
     template_name = 'accounts/my-plan.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not UserSubscriptions.objects.filter(user=self.request.user).exists():
+            return redirect('/accounts/subscribe/?profile=true')
+        return super(MyPlan, self).dispatch(*args, **kwargs)
 
     def get_plan(self, *args, **kwargs):
         plan = UserSubscriptions.objects.get(user=self.request.user)
