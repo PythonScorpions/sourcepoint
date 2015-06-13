@@ -193,7 +193,7 @@ class PostEdit(UpdateView):
                 posts.tags.remove(p)
             for s in saved_tags:
                 post.tags.add(s)
-            posts.publish = True
+            posts.publish = False
             posts.save()
             messages.success(request, 'Posts Editted Successfully.')
             if data == 'true':
