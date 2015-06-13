@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext, Context
@@ -85,12 +86,15 @@ class PostDetail(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        if not UserSubscriptions.objects.filter(user=self.request.user).exists():
+            return redirect('/accounts/subscribe/?redirect=true&post=%s'%(kwargs['slug']))
         return super(PostDetail, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
         context['post'] = Posts.objects.get(slug=self.kwargs['slug'])
-        context['plan'] = UserSubscriptions.objects.get(user=self.request.user)
+        if UserSubscriptions.objects.filter(user=self.request.user).exists():
+            context['plan'] = UserSubscriptions.objects.get(user=self.request.user)
         try:
             context['tracker'] = IpTracker.objects.get(user=self.request.user)
         except:
