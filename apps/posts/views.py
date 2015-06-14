@@ -8,7 +8,7 @@ from django.template import RequestContext, Context
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, FormView, UpdateView, DetailView
 from apps.accounts.models import *
-from apps.posts.forms import PostForm
+from apps.posts.forms import PostForm, PostPreviewForm
 from apps.posts.models import *
 import json
 from django.contrib.auth.decorators import login_required
@@ -144,22 +144,38 @@ class Preview(TemplateView):
     template_name = 'posts/my-posting-detail.html'
 
     def get_tags(self,  *args, **kwargs):
-        posts = Posts.objects.get(id=self.kwargs['id'])
+        posts = PostsPreview.objects.get(id=self.kwargs['id'])
         tags = posts.tags.all()
         return tags
 
     def get_context_data(self, **kwargs):
         context = super(Preview, self).get_context_data(**kwargs)
-        context['post'] = Posts.objects.get(id=kwargs['id'])
+        context['post'] = PostsPreview.objects.get(id=kwargs['id'])
         context['user'] = UserProfiles.objects.get(user=self.request.user)
         context['tags'] = self.get_tags()
         return context
 
-    def post(self, request, *args ,**kwargs):
+    def post(self, request, *args, **kwargs):
         if request.POST.get('publish'):
-            posts = Posts.objects.get(id=kwargs['id'])
-            posts.publish = True
-            posts.save()
+            posts = PostsPreview.objects.get(id=kwargs['id'])
+            posts.preview.title = posts.title
+            posts.preview.description = posts.description
+            posts.preview.category = posts.category
+            posts.preview.prices = posts.prices
+            posts.preview.sell_code = posts.sell_code
+            posts.preview.buy_code = posts.buy_code
+            posts.preview.mobile = posts.mobile
+            posts.preview.file = posts.file
+            posts.preview.skypeid = posts.skypeid
+            posts.preview.email = posts.email
+            posts.preview.publish = posts.publish
+            for s in posts.preview.tags.all():
+                posts.preview.tags.remove(s)
+            for p in posts.tags.all():
+                posts.preview.tags.add(p)
+            posts.preview.publish = True
+            posts.preview.save()
+            PostsPreview.objects.get(id=kwargs['id']).delete()
             return redirect('/')
         return render_to_response(self.template_name, context_instance = RequestContext(request))
 
@@ -179,6 +195,7 @@ class PostEdit(UpdateView):
         form = self.form_class(request.POST, request.FILES, instance=posts)
         user = UserProfiles.objects.get(user=request.user)
         obj = User.objects.get(username=request.user)
+        form1 = PostPreviewForm(request.POST, request.FILES)
         type = request.POST.get('code')
         tags = request.POST.get('tags')
         data = request.GET.get('redirect')
@@ -192,21 +209,20 @@ class PostEdit(UpdateView):
                 tag = TechnologyTags.objects.create(tag=t)
                 saved_tags.append(tag)
         if form.is_valid():
-            post = form.save(user=obj, type=type)
+            print "dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",obj,type,saved_tags
+            post = form1.save(user=obj, type=type, post=posts)
             for p in posts.tags.all():
-                posts.tags.remove(p)
+                post.tags.remove(p)
             for s in saved_tags:
                 post.tags.add(s)
-            posts.publish = False
-            posts.save()
-            messages.success(request, 'Posts Editted Successfully.')
+            # messages.success(request, 'Posts Editted Successfully.')
             if data == 'true':
-                return redirect('/posts/preview/%s/'%(posts.id))
+                return redirect('/posts/preview/%s/'%(post.id))
             else:
-                return redirect('/posts/preview/%s/'%(posts.id))
+                return redirect('/posts/preview/%s/'%(post.id))
         else:
             print "errors",form.errors
-        return render_to_response(self.template_name, {'form': form, 'id': id}, context_instance=RequestContext(request))
+        return render_to_response(self.template_name, {'form': form1, 'id': id}, context_instance=RequestContext(request))
 
 
 class MyPosting(TemplateView):
