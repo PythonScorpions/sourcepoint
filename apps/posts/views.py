@@ -184,18 +184,29 @@ class PostEdit(UpdateView):
     form_class = PostForm
 
     def get(self, request, *args, **kwargs):
-        posts = Posts.objects.get(id=kwargs['id'])
-        user = UserProfiles.objects.get(user=request.user)
-        form = self.form_class(instance=posts)
+        if PostsPreview.objects.filter(id=kwargs['id']).exists():
+            posts = PostsPreview.objects.get(id=kwargs['id'])
+            user = UserProfiles.objects.get(user=request.user)
+            form = PostPreviewForm(instance=posts)
+        else:
+            posts = Posts.objects.get(id=kwargs['id'])
+            user = UserProfiles.objects.get(user=request.user)
+            form = self.form_class(instance=posts)
         return render_to_response(self.template_name, {'form': form, 'post': posts, 'user': user},
                                   context_instance=RequestContext(request),)
 
     def post(self, request, *args, **kwargs):
-        posts = Posts.objects.get(id=kwargs['id'])
-        form = self.form_class(request.POST, request.FILES, instance=posts)
+        if PostsPreview.objects.filter(id=kwargs['id']).exists():
+            preview = PostsPreview.objects.get(id=kwargs['id'])
+            posts = preview.preview
+            form1 = PostPreviewForm(request.POST, request.FILES, instance=preview)
+            form = self.form_class(request.POST, request.FILES, instance=posts)
+        else:
+            posts = Posts.objects.get(id=kwargs['id'])
+            form1 = PostPreviewForm(request.POST, request.FILES)
+            form = self.form_class(request.POST, request.FILES, instance=posts)
         user = UserProfiles.objects.get(user=request.user)
         obj = User.objects.get(username=request.user)
-        form1 = PostPreviewForm(request.POST, request.FILES)
         type = request.POST.get('code')
         tags = request.POST.get('tags')
         data = request.GET.get('redirect')
@@ -209,7 +220,6 @@ class PostEdit(UpdateView):
                 tag = TechnologyTags.objects.create(tag=t)
                 saved_tags.append(tag)
         if form.is_valid():
-            print "dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",obj,type,saved_tags
             post = form1.save(user=obj, type=type, post=posts)
             for p in posts.tags.all():
                 post.tags.remove(p)
