@@ -101,12 +101,12 @@ class PostDetail(TemplateView):
             pass
         # try:
         post = Posts.objects.get(slug=self.kwargs['slug'])
-        ip_tracker = IpTracker.objects.get(user=self.request.user)
-        if post in ip_tracker.intersets.all():
-            context['interest'] = 'true'
-        # except:
-        #     context['interest'] = ''
-        # print "sdddddddddddddddddddd", context['interest']
+        try:
+            ip_tracker = IpTracker.objects.get(user=self.request.user)
+            if post in ip_tracker.intersets.all():
+                context['interest'] = 'true'
+        except:
+            pass
         return context
 
 
@@ -337,13 +337,16 @@ class SendContact(TemplateView):
             track.save()
             track.intersets.add(post)
         site = Site.objects.get(pk=1)
+        ip_tracker = IpTracker.objects.get(user=self.request.user)
+        if post in ip_tracker.intersets.all():
+            interest = 'true'
         t = loader.get_template('posts/interest.txt')
         c = Context({'first_name': request.user.first_name, 'last_name': request.user.last_name,
                      'email': request.user.email, 'site': site.name, 'post_first_name': post.user.first_name,
                     'post_last_name': post.user.last_name})
         send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
                   settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
-        return render_to_response(self.template_name, {'post':post}, context_instance=RequestContext(request))
+        return render_to_response(self.template_name, {'post': post, 'interest':interest}, context_instance=RequestContext(request))
 
 
 class MyInterests(TemplateView):
