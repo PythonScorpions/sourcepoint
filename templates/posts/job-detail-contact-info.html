@@ -61,7 +61,11 @@
 Click here to send your contact detail to user, to show your interest, user will soon contact you
 </p>
 
-<a href="#" class="fancybox-button btn btn-primary"  data-rel="fancybox-button" onclick="showinterest()">Show Interest</a></blockquote>
+{% if interest == 'true' %}
+                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                              {% else %}
+                              <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                              {% endif %}
 
 
 
@@ -118,7 +122,11 @@ Click here to send your contact detail to user, to show your interest, user will
 Click here to send your contact detail to user, to show your interest, user will soon contact you
 </p>
 
-<a href="#" class="fancybox-button btn btn-primary"  data-rel="fancybox-button">Show Interest</a></blockquote>
+{% if interest == 'true' %}
+                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                              {% else %}
+                              <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                              {% endif %}
 
                     </div>
                   </div>

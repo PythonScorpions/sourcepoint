@@ -11,9 +11,6 @@
               <legend>Post Your Requiremen<br>
               <br>
               </legend>
-                {% for message in messages %}
-              <span style="color: green;margin-left: 240px">{{ message }}</span>
-              {% endfor %}
               <form class="form-horizontal" role="form" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
                 <fieldset>
                   <div class="form-group">
