@@ -46,7 +46,11 @@
 
                     <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
                       {% else %}
-                          <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                          {% if interest %}
+                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                              {% else %}
+                              <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                              {% endif %}
                       {% endif %}
                   </blockquote>
                 </div>
@@ -91,7 +95,11 @@
                 {% if tracker.interest_count == plan.plan.show_interest %}
                     <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
                       {% else %}
-                          <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                         {% if interest %}
+                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                              {% else %}
+                              <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
+                              {% endif %}
                       {% endif %}
               </blockquote>
             </div>
