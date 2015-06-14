@@ -99,6 +99,10 @@ class PostDetail(TemplateView):
             context['tracker'] = IpTracker.objects.get(user=self.request.user)
         except:
             pass
+        try:
+            context['interest'] = IpTracker.objects.get(intersets=Posts.objects.get(slug=self.kwargs['slug']))
+        except:
+            context['interest'] = ''
         return context
 
 
