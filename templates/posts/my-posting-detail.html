@@ -24,7 +24,7 @@
             <!-- BEGIN LISTS -->
             <div class="row front-lists-v1 ">
               <ul class="list-unstyled margin-bottom-20">
-                <li><strong>Category:</strong> {{ post.category }}{{ request.path }}</li>
+                <li><strong>Category:</strong> {{ post.category }}</li>
                 <li> <strong>Technology Tags:</strong>{{ post.tags.all|join:", " }}</li>
                 <li> <strong>Price:</strong> {{ post.get_prices_display }} </li>
                 <li> <strong>Posted On:</strong> {{ post.created_date|date }} </li>
