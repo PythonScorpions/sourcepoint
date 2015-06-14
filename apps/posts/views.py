@@ -99,10 +99,14 @@ class PostDetail(TemplateView):
             context['tracker'] = IpTracker.objects.get(user=self.request.user)
         except:
             pass
-        try:
-            context['interest'] = IpTracker.objects.get(intersets=Posts.objects.get(slug=self.kwargs['slug']))
-        except:
-            context['interest'] = ''
+        # try:
+        post = Posts.objects.get(slug=self.kwargs['slug'])
+        ip_tracker = IpTracker.objects.get(user=self.request.user)
+        if post in ip_tracker.intersets.all():
+            context['interest'] = 'true'
+        # except:
+        #     context['interest'] = ''
+        # print "sdddddddddddddddddddd", context['interest']
         return context
 
 
@@ -278,6 +282,7 @@ class PostContact(TemplateView):
 
 
     def get(self, request, *args, **kwargs):
+        interest = ''
         plan = UserSubscriptions.objects.get(user=request.user)
         ip = self.get_client_ip()
         post = Posts.objects.get(slug=kwargs['slug'])
@@ -298,7 +303,10 @@ class PostContact(TemplateView):
             track.view_count += 1
             track.save()
             track.posts.add(post)
-        return render_to_response(self.template_name, {'post': post, 'tracker': tracker, 'plan': plan}, context_instance=RequestContext(request))
+        ip_tracker = IpTracker.objects.get(user=self.request.user)
+        if post in ip_tracker.intersets.all():
+            interest = 'true'
+        return render_to_response(self.template_name, {'post': post, 'tracker': tracker, 'plan': plan, 'interest': interest}, context_instance=RequestContext(request))
 
 class SendContact(TemplateView):
     template_name = 'posts/job-detail-contact-info.html'
@@ -361,7 +369,6 @@ class MyInterests(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MyInterests, self).get_context_data(**kwargs)
-        print "sdsd",self.get_interests()
         context['final_posts'] = self.get_interests()
         return context
 
@@ -378,8 +385,12 @@ def delete_interest(request, slug):
     if IpTracker.objects.filter(user=request.user).exists():
         tracker = IpTracker.objects.get(user=request.user)
         post = Posts.objects.get(slug=slug)
-        obj = tracker.intersets.get(id=post.id)
-        obj.delete()
+        for t in tracker.intersets.all():
+            if t == post:
+                tracker.intersets.remove(t)
+        for t in tracker.posts.all():
+            if t == post:
+                tracker.posts.remove(t)
         return redirect('/my-interests/')
     return render_to_response(template_name, context_instance=RequestContext(request))
 
