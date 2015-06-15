@@ -135,11 +135,14 @@ def addpost(request):
                 tag = TechnologyTags.objects.create(tag=t)
                 saved_tags.append(tag)
         form = PostForm(request.POST, request.FILES)
+        form1 = PostPreviewForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(user=obj, type=type)
+            post_preview = form1.save(user=obj, type=type, post=post)
             for s in saved_tags:
                 post.tags.add(s)
-            return redirect('/posts/preview/%s' % post.id)
+                post_preview.tags.add(s)
+            return redirect('/posts/preview/%s' % post_preview.id)
         else:
             print "error", form.errors
     return render_to_response(template_name, {'form': form, 'user': user, 'tech_tags': tech_tags, 'tags':tags}, context_instance = RequestContext(request))
@@ -148,13 +151,19 @@ class Preview(TemplateView):
     template_name = 'posts/my-posting-detail.html'
 
     def get_tags(self,  *args, **kwargs):
+        # if PostsPreview.objects.filter(id=self.kwargs['id']).exists():
+        #     posts = PostsPreview.objects.get(id=self.kwargs['id'])
+        # else:
         posts = PostsPreview.objects.get(id=self.kwargs['id'])
         tags = posts.tags.all()
         return tags
 
     def get_context_data(self, **kwargs):
         context = super(Preview, self).get_context_data(**kwargs)
+        # if PostsPreview.objects.filter(id=kwargs['id']).exists():
         context['post'] = PostsPreview.objects.get(id=kwargs['id'])
+        # else:
+        #     context['post'] = Posts.objects.get(id=kwargs['id'])
         context['user'] = UserProfiles.objects.get(user=self.request.user)
         context['tags'] = self.get_tags()
         return context
