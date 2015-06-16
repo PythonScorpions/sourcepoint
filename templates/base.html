@@ -60,7 +60,14 @@
               <li {% if 'posting-details' in request.path %}class="active"{% endif %}>
               <a href="{% url 'my-posting' %}">My Posting</a></li>
               {% endif %}
+
+          {% if request.path == '/my-interests/' %}
           <li {% ifequal request.path '/my-interests/' %}class="active"{% endifequal %}><a href="{% url 'my-interests' %}">My Interest</a></li>
+          {% else %}
+          <li {% if 'my-interest-detail' in request.path %}class="active"{% endif %}><a href="{% url 'my-interests' %}">My Interest</a></li>
+          {% endif %}
+
+
           <li {% ifequal request.path '/accounts/update-profile/' %}class="active"{% endifequal %}><a  href="{% url 'update-profile' %}">My Account</a></li>
 
       {% endif %}
