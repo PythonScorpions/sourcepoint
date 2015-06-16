@@ -71,7 +71,9 @@
                 <li>4. Someone who wants to learn something can create his / her profile and can check various courses available, and can join courses, can view course wise itesm (video, images, documents)</li>
                 <li>5. Users can pay for courses</li>
               </ul>
+                {% if post.file %}
               <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: Non </h3></a>
+                {% endif %}
             </div>
           </div>
           <div class="row front-lists-v1  ">
