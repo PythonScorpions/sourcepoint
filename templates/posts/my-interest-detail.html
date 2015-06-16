@@ -24,10 +24,10 @@
                          <li> <strong>Technology Tags:</strong> {{ post.tags.all|join:", " }}</li>
                         <li> <strong>Price:</strong> {{ post.get_prices_display }} </li>
                             <li> <strong>Posted On:</strong> {{ post.created_date|date }}  </li>
-                        <li> <strong>Email ID:</strong> {% if user.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+                        <li> <strong>Email ID:</strong> {% if post.user.user_profiles.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
 
 
-                        <li> <strong>Mobile Number:</strong> {% if user.mobile_verify == True %}Verified{% else %}Not Verified{% endif %}</li>
+                        <li> <strong>Mobile Number:</strong> {% if post.user.user_profiles.mobile_verify == True %}Verified{% else %}Not Verified{% endif %}</li>
                       </ul>
                    <div class="row"> <div class="col-md-6 margin-top-20">
 

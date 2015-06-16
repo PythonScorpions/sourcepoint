@@ -26,8 +26,8 @@
           <ul class="blog-info">
             <li><i class="fa fa-calendar"></i> {{ post.created_date }}</li>
             <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
-            <li><i class="fa fa-envelope"></i> {% if post.email == True %}Verified{% else %}Not Verified{% endif %} </li>
-            <li><i class="fa fa-phone"></i> {% if post.mobile == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li><i class="fa fa-envelope"></i> {% if post.user.user_profiles.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li><i class="fa fa-phone"></i> {% if post.user.user_profiles.mobile_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
             <li class="pull-right"><i class="fa fa-list"></i> {{ post.category.name }}</li>
             <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
           </ul>
@@ -47,8 +47,8 @@
           <ul class="blog-info">
             <li><i class="fa fa-calendar"></i> {{ post.created_date }}</li>
             <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
-            <li><i class="fa fa-envelope"></i> {% if post.email == True %}Verified{% else %}Not Verified{% endif %} </li>
-            <li><i class="fa fa-phone"></i> {% if post.mobile == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li><i class="fa fa-envelope"></i> {% if post.user.user_profiles.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li><i class="fa fa-phone"></i> {% if post.user.user_profiles.mobile_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
             <li class="pull-right"><i class="fa fa-list"></i> {{ post.category.name }}</li>
             <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
           </ul>
