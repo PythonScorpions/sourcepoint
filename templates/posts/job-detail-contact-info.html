@@ -40,12 +40,11 @@
 
 
 <blockquote class="border-left-none">
-
-<ul class="list-unstyled margin-bottom-0">
-                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
-                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
-                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
-                      </ul>
+{% if ip_tracker.view_count == plan.plan.view_contact %}
+                          <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
+                      {% else %}
+                    <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
+                      {% endif %}
 </blockquote>
 
 
@@ -58,11 +57,15 @@
 
 <blockquote><p>
 
-Click here to send your contact detail to user, to show your interest, user will soon contact you
+{% if interest == 'true' %}
+Contact Request Sent, user will soon contact you
+{% else %}
+    Click here to send your contact detail to user, to show your interest, user will soon contact you
+{% endif %}
 </p>
 
 {% if interest == 'true' %}
-                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                          <a class="btn btn-primary"  data-rel="fancybox-button">We have send your contact details to user {{ post.user.first_name }}</a>
                               {% else %}
                               <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
                               {% endif %}
@@ -108,23 +111,26 @@ Click here to send your contact detail to user, to show your interest, user will
                     <div class="col-md-6">
                      <blockquote class="border-left-none">
 
-<ul class="list-unstyled margin-bottom-0">
-                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
-                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
-                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
-                      </ul>
+{% if ip_tracker.view_count == plan.plan.view_contact %}
+                          <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
+                      {% else %}
+                    <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
+                      {% endif %}
 </blockquote>
 
                     </div>
 
                     <div class="col-md-6">
                       <blockquote><p>
-
-Click here to send your contact detail to user, to show your interest, user will soon contact you
+{% if interest == 'true' %}
+Contact Request Sent, user will soon contact you
+{% else %}
+    Click here to send your contact detail to user, to show your interest, user will soon contact you
+{% endif %}
 </p>
 
 {% if interest == 'true' %}
-                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                          <a class="btn btn-primary"  data-rel="fancybox-button">We have send your contact details to user {{ post.user.first_name }}</a>
                               {% else %}
                               <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
                               {% endif %}
