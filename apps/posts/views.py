@@ -105,6 +105,8 @@ class PostDetail(TemplateView):
             ip_tracker = IpTracker.objects.get(user=self.request.user)
             if post in ip_tracker.intersets.all():
                 context['interest'] = 'true'
+            if post in ip_tracker.posts.all():
+                context['contact'] = 'true'
         except:
             pass
         return context
