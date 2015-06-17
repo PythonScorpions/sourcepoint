@@ -422,7 +422,7 @@ class MyInterests(TemplateView):
 
             code_buy = interest_buy_post + contact_buy_post
 
-            print "code_buyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", code_buy
+            code_buy = list(set(code_buy))
         else:
             code_buy = []
         return code_buy
@@ -444,7 +444,7 @@ class MyInterests(TemplateView):
                 interest_shown.append(i)
 
             code_sell = contact_sell_post + interest_sell_code
-            print "code_sellllllllllllllllllllllllllllllllllllllllllllll", code_sell
+            code_sell = list(set(code_sell))
         else:
             code_sell = []
         return code_sell
