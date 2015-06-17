@@ -370,26 +370,91 @@ class MyInterests(TemplateView):
     template_name = 'posts/my-interest.html'
 
     def get_interests(self, *args, **kwargs):
-        interests = []
-        interests1 = []
+        contact_sell_post = []
+        contact_buy_post = []
+        interest_buy_post = []
+        interest_sell_code = []
         posts_contacted = []
         interest_shown = []
         if IpTracker.objects.filter(user=self.request.user).exists():
             posts = IpTracker.objects.get(user=self.request.user)
             for p in posts.posts.all():
+                if p.buy_code == True:
+                    contact_buy_post.append(p)
+                else:
+                    contact_sell_post.append(p)
                 posts_contacted.append(p)
             for i in posts.intersets.all():
+                if i.buy_code == True:
+                    interest_buy_post.append(i)
+                else:
+                    interest_sell_code.append(i)
                 interest_shown.append(i)
+
+            code_buy = interest_buy_post + contact_buy_post
+            code_sell = contact_sell_post + interest_sell_code
+
+            print "code_buyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", code_buy
+            print "code_sellllllllllllllllllllllllllllllllllllllllllllll", code_sell
+
             interests = posts_contacted + interest_shown
             final_posts = list(set(interests))
         else:
             final_posts = []
         return final_posts
 
+    def buy_posts(self, *args, **kwargs):
+        contact_buy_post = []
+        interest_buy_post = []
+        posts_contacted = []
+        interest_shown = []
+
+        if IpTracker.objects.filter(user=self.request.user).exists():
+            posts = IpTracker.objects.get(user=self.request.user)
+            for p in posts.posts.all():
+                if p.buy_code == True:
+                    contact_buy_post.append(p)
+                posts_contacted.append(p)
+            for i in posts.intersets.all():
+                if i.buy_code == True:
+                    interest_buy_post.append(i)
+                interest_shown.append(i)
+
+            code_buy = interest_buy_post + contact_buy_post
+
+            print "code_buyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", code_buy
+        else:
+            code_buy = []
+        return code_buy
+
+    def sell_posts(self, *args, **kwargs):
+        contact_sell_post = []
+        interest_sell_code = []
+        posts_contacted = []
+        interest_shown = []
+        if IpTracker.objects.filter(user=self.request.user).exists():
+            posts = IpTracker.objects.get(user=self.request.user)
+            for p in posts.posts.all():
+                if p.sell_code == True:
+                    contact_sell_post.append(p)
+                posts_contacted.append(p)
+            for i in posts.intersets.all():
+                if i.sell_code == True:
+                    interest_sell_code.append(i)
+                interest_shown.append(i)
+
+            code_sell = contact_sell_post + interest_sell_code
+            print "code_sellllllllllllllllllllllllllllllllllllllllllllll", code_sell
+        else:
+            code_sell = []
+        return code_sell
+
 
     def get_context_data(self, **kwargs):
         context = super(MyInterests, self).get_context_data(**kwargs)
-        context['final_posts'] = self.get_interests()
+        # context['final_posts'] = self.get_interests()
+        context['buy_posts'] = self.buy_posts()
+        context['sell_posts'] = self.sell_posts()
         return context
 
 class MyInterestDetail(TemplateView):
