@@ -27,16 +27,24 @@
               <div class="row">
                 <div class="col-md-6 margin-top-20">
                   <blockquote>
-                    <p> Click here to get contact
+                    {% if contact == 'true' %}
+                  <ul class="list-unstyled margin-bottom-0">
+                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
+                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
+                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
+                      </ul>
+              {% else %}
+                <p> Click here to get contact
 
-                      information of usre
+                  information of usre
 
-                      (Email ID, Mobile number & Skype ID) </p>
-                      {% if tracker.view_count == plan.plan.view_contact %}
+                  (Email ID, Mobile number & Skype ID) </p>
+                {% if tracker.view_count == plan.plan.view_contact %}
                           <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
                       {% else %}
                     <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
                       {% endif %}
+              {% endif %}
                   </blockquote>
                 </div>
                 <div class="col-md-6 padding-left-0 margin-top-20">
@@ -79,6 +87,13 @@
           <div class="row front-lists-v1  ">
             <div class="col-md-6">
               <blockquote>
+              {% if contact == 'true' %}
+                  <ul class="list-unstyled margin-bottom-0">
+                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
+                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
+                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
+                      </ul>
+              {% else %}
                 <p> Click here to get contact
 
                   information of usre
@@ -89,6 +104,7 @@
                       {% else %}
                     <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
                       {% endif %}
+              {% endif %}
               </blockquote>
             </div>
             <div class="col-md-6">
