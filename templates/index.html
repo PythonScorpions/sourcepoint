@@ -70,8 +70,17 @@
                     <div class="search-result-item">
                     <a href="{% url 'post-detail' post.slug %}">
                       <h4>{{ post.title }}</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
+                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
+                          {% if post.user.user_profiles.email_verify == True %}
+                          <li><i class="fa fa-envelope"></i> Verified </li>
+                          {% else %}
+                              <li><i class="fa fa-envelope"></i> Not Verified </li>
+                          {% endif %}
+                      {% if post.user.user_profiles.mobile_verify == True %}
                         <li><i class="fa fa-phone"></i> Verified </li>
+                      {% else %}
+                          <li><i class="fa fa-phone"></i> Not Verified </li>
+                      {% endif %}
                         <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
                         <li class="pull-right"><i class="fa fa-tag"></i>{{ post.tags.all|join:", " }}</li>
                       </ul>
@@ -115,8 +124,17 @@
                     <div class="search-result-item">
                     <a href="{% url 'post-detail' post.slug %}">
                       <h4>{{ post.title }}</h4>
-                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>                        <li><i class="fa fa-envelope"></i> Verified </li>
+                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
+                          {% if post.user.user_profiles.email_verify == True %}
+                          <li><i class="fa fa-envelope"></i> Verified </li>
+                          {% else %}
+                              <li><i class="fa fa-envelope"></i> Not Verified </li>
+                          {% endif %}
+                        {% if post.user.user_profiles.mobile_verify == True %}
                         <li><i class="fa fa-phone"></i> Verified </li>
+                      {% else %}
+                          <li><i class="fa fa-phone"></i> Not Verified </li>
+                      {% endif %}
                         <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
                         <li class="pull-right"><i class="fa fa-tag"></i>{{ post.tags.all|join:", " }}</li>
                       </ul>
