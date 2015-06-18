@@ -8,7 +8,13 @@
       <div class="content-page">
         <div class="row margin-bottom-30 search-result-item border-box">
           <!-- BEGIN INFO BLOCK -->
-          <h2 class="margin-bottom-30">{{ post.title }}</h2>
+          <h2 class="margin-bottom-30">{{ post.title }}
+          <span class="pull-right">
+          {% if request.GET.redirect == 'true' %}
+                    <span class="btn-danger btn-lg" >{% if post.sell_code == True %}on Sell{% else %}on Buy{% endif %}</span>
+                    <span class="btn-success btn-lg" >New</span>
+          {% endif %}
+                </span></h2>
           <hr>
           <div class="col-md-12">
 
@@ -26,6 +32,15 @@
               </ul>
               <div class="row">
                 <div class="col-md-6 margin-top-20">
+                {% if request.user == post.user %}
+                    <blockquote>
+                    <ul class="list-unstyled margin-bottom-0">
+                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
+                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
+                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
+                      </ul>
+                    </blockquote>
+                    {% else %}
                   <blockquote>
                     {% if contact == 'true' %}
                   <ul class="list-unstyled margin-bottom-0">
@@ -46,7 +61,10 @@
                       {% endif %}
               {% endif %}
                   </blockquote>
+                {% endif %}
                 </div>
+              {% if request.user == post.user %}
+                  {% else %}
                 <div class="col-md-6 padding-left-0 margin-top-20">
                   <blockquote>
                     <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
@@ -62,6 +80,7 @@
                       {% endif %}
                   </blockquote>
                 </div>
+              {% endif %}
               </div>
             </div>
           </div>
@@ -86,8 +105,17 @@
           </div>
           <div class="row front-lists-v1  ">
             <div class="col-md-6">
-              <blockquote>
-              {% if contact == 'true' %}
+              {% if request.user == post.user %}
+                    <blockquote>
+                    <ul class="list-unstyled margin-bottom-0">
+                        <li><strong>Email Id:</strong> {{ post.user.email }}</li>
+                        <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
+                        <li> <strong>Skype ID:</strong> {% if post.skypeid == True %}{{ post.user.user_profiles.skypeid }}{% else %}Not Provided{% endif %} </li>
+                      </ul>
+                    </blockquote>
+                    {% else %}
+                  <blockquote>
+                    {% if contact == 'true' %}
                   <ul class="list-unstyled margin-bottom-0">
                         <li><strong>Email Id:</strong> {{ post.user.email }}</li>
                         <li> <strong>Mobile Number:</strong>  {% if post.mobile == True %}{{ post.user.user_profiles.mobile }}{% else %}Not Verified{% endif %}  </li>
@@ -105,22 +133,27 @@
                     <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
                       {% endif %}
               {% endif %}
-              </blockquote>
+                  </blockquote>
+                {% endif %}
             </div>
-            <div class="col-md-6">
-              <blockquote>
-                <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
-                {% if tracker.interest_count == plan.plan.show_interest %}
+            {% if request.user == post.user %}
+                  {% else %}
+                <div class="col-md-6 padding-left-0 margin-top-20">
+                  <blockquote>
+                    <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
+                      {% if tracker.interest_count == plan.plan.show_interest %}
+
                     <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
                       {% else %}
-                         {% if interest == 'true' %}
+                          {% if interest == 'true' %}
                           <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
                               {% else %}
                               <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
                               {% endif %}
                       {% endif %}
-              </blockquote>
-            </div>
+                  </blockquote>
+                </div>
+              {% endif %}
           </div>
         </div>
         <!-- END INFO BLOCK -->
