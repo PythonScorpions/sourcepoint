@@ -315,6 +315,28 @@ class PostContact(TemplateView):
                                                        'interest': interest,},
                                   context_instance=RequestContext(request))
 
+
+def get_context_data(self, **kwargs):
+        context = super(PostDetail, self).get_context_data(**kwargs)
+        context['post'] = Posts.objects.get(slug=self.kwargs['slug'])
+        if UserSubscriptions.objects.filter(user=self.request.user).exists():
+            context['plan'] = UserSubscriptions.objects.get(user=self.request.user)
+        try:
+            context['tracker'] = IpTracker.objects.get(user=self.request.user)
+        except:
+            pass
+        # try:
+        post = Posts.objects.get(slug=self.kwargs['slug'])
+        try:
+            ip_tracker = IpTracker.objects.get(user=self.request.user)
+            if post in ip_tracker.intersets.all():
+                context['interest'] = 'true'
+            if post in ip_tracker.posts.all():
+                context['contact'] = 'true'
+        except:
+            pass
+        return context
+
 class SendContact(TemplateView):
     template_name = 'posts/job-detail-contact-info.html'
 
@@ -330,6 +352,8 @@ class SendContact(TemplateView):
         ip = self.get_client_ip()
         post = Posts.objects.get(slug=kwargs['slug'])
         plan = UserSubscriptions.objects.get(user=request.user)
+        interest = ''
+        contact = ''
         try:
             tracker = IpTracker.objects.get(user=request.user)
 
@@ -348,6 +372,9 @@ class SendContact(TemplateView):
         ip_tracker = IpTracker.objects.get(user=self.request.user)
         if post in ip_tracker.intersets.all():
             interest = 'true'
+        if post in ip_tracker.posts.all():
+            contact = 'true'
+
         t = loader.get_template('posts/interest.txt')
         c = Context({'first_name': request.user.first_name, 'last_name': request.user.last_name,
                      'email': request.user.email, 'site': site.name, 'post_first_name': post.user.first_name,
@@ -355,8 +382,8 @@ class SendContact(TemplateView):
         send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
                   settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
 
-        return render_to_response(self.template_name, {'post': post, 'interest': interest, 'plan': plan},
-                                  context_instance=RequestContext(request))
+        return render_to_response(self.template_name, {'post': post, 'interest': interest, 'contact': contact,
+                                                       'plan': plan}, context_instance=RequestContext(request))
 
 
 class MyInterests(TemplateView):
