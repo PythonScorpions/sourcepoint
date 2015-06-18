@@ -27,18 +27,11 @@ class Homepage(TemplateView):
         return keywords
 
     def get_sellposts(self, *args, **kwargs):
-        print self.request.user
-        if str(self.request.user) == 'AnonymousUser':
-            posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_dattetime')
-        else:
-            posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_dattetime').exclude(user=self.request.user)
+        posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_dattetime')
         return posts_sell
 
     def get_buyposts(self, *args, **kwargs):
-        if str(self.request.user) == 'AnonymousUser':
-            posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_dattetime')
-        else:
-            posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_dattetime').exclude(user=self.request.user)
+        posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_dattetime')
         return posts_buy
 
     def get_context_data(self, **kwargs):
@@ -359,8 +352,8 @@ class SendContact(TemplateView):
         c = Context({'first_name': request.user.first_name, 'last_name': request.user.last_name,
                      'email': request.user.email, 'site': site.name, 'post_first_name': post.user.first_name,
                     'post_last_name': post.user.last_name})
-        # send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
-        #           settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
+        send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
+                  settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
 
         return render_to_response(self.template_name, {'post': post, 'interest': interest, 'plan': plan},
                                   context_instance=RequestContext(request))
