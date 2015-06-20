@@ -77,29 +77,32 @@ class CategoryList(TemplateView):
 class PostDetail(TemplateView):
     template_name = 'posts/job-detail-after-login.html'
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        if not UserSubscriptions.objects.filter(user=self.request.user).exists():
-            return redirect('/accounts/subscribe/?redirect=true&post=%s'%(kwargs['slug']))
-        return super(PostDetail, self).dispatch(*args, **kwargs)
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs):
+    #     if not UserSubscriptions.objects.filter(user=self.request.user).exists():
+    #         return redirect('/accounts/subscribe/?redirect=true&post=%s'%(kwargs['slug']))
+    #     return super(PostDetail, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
         context['post'] = Posts.objects.get(slug=self.kwargs['slug'])
-        if UserSubscriptions.objects.filter(user=self.request.user).exists():
-            context['plan'] = UserSubscriptions.objects.get(user=self.request.user)
         try:
-            context['tracker'] = IpTracker.objects.get(user=self.request.user)
-        except:
-            pass
-        # try:
-        post = Posts.objects.get(slug=self.kwargs['slug'])
-        try:
-            ip_tracker = IpTracker.objects.get(user=self.request.user)
-            if post in ip_tracker.intersets.all():
-                context['interest'] = 'true'
-            if post in ip_tracker.posts.all():
-                context['contact'] = 'true'
+            if UserSubscriptions.objects.filter(user=self.request.user).exists():
+                context['plan'] = UserSubscriptions.objects.get(user=self.request.user)
+            try:
+                context['tracker'] = IpTracker.objects.get(user=self.request.user)
+            except:
+                pass
+            # try:
+            post = Posts.objects.get(slug=self.kwargs['slug'])
+            try:
+                ip_tracker = IpTracker.objects.get(user=self.request.user)
+                if post in ip_tracker.intersets.all():
+                    context['interest'] = 'true'
+                if post in ip_tracker.posts.all():
+                    context['contact'] = 'true'
+            except:
+                pass
         except:
             pass
         return context
