@@ -47,11 +47,12 @@
               <h3>Discription</h3>
               <p>{{ post.description }}</p>
               <hr>
+                {% if post.file %}
+              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: {{ post.file.name|slice:'6:' }} </h3></a>
+                {% endif %}
               <h5 class="margin-bottom-10">Contact Viewed By: {{ contact_count }} persons</h5>
               <h3>Interest Shown By: {{ interest_count }} persons</h3>
-               {% if post.file %}
-              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: Non </h3></a>
-                {% endif %}
+
             </div>
           </div>
           <div class="row front-lists-v1  ">
