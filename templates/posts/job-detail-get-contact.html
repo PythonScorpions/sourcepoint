@@ -98,7 +98,7 @@ Click here to send your contact detail to user, to show your interest, user will
 
 <p>And many more.......</p>
 {% if post.file %}
-              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: Non </h3></a>
+              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: {{ post.file.name|slice:'6:' }} </h3></a>
                 {% endif %}
 </div></div>
 
