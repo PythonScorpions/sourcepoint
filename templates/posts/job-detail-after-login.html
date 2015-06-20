@@ -54,6 +54,9 @@
                   information of usre
 
                   (Email ID, Mobile number & Skype ID) </p>
+                        {% if not request.user.is_authenticated %}
+                            <a href="{% url 'login' %}" class="btn btn-primary">Get Contact Detail</a>
+                            {% else %}
                 {% if tracker.view_count == plan.plan.view_contact %}
                           <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
                       {% else %}
@@ -62,8 +65,18 @@
               {% endif %}
                   </blockquote>
                 {% endif %}
+                {% endif %}
+
                 </div>
-              {% if request.user == post.user %}
+              {% if not request.user.is_authenticated %}
+          <div class="col-md-6 padding-left-0 margin-top-20">
+                  <blockquote>
+                    <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
+              <a href="{% url 'login' %}" class="btn btn-primary"  data-rel="fancybox-button">Show Interest</a>
+               <blockquote>
+              </div>
+                  {% else %}
+            {% if request.user == post.user %}
                   {% else %}
                 <div class="col-md-6 padding-left-0 margin-top-20">
                   <blockquote>
@@ -81,6 +94,7 @@
                   </blockquote>
                 </div>
               {% endif %}
+                  {% endif %}
               </div>
             </div>
           </div>
@@ -99,7 +113,7 @@
                 <li>5. Users can pay for courses</li>
               </ul>
                 {% if post.file %}
-              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: Non </h3></a>
+              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: {{ post.file.name|slice:'6:' }} </h3></a>
                 {% endif %}
             </div>
           </div>
@@ -127,6 +141,9 @@
                   information of usre
 
                   (Email ID, Mobile number & Skype ID) </p>
+               {% if not request.user.is_authenticated %}
+                            <a href="{% url 'login' %}" class="btn btn-primary">Get Contact Detail</a>
+                            {% else %}
                 {% if tracker.view_count == plan.plan.view_contact %}
                           <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
                       {% else %}
@@ -135,7 +152,16 @@
               {% endif %}
                   </blockquote>
                 {% endif %}
+                {% endif %}
             </div>
+          {% if not request.user.is_authenticated %}
+          <div class="col-md-6 padding-left-0 margin-top-20">
+                  <blockquote>
+                    <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
+              <a href="{% url 'login' %}" class="btn btn-primary"  data-rel="fancybox-button">Show Interest</a>
+               <blockquote>
+              </div>
+                  {% else %}
             {% if request.user == post.user %}
                   {% else %}
                 <div class="col-md-6 padding-left-0 margin-top-20">
@@ -154,6 +180,7 @@
                   </blockquote>
                 </div>
               {% endif %}
+                  {% endif %}
           </div>
         </div>
         <!-- END INFO BLOCK -->
