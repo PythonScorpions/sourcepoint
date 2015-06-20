@@ -21,7 +21,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^',include('apps.posts.urls')),
-    url(r'^accounts/',include('apps.accounts.urls'))
+    url(r'^accounts/',include('apps.accounts.urls')),
+    url(r'dashboard/',include('apps.dashboard.urls'))
 ]
 urlpatterns += patterns('',
         (r'^static/(.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT,'show_indexes': False}),
