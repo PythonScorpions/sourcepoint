@@ -60,7 +60,7 @@
                 {% if tracker.view_count == plan.plan.view_contact %}
                           <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
                       {% else %}
-                    <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
+                    <a onclick="getcontact(3000)" class="btn btn-primary">Get Contact Detail</a>
                       {% endif %}
               {% endif %}
                   </blockquote>
@@ -147,7 +147,7 @@
                 {% if tracker.view_count == plan.plan.view_contact %}
                           <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
                       {% else %}
-                    <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
+                    <a class="btn btn-primary" onclick="getcontact(3000)">Get Contact Detail</a>
                       {% endif %}
               {% endif %}
                   </blockquote>
@@ -208,5 +208,18 @@ function showinterest() {
     document.getElementById("demo").innerHTML = x;
 }
 </script>
+    <script>
+    function getcontact()
+    {
+    var x;
+    if (confirm("Are you sure you want to see contact for this post?") == true) {
+        x = "You pressed OK!";
+        window.location.href = "/job-detail-contact/{{ post.slug }}/"
+    } else {
+        x = "You pressed Cancel!";
+    }
+    document.getElementById("demo").innerHTML = x;
+}
+    </script>
 
 {% endblock %}
