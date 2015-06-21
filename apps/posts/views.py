@@ -66,8 +66,12 @@ class CategoryList(TemplateView):
                 posts = ''
         else:
             categories = Category.objects.all()[:3]
-            posts = Posts.objects.filter(publish=True,sell_code=True).order_by('-created_dattetime').exclude(category__in=categories)
-            print "posttttttttttttttttttttttttt",posts
+            if type == 'sell':
+                posts = Posts.objects.filter(publish=True,sell_code=True).order_by('-created_dattetime').exclude(category__name__in=[c.name for c in categories])
+            elif type == 'buy':
+                posts = Posts.objects.filter(publish=True,buy_code=True).order_by('-created_dattetime').exclude(category__name__in=[c.name for c in categories])
+            else:
+                pass
         return posts
 
     def get_context_data(self, **kwargs):
@@ -77,6 +81,8 @@ class CategoryList(TemplateView):
         context['buy'] = 'buy'
         context['selected_cat'] = self.kwargs['category']
         context['type'] = self.kwargs['type']
+        if self.kwargs['category'] == 'other':
+            context['cat_other'] = 'other'
         return context
 
 class PostDetail(TemplateView):
