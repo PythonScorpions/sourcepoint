@@ -15,10 +15,10 @@
                 <fieldset>
                   <div class="form-group">
                     <label  class="col-lg-4 control-label">Requirement Type <span class="require">*</span></label>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" style="width: 53%">
                       <input type="radio" name="code" value="sell" {% if post.sell_code == True %}checked{% endif %}>
                       Want to sell source code  &nbsp;
-                      <input style="margin-right: -5px" type="radio" name="code" value="buy"{% if post.buy_code == True %}checked{% endif %}>
+                      <input type="radio" name="code" value="buy"{% if post.buy_code == True %}checked{% endif %}>
                       Want to buy source code </div>
                   </div>
                   <div class="form-group">
