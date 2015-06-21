@@ -448,7 +448,7 @@ class MyInterests(TemplateView):
             code_buy = list(set(code_buy))
         else:
             code_buy = []
-        return code_buy
+        return reversed(code_buy)
 
     def sell_posts(self, *args, **kwargs):
         contact_sell_post = []
@@ -470,7 +470,7 @@ class MyInterests(TemplateView):
             code_sell = list(set(code_sell))
         else:
             code_sell = []
-        return code_sell
+        return reversed(code_sell)
 
 
     def get_context_data(self, **kwargs):
