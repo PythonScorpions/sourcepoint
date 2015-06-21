@@ -53,14 +53,14 @@ class CategoryList(TemplateView):
         categories = Category.objects.get(slug=self.kwargs['category'])
         if type == 'sell':
             if str(self.request.user) == 'AnonymousUser':
-                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True)
+                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).order_by('-created_dattetime')
             else:
-                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).exclude(user=self.request.user)
+                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).order_by('-created_dattetime')
         elif type == 'buy':
             if str(self.request.user) == 'AnonymousUser':
-                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True)
+                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).order_by('-created_dattetime')
             else:
-                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).exclude(user=self.request.user)
+                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).order_by('-created_dattetime')
         else:
             posts = ''
         return posts
