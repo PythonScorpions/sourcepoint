@@ -86,15 +86,8 @@ Click here to send your contact detail to user, to show your interest, user will
 
 <div>
 <h3>Discription</h3>
-<p>{{ post.description }}</p>
-<strong>features:</strong>
-<ul class="list-style-none">
-<li>1. Someon who wants to teach something, can create his profile and can create his / her course, can manage courses.</li>
-<li>2. Uplaoded training items, documents, video, images etc...</li>
-<li>3. Can charge fee for course training</li>
-<li>4. Someone who wants to learn something can create his / her profile and can check various courses available, and can join courses, can view course wise itesm (video, images, documents)</li>
-<li>5. Users can pay for courses</li>
-</ul>
+<p>{{ post.description|linebreaks }}</p>
+
 
 <p>And many more.......</p>
 {% if post.file %}
@@ -105,7 +98,7 @@ Click here to send your contact detail to user, to show your interest, user will
 
 
            <div class="row front-lists-v1  ">
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="float:none">
                      <blockquote class="border-left-none">
 
 <ul class="list-unstyled margin-bottom-0">
@@ -117,7 +110,7 @@ Click here to send your contact detail to user, to show your interest, user will
 
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" >
                       <blockquote><p>
 
 Click here to send your contact detail to user, to show your interest, user will soon contact you

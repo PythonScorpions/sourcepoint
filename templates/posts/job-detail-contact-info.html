@@ -106,26 +106,16 @@ Contact Request Sent, user will soon contact you
 
 <div>
 <h3>Discription</h3>
-<p>{{ post.description }}</p>
-<strong>features:</strong>
-<ul class="list-style-none">
-<li>1. Someon who wants to teach something, can create his profile and can create his / her course, can manage courses.</li>
-<li>2. Uplaoded training items, documents, video, images etc...</li>
-<li>3. Can charge fee for course training</li>
-<li>4. Someone who wants to learn something can create his / her profile and can check various courses available, and can join courses, can view course wise itesm (video, images, documents)</li>
-<li>5. Users can pay for courses</li>
-</ul>
-
-<p>And many more.......</p>
+<p>{{ post.description|linebreaks }}</p>
 {% if post.file %}
-              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: Non </h3></a>
+              <a target="_blank" href="{{ post.file.url }}"><h3 class="margin-bottom-30">Uploaded Document: {{ post.file.name|slice:'6:' }} </h3></a>
                 {% endif %}
 </div></div>
 
 
 
            <div class="row front-lists-v1  ">
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="float: none">
               {% if request.user == post.user %}
                     <blockquote>
                     <ul class="list-unstyled margin-bottom-0">
