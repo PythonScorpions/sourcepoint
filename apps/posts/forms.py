@@ -3,7 +3,7 @@ from apps.posts.models import Posts, PostsPreview
 
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(max_length=500)
+    tags = forms.CharField(max_length=500, required=False)
 
     class Meta:
         model = Posts
@@ -35,7 +35,7 @@ class PostForm(forms.ModelForm):
         return proform
 
 class PostPreviewForm(forms.ModelForm):
-    tags = forms.CharField(max_length=500)
+    tags = forms.CharField(max_length=500,required=False)
 
     class Meta:
         model = PostsPreview
