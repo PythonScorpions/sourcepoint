@@ -51,7 +51,18 @@
     <!-- BEGIN NAVIGATION -->
     <div class="header-navigation pull-left font-transform-inherit">
       <ul>
-        <li {% ifequal request.path '/' %}class="active"{% endifequal %}><a  href="/">Home</a></li>
+      {% if request.path == '/' %}
+        <li class="active"><a  href="/">Home</a></li>
+          {% elif 'post-detail' in request.path%}
+          <li class="active"><a  href="/">Home</a></li>
+          {% elif 'job-detail-contact' in request.path%}
+          <li class="active"><a  href="/">Home</a></li>
+          {% elif 'send-contact' in request.path%}
+          <li class="active"><a  href="/">Home</a></li>
+
+      {% else %}
+          <li><a  href="/">Home</a></li>
+      {% endif %}
       {% if request.user.is_authenticated %}
           {% if request.path ==  '/my-posting/' %}
           <li {% ifequal request.path '/my-posting/' %}class="active"{% endifequal %}>
