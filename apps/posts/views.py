@@ -251,8 +251,8 @@ class MyPosting(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MyPosting, self).get_context_data(**kwargs)
-        context['posts_buy'] = Posts.objects.filter(user=self.request.user, buy_code=True)
-        context['posts_sell'] = Posts.objects.filter(user=self.request.user, sell_code=True)
+        context['posts_buy'] = Posts.objects.filter(user=self.request.user, buy_code=True).order_by('-created_dattetime')
+        context['posts_sell'] = Posts.objects.filter(user=self.request.user, sell_code=True).order_by('-created_dattetime')
         context['today_date'] = datetime.datetime.now().date()
         return context
 
