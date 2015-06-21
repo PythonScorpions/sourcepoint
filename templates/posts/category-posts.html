@@ -37,7 +37,7 @@
                     {% for category in categories %}
                   <li {% ifequal selected_cat category.slug %}class="active"{% endifequal %}> <a href="{% url 'category-post' category.slug type %}" >{{ category }}</a></li>
                     {% endfor %}
-                  <li class=""><a href="#" >Other</a></li>
+                  <li {% ifequal cat_other 'other' %}class="active"{% endifequal %}><a href="{% url 'category-post' 'other' type %}" >Other</a></li>
                 </ul>
               </div>
               <div class="row ">

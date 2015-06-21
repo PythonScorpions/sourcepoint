@@ -113,7 +113,7 @@
                     {% for category in categories %}
                   <li class=""> <a href="{% url 'category-post' category.slug buy %}" >{{ category.name }}</a></li>
                     {% endfor %}
-                  <li class=""><a href="#" >Other</a></li>
+                  <li class=""><a href="{% url 'category-post' 'other' buy %}" >Other</a></li>
                 </ul>
               </div>
               <div class="row ">
