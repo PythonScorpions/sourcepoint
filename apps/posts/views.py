@@ -49,20 +49,25 @@ class CategoryList(TemplateView):
 
     def get_posts(self,*args, **kwargs):
         type = self.kwargs['type']
-        print "asasasas",Category.objects.get(slug=self.kwargs['category'])
-        categories = Category.objects.get(slug=self.kwargs['category'])
-        if type == 'sell':
-            if str(self.request.user) == 'AnonymousUser':
-                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).order_by('-created_dattetime')
+        if not self.kwargs['category'] == 'other':
+            categories = Category.objects.get(slug=self.kwargs['category'])
+        if not self.kwargs['category'] == 'other':
+            if type == 'sell':
+                if str(self.request.user) == 'AnonymousUser':
+                    posts = Posts.objects.filter(category=categories,publish=True, sell_code=True).order_by('-created_dattetime')
+                else:
+                    posts = Posts.objects.filter(category=categories,publish=True, sell_code=True).order_by('-created_dattetime')
+            elif type == 'buy':
+                if str(self.request.user) == 'AnonymousUser':
+                    posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).order_by('-created_dattetime')
+                else:
+                    posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).order_by('-created_dattetime')
             else:
-                posts = Posts.objects.filter(category=categories,publish=True,sell_code=True).order_by('-created_dattetime')
-        elif type == 'buy':
-            if str(self.request.user) == 'AnonymousUser':
-                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).order_by('-created_dattetime')
-            else:
-                posts = Posts.objects.filter(category=categories,publish=True,buy_code=True).order_by('-created_dattetime')
+                posts = ''
         else:
-            posts = ''
+            categories = Category.objects.all()[:3]
+            posts = Posts.objects.filter(publish=True,sell_code=True).order_by('-created_dattetime').exclude(category__in=categories)
+            print "posttttttttttttttttttttttttt",posts
         return posts
 
     def get_context_data(self, **kwargs):
