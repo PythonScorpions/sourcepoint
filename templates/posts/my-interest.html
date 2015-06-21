@@ -28,7 +28,7 @@
             <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
             <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
           </ul>
-          <p>{{ post.description }}<span class="label label-success "> New </span></a>
+          <p>{{ post.description|truncatewords:30 }}</a>
           <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
         </div>
     {% endfor %}
@@ -65,7 +65,7 @@
             <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
             <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
           </ul>
-          <p>{{ post.description }}<span class="label label-success "> New </span></a>
+          <p>{{ post.description|truncatewords:30 }}</a>
           <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
         </div>
     {% endfor %}
