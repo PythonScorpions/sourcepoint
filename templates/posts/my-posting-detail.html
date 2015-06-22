@@ -12,8 +12,15 @@
           <h2 class="margin-bottom-30">{{ post.title }} <span class="pull-right"><a href="{% url 'edit-post' post.id %}">
 
               <span class="btn-danger btn-lg" >Edit</span></a> </span></h2>
+        <h3>Posting Type</h3>
+                {% if post.sell_code == True %}
+                <p>I want to sell Source Code</p>
+                {% else %}
+                <p>I want to buy Source Code</p>
+                {% endif %}
 
           <hr>
+
 {#        {% if post.sell_code == True %}#}
 {#              <span class="btn-danger btn-lg" >On Sell</span></a> </span></h2>#}
 {#                {% else %}#}
@@ -51,12 +58,7 @@
             <div>
               <h3>Description</h3>
               <p>{{ post.description }}</p>
-                <h3>Posting Type</h3>
-                {% if post.sell_code == True %}
-                <p>I want to sell Source Code</p>
-                {% else %}
-                <p>I want to buy Source Code</p>
-                {% endif %}
+
 
               <hr>
             {% if post.file %}

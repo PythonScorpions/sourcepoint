@@ -19,20 +19,20 @@
 {% if sell_posts %}
     {% for post in sell_posts %}
         <div class="search-result-item">
-          <a href="{% url 'post-detail' post.slug %}?redirect=true"><h4>{{ post.title }}</h4>
+          <a href="{% url 'post-detail' post.post_name.slug %}?redirect=true"><h4>{{ post.post_name.title }}</h4>
           <ul class="blog-info">
-            <li><i class="fa fa-calendar"></i> {{ post.created_date|date }}</li>
-            <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
-            <li><i class="fa fa-envelope"></i> {% if post.user.user_profiles.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
-            <li><i class="fa fa-phone"></i> {% if post.user.user_profiles.mobile_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
-            <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
-            <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
+            <li><i class="fa fa-calendar"></i> {{ post.post_name.created_date|date }}</li>
+            <li><i class="fa fa-dollar"></i> {{ post.post_name.get_prices_display }}</li>
+            <li><i class="fa fa-envelope"></i> {% if post.post_name.user.user_profiles.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li><i class="fa fa-phone"></i> {% if post.post_name.user.user_profiles.mobile_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li class="pull-right"><i class="fa fa-list"></i> {{ post.post_name.category }}</li>
+            <li class="pull-right"><i class="fa fa-tag"></i> {{ post.post_name.tags.all|join:", " }}</li>
           </ul>
-          <p>{{ post.description|truncatewords:30 }}</a>
-          <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
+          <p>{{ post.post_name.description|truncatewords:30 }}</a>
+          <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.post_name.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
         </div>
     {% endfor %}
-{% endif %}
+
         <div class="row margin-top-15">
 <div class="margin-top-10">                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
                 <div class="col-md-8 col-sm-8">
@@ -47,6 +47,7 @@
                   </ul>
                 </div></div>
               </div>
+{% endif %}
         </div>
             </div>
           <div class="tab-pane fontawesome-demo" id="tab_1_2"> <div class="">
@@ -56,20 +57,20 @@
        {% if buy_posts %}
     {% for post in buy_posts %}
         <div class="search-result-item">
-          <a href="{% url 'post-detail' post.slug %}?redirect=true"><h4>{{ post.title }}</h4>
+          <a href="{% url 'post-detail' post.post_name.slug %}?redirect=true"><h4>{{ post.post_name.title }}</h4>
           <ul class="blog-info">
-            <li><i class="fa fa-calendar"></i> {{ post.created_date|date }}</li>
-            <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
-            <li><i class="fa fa-envelope"></i> {% if post.user.user_profiles.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
-            <li><i class="fa fa-phone"></i> {% if post.user.user_profiles.mobile_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
-            <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
-            <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
+            <li><i class="fa fa-calendar"></i> {{ post.post_name.created_date|date }}</li>
+            <li><i class="fa fa-dollar"></i> {{ post.post_name.get_prices_display }}</li>
+            <li><i class="fa fa-envelope"></i> {% if post.post_name.user.user_profiles.email_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li><i class="fa fa-phone"></i> {% if post.post_name.user.user_profiles.mobile_verify == True %}Verified{% else %}Not Verified{% endif %} </li>
+            <li class="pull-right"><i class="fa fa-list"></i> {{ post.post_name.category }}</li>
+            <li class="pull-right"><i class="fa fa-tag"></i> {{ post.post_name.tags.all|join:", " }}</li>
           </ul>
-          <p>{{ post.description|truncatewords:30 }}</a>
-          <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
+          <p>{{ post.post_name.description|truncatewords:30 }}</a>
+          <div class="posting-icon">  <a class="red" onclick="showinterest('{{ post.post_name.slug|safe }}')"><i class="fa fa-bitbucket"></i> Delete</a> </div>
         </div>
     {% endfor %}
-{% endif %}
+
 
         <div class="row margin-top-15">
 <div class="margin-top-10">                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
@@ -85,6 +86,7 @@
                   </ul>
                 </div></div>
               </div>
+          {% endif %}
         </div> </div>
 
           </div>
