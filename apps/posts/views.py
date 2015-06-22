@@ -108,7 +108,7 @@ class PostDetail(TemplateView):
             post = Posts.objects.get(slug=self.kwargs['slug'])
             try:
                 ip_tracker = IpTracker.objects.get(user=self.request.user)
-                if post in ip_tracker.intersets.all():
+                if InterestOfUsers.objects.filter(post_name=post).exists():
                     context['interest'] = 'true'
                 if post in ip_tracker.posts.all():
                     context['contact'] = 'true'
@@ -322,7 +322,7 @@ class PostContact(TemplateView):
             track.save()
             track.posts.add(post)
         ip_tracker = IpTracker.objects.get(user=self.request.user)
-        if post in ip_tracker.intersets.all():
+        if InterestOfUsers.objects.filter(post_name=post).exists():
             interest = 'true'
 
         return render_to_response(self.template_name, {'post': post, 'tracker': tracker, 'plan': plan,
@@ -369,22 +369,27 @@ class SendContact(TemplateView):
         interest = ''
         contact = ''
         try:
-            tracker = IpTracker.objects.get(user=request.user)
+            trackers = IpTracker.objects.get(user=request.user)
 
-            if not tracker.intersets.filter(id=post.id).exists():
-                tracker.interest_count += 1
-                tracker.save()
-                tracker.intersets.add(post)
+            if not trackers.intersets.filter(id=post.id).exists():
+                post_obj = Posts.objects.get(slug=kwargs['slug'])
+                if not InterestOfUsers.objects.filter(post_name=post_obj, ip_tracker=trackers).exists():
+                    trackers.interest_count += 1
+                    trackers.save()
+                    trackers_obj = IpTracker.objects.get(user=request.user)
+
+                    InterestOfUsers.objects.create(post_name=post_obj, ip_tracker=trackers_obj)
         except IpTracker.DoesNotExist:
+            post_obj = Posts.objects.get(slug=kwargs['slug'])
             track = IpTracker()
             track.user = User.objects.get(id=request.user.id)
             track.ip = self.get_client_ip()
             track.interest_count += 1
             track.save()
-            track.intersets.add(post)
+            InterestOfUsers.objects.create(post_name=post_obj, ip_tracker=track)
         site = Site.objects.get(pk=1)
         ip_tracker = IpTracker.objects.get(user=self.request.user)
-        if post in ip_tracker.intersets.all():
+        if InterestOfUsers.objects.filter(post_name=post).exists():
             interest = 'true'
         if post in ip_tracker.posts.all():
             contact = 'true'
@@ -393,8 +398,8 @@ class SendContact(TemplateView):
         c = Context({'first_name': request.user.first_name, 'last_name': request.user.last_name,
                      'email': request.user.email, 'site': site.name, 'post_first_name': post.user.first_name,
                     'post_last_name': post.user.last_name})
-        send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
-                  settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
+        # send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
+        #           settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
 
         return render_to_response(self.template_name, {'post': post, 'interest': interest, 'contact': contact,
                                                        'plan': plan}, context_instance=RequestContext(request))
@@ -418,6 +423,7 @@ class MyInterests(TemplateView):
                 else:
                     contact_sell_post.append(p)
                 posts_contacted.append(p)
+
             for i in posts.intersets.all():
                 if i.buy_code == True:
                     interest_buy_post.append(i)
@@ -447,14 +453,16 @@ class MyInterests(TemplateView):
             posts = IpTracker.objects.get(user=self.request.user)
             for p in posts.posts.all():
                 if p.buy_code == True:
-                    contact_buy_post.append(p)
+                    contact_buy_post.append(Posts.objects.get(id=p.id))
                 posts_contacted.append(p)
-            for i in posts.intersets.all():
-                if i.buy_code == True:
-                    interest_buy_post.append(i)
-                interest_shown.append(i)
-
-            code_buy = interest_buy_post + contact_buy_post
+            # for i in posts.intersets.all():
+            #     if i.buy_code == True:
+            #         interest_buy_post.append(i)
+            #     interest_shown.append(i)
+            if InterestOfUsers.objects.filter(ip_tracker_id=posts.id).exists():
+                interest_buy_post = InterestOfUsers.objects.filter(ip_tracker=posts, post_name__buy_code=True).order_by('date')
+            print "conatcttttttttttttttttttttt",
+            code_buy = interest_buy_post
 
             code_buy = list(set(code_buy))
         else:
@@ -470,14 +478,17 @@ class MyInterests(TemplateView):
             posts = IpTracker.objects.get(user=self.request.user)
             for p in posts.posts.all():
                 if p.sell_code == True:
-                    contact_sell_post.append(p)
+                    contact_sell_post.append(Posts.objects.get(id=p.id))
                 posts_contacted.append(p)
-            for i in posts.intersets.all():
-                if i.sell_code == True:
-                    interest_sell_code.append(i)
-                interest_shown.append(i)
+            # for i in posts.intersets.all():
+            #     if i.sell_code == True:
+            #         interest_sell_code.append(i)
+            #     interest_shown.append(i)
 
-            code_sell = contact_sell_post + interest_sell_code
+            if InterestOfUsers.objects.filter(ip_tracker_id=posts.id).exists():
+                interest_sell_code = InterestOfUsers.objects.filter(ip_tracker=posts, post_name__sell_code=True).order_by('date')
+            print "contact_sell_post",contact_sell_post
+            code_sell = interest_sell_code
             code_sell = list(set(code_sell))
         else:
             code_sell = []
