@@ -62,10 +62,22 @@ class IpTracker(models.Model):
     user = models.ForeignKey(User,related_name='user_track')
     posts = models.ManyToManyField(Posts, related_name='post_track')
     view_count = models.IntegerField('View Count', default=0)
-    intersets = models.ManyToManyField(Posts, null=True, blank=True)
+    intersets = models.ManyToManyField(Posts, null=True, blank=True, through='UserInterests')
     interest_count = models.IntegerField('Total Interest Shown', default=0)
     date = models.DateField(auto_now_add=True)
 
     def __unicode__(self):
         return u'%s' % self.user
 
+class UserInterests(models.Model):
+    user_post = models.ForeignKey(Posts, null=True, blank=True, related_name='interest_post')
+    tracker = models.ForeignKey(IpTracker, null=True, blank=True, related_name='interest_track')
+    date = models.DateTimeField(auto_now=True)
+
+class InterestOfUsers(models.Model):
+    post_name = models.ForeignKey(Posts, null=True, blank=True, related_name='interest_userpost')
+    ip_tracker = models.ForeignKey(IpTracker, null=True, blank=True, related_name='interest_usertrack')
+    date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u'%s' %(self.ip_tracker)
