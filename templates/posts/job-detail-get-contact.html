@@ -52,7 +52,7 @@
 
                     </div>
 
-                    {% if not request.user.is_authenticated %}
+                     {% if not request.user.is_authenticated %}
           <div class="col-md-6 padding-left-0 margin-top-20">
                   <blockquote>
                     <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
@@ -65,20 +65,18 @@
                 <div class="col-md-6 padding-left-0 margin-top-20">
                   <blockquote>
                     <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
-                      {% if tracker.interest_count == plan.plan.show_interest %}
 
-                    <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
-                      {% else %}
                           {% if interest == 'true' %}
                           <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                              {% elif  tracker.interest_count == plan.plan.show_interest %}
+                              <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
                               {% else %}
                               <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
                               {% endif %}
                       {% endif %}
                   </blockquote>
                 </div>
-              {% endif %}
-                  {% endif %}</div>
+              {% endif %}</div>
 
 
 
@@ -132,12 +130,11 @@
                 <div class="col-md-6 padding-left-0 margin-top-20">
                   <blockquote>
                     <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
-                      {% if tracker.interest_count == plan.plan.show_interest %}
 
-                    <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
-                      {% else %}
                           {% if interest == 'true' %}
                           <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
+                              {% elif  tracker.interest_count == plan.plan.show_interest %}
+                              <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
                               {% else %}
                               <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
                               {% endif %}
@@ -145,7 +142,6 @@
                   </blockquote>
                 </div>
               {% endif %}
-                  {% endif %}
                   </div>
 
 
