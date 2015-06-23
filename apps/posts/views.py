@@ -431,11 +431,13 @@ class MyInterests(TemplateView):
                     interest_sell_code.append(i)
                 interest_shown.append(i)
 
+            print "code_buyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", interest_shown
+            print "code_sellllllllllllllllllllllllllllllllllllllllllllll", posts_contacted
+
             code_buy = interest_buy_post + contact_buy_post
             code_sell = contact_sell_post + interest_sell_code
 
-            print "code_buyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", code_buy
-            print "code_sellllllllllllllllllllllllllllllllllllllllllllll", code_sell
+
 
             interests = posts_contacted + interest_shown
             final_posts = list(set(interests))
@@ -454,20 +456,27 @@ class MyInterests(TemplateView):
             for p in posts.posts.all():
                 if p.buy_code == True:
                     contact_buy_post.append(Posts.objects.get(id=p.id))
-                posts_contacted.append(p)
+                    # posts_contacted.append(p)
             # for i in posts.intersets.all():
             #     if i.buy_code == True:
             #         interest_buy_post.append(i)
             #     interest_shown.append(i)
             if InterestOfUsers.objects.filter(ip_tracker_id=posts.id).exists():
                 interest_buy_post = InterestOfUsers.objects.filter(ip_tracker=posts, post_name__buy_code=True).order_by('date')
-            print "conatcttttttttttttttttttttt",
-            code_buy = interest_buy_post
-
+                for i in interest_buy_post:
+                    posts_shown = Posts.objects.filter(title=i.post_name.title)
+                    for p in posts_shown:
+                        interest_shown.append(p)
+            if interest_shown == []:
+                code_buy = contact_buy_post
+            elif contact_buy_post ==[]:
+                code_buy = interest_shown
+            else:
+                code_buy = interest_shown + contact_buy_post
             code_buy = list(set(code_buy))
         else:
             code_buy = []
-        return reversed(code_buy)
+        return code_buy
 
     def sell_posts(self, *args, **kwargs):
         contact_sell_post = []
@@ -478,8 +487,9 @@ class MyInterests(TemplateView):
             posts = IpTracker.objects.get(user=self.request.user)
             for p in posts.posts.all():
                 if p.sell_code == True:
+                    # contact_sell_post = posts.posts.filter(sell_code=True)
                     contact_sell_post.append(Posts.objects.get(id=p.id))
-                posts_contacted.append(p)
+                # posts_contacted.append(p)
             # for i in posts.intersets.all():
             #     if i.sell_code == True:
             #         interest_sell_code.append(i)
@@ -487,12 +497,24 @@ class MyInterests(TemplateView):
 
             if InterestOfUsers.objects.filter(ip_tracker_id=posts.id).exists():
                 interest_sell_code = InterestOfUsers.objects.filter(ip_tracker=posts, post_name__sell_code=True).order_by('date')
-            print "contact_sell_post",contact_sell_post
-            code_sell = interest_sell_code
+                for i in interest_sell_code:
+                    posts_shown = Posts.objects.filter(title=i.post_name.title)
+                    for p in posts_shown:
+                        interest_shown.append(p)
+            if interest_shown == []:
+                code_sell = contact_sell_post
+            elif contact_sell_post == []:
+                code_sell = interest_shown
+            else:
+                code_sell = contact_sell_post + interest_shown
             code_sell = list(set(code_sell))
         else:
             code_sell = []
-        return reversed(code_sell)
+        if contact_sell_post == []:
+            return code_sell
+        else:
+            print "sdsdd"
+            return reversed(code_sell)
 
 
     def get_context_data(self, **kwargs):
