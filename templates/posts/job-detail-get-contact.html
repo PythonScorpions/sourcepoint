@@ -52,24 +52,33 @@
 
                     </div>
 
-                    <div class="col-md-6 padding-left-0 margin-top-20">
+                    {% if not request.user.is_authenticated %}
+          <div class="col-md-6 padding-left-0 margin-top-20">
+                  <blockquote>
+                    <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
+              <a href="{% url 'login' %}" class="btn btn-primary"  data-rel="fancybox-button">Show Interest</a>
+               <blockquote>
+              </div>
+                  {% else %}
+            {% if request.user == post.user %}
+                  {% else %}
+                <div class="col-md-6 padding-left-0 margin-top-20">
+                  <blockquote>
+                    <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
+                      {% if tracker.interest_count == plan.plan.show_interest %}
 
-
-
-<blockquote><p>
-
-Click here to send your contact detail to user, to show your interest, user will soon contact you
-</p>
-
-{% if interest == 'true' %}
-                          <a class="btn btn-primary"  data-rel="fancybox-button">We have send your contact details to {{ post.user.first_name }}</a>
+                    <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
+                      {% else %}
+                          {% if interest == 'true' %}
+                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
                               {% else %}
                               <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
                               {% endif %}
-
-
-
-                    </div></div>
+                      {% endif %}
+                  </blockquote>
+                </div>
+              {% endif %}
+                  {% endif %}</div>
 
 
 
@@ -110,19 +119,33 @@ Click here to send your contact detail to user, to show your interest, user will
 
                     </div>
 
-                    <div class="col-md-6" >
-                      <blockquote><p>
+                    {% if not request.user.is_authenticated %}
+          <div class="col-md-6 padding-left-0 margin-top-20">
+                  <blockquote>
+                    <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
+              <a href="{% url 'login' %}" class="btn btn-primary"  data-rel="fancybox-button">Show Interest</a>
+               <blockquote>
+              </div>
+                  {% else %}
+            {% if request.user == post.user %}
+                  {% else %}
+                <div class="col-md-6 padding-left-0 margin-top-20">
+                  <blockquote>
+                    <p> Click here to send your contact detail to user, to show your interest, user will soon contact you </p>
+                      {% if tracker.interest_count == plan.plan.show_interest %}
 
-Click here to send your contact detail to user, to show your interest, user will soon contact you
-</p>
-
-{% if interest == 'true' %}
-                          <a class="btn btn-primary"  data-rel="fancybox-button">We have send your contact details to user {{ post.user.first_name }}</a>
+                    <a href="#" class="btn btn-primary"  data-rel="fancybox-button" >You have Reached Your Interest Limit</a>
+                      {% else %}
+                          {% if interest == 'true' %}
+                          <a class="btn btn-primary"  data-rel="fancybox-button">Already Shown Interest</a>
                               {% else %}
                               <a href="#" class="btn btn-primary"  data-rel="fancybox-button" onclick="showinterest(3000)">Show Interest</a>
                               {% endif %}
-
-                    </div>
+                      {% endif %}
+                  </blockquote>
+                </div>
+              {% endif %}
+                  {% endif %}
                   </div>
 
 
