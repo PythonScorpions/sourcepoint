@@ -537,9 +537,9 @@ def delete_interest(request, slug):
     if IpTracker.objects.filter(user=request.user).exists():
         tracker = IpTracker.objects.get(user=request.user)
         post = Posts.objects.get(slug=slug)
-        for t in tracker.intersets.all():
-            if t == post:
-                tracker.intersets.remove(t)
+        if InterestOfUsers.objects.filter(ip_tracker=tracker, post_name=post).exists():
+            interests = InterestOfUsers.objects.get(ip_tracker=tracker, post_name=post)
+            interests.delete()
         for t in tracker.posts.all():
             if t == post:
                 tracker.posts.remove(t)
