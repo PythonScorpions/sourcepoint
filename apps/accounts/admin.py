@@ -11,3 +11,4 @@ class IpAdmin(admin.ModelAdmin):
 
 admin.site.register(IpTracker, IpAdmin)
 admin.site.register(InterestOfUsers)
+admin.site.register(ContactsViewed)

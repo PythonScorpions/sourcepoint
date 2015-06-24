@@ -311,9 +311,11 @@ class PostContact(TemplateView):
             if post in visted_posts:
                 pass
             else:
-                tracker.view_count +=1
-                tracker.save()
-                tracker.posts.add(post)
+                if not ContactsViewed.objects.filter(post_name=post, ip_tracker=tracker).exists():
+                    tracker.view_count +=1
+                    tracker.save()
+                    tracker.posts.add(post)
+                    ContactsViewed.objects.create(post_name=post, ip_tracker=tracker)
         except IpTracker.DoesNotExist:
             track = IpTracker()
             track.user = User.objects.get(id=request.user.id)
@@ -321,6 +323,7 @@ class PostContact(TemplateView):
             track.view_count += 1
             track.save()
             track.posts.add(post)
+            ContactsViewed.objects.create(post_name=post, ip_tracker=track)
         ip_tracker = IpTracker.objects.get(user=self.request.user)
         if InterestOfUsers.objects.filter(post_name=post).exists():
             interest = 'true'
@@ -328,6 +331,13 @@ class PostContact(TemplateView):
         return render_to_response(self.template_name, {'post': post, 'tracker': tracker, 'plan': plan,
                                                        'interest': interest,},
                                   context_instance=RequestContext(request))
+
+    # if not InterestOfUsers.objects.filter(post_name=post_obj, ip_tracker=trackers).exists():
+    #                 trackers.interest_count += 1
+    #                 trackers.save()
+    #                 trackers_obj = IpTracker.objects.get(user=request.user)
+    #
+    #                 InterestOfUsers.objects.create(post_name=post_obj, ip_tracker=trackers_obj)
 
 
 def get_context_data(self, **kwargs):
@@ -419,7 +429,15 @@ class MyInterests(TemplateView):
             posts = IpTracker.objects.get(user=self.request.user)
             for p in posts.posts.all():
                 if p.buy_code == True:
-                    contact_buy_post.append(Posts.objects.get(id=p.id))
+                    # contact_buy_post.append(Posts.objects.get(id=p.id))
+                    if ContactsViewed.objects.filter(ip_tracker_id=posts.id).exists():
+                        interest_sell_code = ContactsViewed.objects.filter(ip_tracker=posts, post_name__buy_code=True).order_by('-date')
+                        for i in interest_sell_code:
+                            posts_shown = Posts.objects.filter(title=i.post_name.title)
+                            posts_contacted.append(posts_shown)
+                            for p in posts_shown:
+                                print "contacttttttttttttttttttttttttt",p
+                                contact_buy_post.append(p)
                     # posts_contacted.append(p)
             # for i in posts.intersets.all():
             #     if i.buy_code == True:
@@ -451,6 +469,7 @@ class MyInterests(TemplateView):
     def sell_posts(self, *args, **kwargs):
         contact_sell_post = []
         interest_sell_code = []
+        interest_post = []
         posts_contacted = []
         interest_shown = []
         if IpTracker.objects.filter(user=self.request.user).exists():
@@ -458,7 +477,13 @@ class MyInterests(TemplateView):
             for p in posts.posts.all():
                 if p.sell_code == True:
                     # contact_sell_post = posts.posts.filter(sell_code=True)
-                    contact_sell_post.append(Posts.objects.get(id=p.id))
+                    if ContactsViewed.objects.filter(ip_tracker_id=posts.id).exists():
+                        interest_sell_code = ContactsViewed.objects.filter(ip_tracker=posts, post_name__sell_code=True).order_by('-date')
+                        for i in interest_sell_code:
+                            posts_shown = Posts.objects.filter(title=i.post_name.title)
+                            posts_contacted.append(posts_shown)
+                            for p in posts_shown:                                contact_sell_post.append(p)
+                                # contact_sell_post.append(Posts.objects.get(id=p.id))
                 # posts_contacted.append(p)
             # for i in posts.intersets.all():
             #     if i.sell_code == True:
@@ -467,11 +492,16 @@ class MyInterests(TemplateView):
 
             if InterestOfUsers.objects.filter(ip_tracker_id=posts.id).exists():
                 interest_sell_code = InterestOfUsers.objects.filter(ip_tracker=posts, post_name__sell_code=True).order_by('-date')
-                print "interest_sell_codeinterest_sell_code",interest_sell_code
                 for i in interest_sell_code:
-                    posts_shown = Posts.objects.filter(title=i.post_name.title)
-                    for p in posts_shown:
+                    posts_data = Posts.objects.filter(title=i.post_name.title)
+                    interest_post.append(posts_data)
+                    for p in posts_data:
                         interest_shown.append(p)
+            print "dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",posts_data
+            total_interests = interest_post + contact_sell_post
+            print "total_intereststotal_intereststotal_intereststotal_interests",total_interests
+            for t in total_interests:
+                print "ttttttttttttttttttttttttttttttttttt",t
             if interest_shown == []:
                 code_sell = contact_sell_post
                 code_sell = list(code_sell)
@@ -518,6 +548,9 @@ def delete_interest(request, slug):
         for t in tracker.posts.all():
             if t == post:
                 tracker.posts.remove(t)
+                if ContactsViewed.objects.filter(ip_tracker=tracker, post_name=post).exists():
+                    interests = ContactsViewed.objects.get(ip_tracker=tracker, post_name=post)
+                    interests.delete()
         return redirect('/my-interests/')
     return render_to_response(template_name, context_instance=RequestContext(request))
 

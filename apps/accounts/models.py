@@ -81,3 +81,11 @@ class InterestOfUsers(models.Model):
 
     def __unicode__(self):
         return u'%s' %(self.ip_tracker)
+
+class ContactsViewed(models.Model):
+    post_name = models.ForeignKey(Posts, null=True, blank=True, related_name='contact_userpost')
+    ip_tracker = models.ForeignKey(IpTracker, null=True, blank=True, related_name='contact_usertrack')
+    date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u'%s'%(self.post_name)
