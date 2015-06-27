@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, UpdateView
+from django.views.generic import TemplateView, UpdateView, DetailView
 from django.views.generic import View
 import json
 from django.template import RequestContext, Context
@@ -84,6 +84,19 @@ def delete_plan(request, id):
         SubscriptionPlan.objects.get(id=id).delete()
         return redirect('/dashboard/plan-lists/')
     return render_to_response(template_name, context_instance=RequestContext(request))
+
+class SubscriptionDetails(DetailView):
+    template_name = 'dashboard/subscription-detail.html'
+    model = UserSubscriptions
+
+    def get_context_data(self, **kwargs):
+        context = super(SubscriptionDetails, self).get_context_data(**kwargs)
+        return context
+
+class UserDetails(DetailView):
+    template_name = 'dashboard/user-detail.html'
+    model = UserProfiles
+
 
 
 
