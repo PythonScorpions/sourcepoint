@@ -10,6 +10,7 @@ from django.template import RequestContext, Context
 from django.shortcuts import render_to_response, redirect
 from django.contrib import messages
 from apps.accounts.models import *
+from apps.dashboard.forms import PlanForm
 
 
 class AdminLoginpage(TemplateView):
@@ -59,5 +60,30 @@ class PlanLists(TemplateView):
         context = super(PlanLists, self).get_context_data(**kwargs)
         context['plans'] = SubscriptionPlan.objects.all()
         return context
+
+class AddPlan(TemplateView):
+    template_name = 'dashboard/add-plan.html'
+    form_class = PlanForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/plan-lists/')
+        else:
+            print "errors",form.errors
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+def delete_plan(request, id):
+    template_name = 'dashboard/plan-list.html'
+    if SubscriptionPlan.objects.filter(id=id).exists():
+        SubscriptionPlan.objects.get(id=id).delete()
+        return redirect('/dashboard/plan-lists/')
+    return render_to_response(template_name, context_instance=RequestContext(request))
+
 
 
