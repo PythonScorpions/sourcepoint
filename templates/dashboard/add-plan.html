@@ -1,0 +1,99 @@
+{% extends 'admin_base.html' %}
+{% block admin_content %}
+<div id="content" class="span10">
+
+
+			<ul class="breadcrumb">
+				<li>
+					<i class="icon-home"></i>
+					<a href="index.html">Home</a>
+					<i class="icon-angle-right"></i>
+				</li>
+				<li>
+					<i class="icon-edit"></i>
+					<a href="#">Forms</a>
+				</li>
+			</ul>
+
+
+
+			<div class="row-fluid sortable">
+				<div class="box span12">
+					<div class="box-header" data-original-title>
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>Form Elements</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<form class="form-horizontal" action="." method="post">
+                            {% csrf_token %}
+							<fieldset>
+							  <div class="control-group">
+								<label class="control-label" for="focusedInput">Name*</label>
+								<div class="controls">
+								  {{ form.title }} <span style="color: red">{{ form.title.errors.as_text }}</span>
+								</div>
+							  </div>
+                                <div class="control-group">
+								<label class="control-label" for="focusedInput">Post Requirement*</label>
+								<div class="controls">
+								  {{ form.post_requirement }}<span style="color: red">{{ form.title.errors.as_text }}</span>
+								</div>
+							  </div>
+                                <div class="control-group">
+								<label class="control-label" for="focusedInput">View Requirement*</label>
+								<div class="controls">
+								  {{ form.view_requirement }}<span style="color: red">{{ form.view_requirement.errors.as_text }}</span>
+								</div>
+							  </div>
+                                <div class="control-group">
+								<label class="control-label" for="focusedInput">View Contact*</label>
+								<div class="controls">
+								  {{ form.view_contact }}<span style="color: red">{{ form.view_contact.errors.as_text }}</span>
+								</div>
+							  </div>
+                                <div class="control-group">
+								<label class="control-label" for="focusedInput">Show Interest*</label>
+								<div class="controls">
+								  {{ form.show_interest }}<span style="color: red">{{ form.show_interest.errors.as_text }}</span>
+								</div>
+							  </div>
+
+							  <div class="control-group">
+								<label class="control-label" for="optionsCheckbox2">Displays Contact Detail of Person who Showed Interest</label>
+								<div class="controls">
+								  <label class="checkbox">
+									{{ form.contact }}
+								  </label>
+								</div>
+							  </div>
+                            <div class="control-group">
+								<label class="control-label" for="optionsCheckbox2">Free Plan</label>
+								<div class="controls">
+								  <label class="checkbox">
+									{{ form.free_plan }}								  </label>
+								</div>
+							  </div>
+
+
+
+							  <div class="form-actions">
+								<button type="submit" class="btn btn-primary">Save changes</button>
+								<button class="btn">Cancel</button>
+							  </div>
+							</fieldset>
+						  </form>
+
+					</div>
+				</div><!--/span-->
+
+			</div><!--/row-->
+
+
+
+
+	</div><!--/.fluid-container-->
+{% endblock %}
