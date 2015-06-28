@@ -85,14 +85,9 @@ class CategoryList(TemplateView):
             context['cat_other'] = 'other'
         return context
 
+
 class PostDetail(TemplateView):
     template_name = 'posts/job-detail-after-login.html'
-
-    # @method_decorator(login_required)
-    # def dispatch(self, *args, **kwargs):
-    #     if not UserSubscriptions.objects.filter(user=self.request.user).exists():
-    #         return redirect('/accounts/subscribe/?redirect=true&post=%s'%(kwargs['slug']))
-    #     return super(PostDetail, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
@@ -160,19 +155,13 @@ class Preview(TemplateView):
     template_name = 'posts/my-posting-detail.html'
 
     def get_tags(self,  *args, **kwargs):
-        # if PostsPreview.objects.filter(id=self.kwargs['id']).exists():
-        #     posts = PostsPreview.objects.get(id=self.kwargs['id'])
-        # else:
         posts = PostsPreview.objects.get(id=self.kwargs['id'])
         tags = posts.tags.all()
         return tags
 
     def get_context_data(self, **kwargs):
         context = super(Preview, self).get_context_data(**kwargs)
-        # if PostsPreview.objects.filter(id=kwargs['id']).exists():
         context['post'] = PostsPreview.objects.get(id=kwargs['id'])
-        # else:
-        #     context['post'] = Posts.objects.get(id=kwargs['id'])
         context['user'] = UserProfiles.objects.get(user=self.request.user)
         context['tags'] = self.get_tags()
         return context
@@ -247,7 +236,6 @@ class PostEdit(UpdateView):
                 post.tags.remove(p)
             for s in saved_tags:
                 post.tags.add(s)
-            # messages.success(request, 'Posts Editted Successfully.')
             if data == 'true':
                 return redirect('/posts/preview/%s/'%(post.id))
             else:
@@ -267,6 +255,7 @@ class MyPosting(TemplateView):
         context['today_date'] = datetime.datetime.now().date()
         return context
 
+
 class MyPostDetail(TemplateView):
     template_name = 'posts/post-detail.html'
 
@@ -279,6 +268,7 @@ class MyPostDetail(TemplateView):
         context['user_shown_interests'] = IpTracker.objects.filter(intersets=Posts.objects.get(id=self.kwargs['id']))
         return context
 
+
 def postdelete(request,id):
     template_name = 'posts/my-posting.html'
     if Posts.objects.filter(id=id).exists():
@@ -286,6 +276,7 @@ def postdelete(request,id):
         return redirect('/my-posting/')
         messages.success(request, 'Post Deleted Successfully')
     return render_to_response(template_name, context_instance=RequestContext(request))
+
 
 class PostContact(TemplateView):
     template_name = 'posts/job-detail-get-contact.html'
@@ -340,7 +331,7 @@ class PostContact(TemplateView):
     #                 InterestOfUsers.objects.create(post_name=post_obj, ip_tracker=trackers_obj)
 
 
-def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data(**kwargs)
         context['post'] = Posts.objects.get(slug=self.kwargs['slug'])
         if UserSubscriptions.objects.filter(user=self.request.user).exists():
@@ -429,97 +420,54 @@ class MyInterests(TemplateView):
             posts = IpTracker.objects.get(user=self.request.user)
             for p in posts.posts.all():
                 if p.buy_code == True:
-                    # contact_buy_post.append(Posts.objects.get(id=p.id))
                     if ContactsViewed.objects.filter(ip_tracker_id=posts.id).exists():
-                        interest_sell_code = ContactsViewed.objects.filter(ip_tracker=posts, post_name__buy_code=True).order_by('-date')
-                        for i in interest_sell_code:
+                        interest_buy_code = ContactsViewed.objects.filter(ip_tracker=posts, post_name__buy_code=True).order_by('-date')
+                        for i in interest_buy_code:
                             posts_shown = Posts.objects.filter(title=i.post_name.title)
                             posts_contacted.append(posts_shown)
                             for p in posts_shown:
-                                print "contacttttttttttttttttttttttttt",p
                                 contact_buy_post.append(p)
-                    # posts_contacted.append(p)
-            # for i in posts.intersets.all():
-            #     if i.buy_code == True:
-            #         interest_buy_post.append(i)
-            #     interest_shown.append(i)
             if InterestOfUsers.objects.filter(ip_tracker_id=posts.id).exists():
                 interest_buy_post = InterestOfUsers.objects.filter(ip_tracker=posts, post_name__buy_code=True).order_by('-date')
-                print "interest_buy_post",interest_buy_post
                 for i in interest_buy_post:
                     posts_shown = Posts.objects.filter(title=i.post_name.title)
                     for p in posts_shown:
                         interest_shown.append(p)
-            if interest_shown == []:
-                code_buy = contact_buy_post
-                code_buy = list(code_buy)
-            elif contact_buy_post ==[]:
-                code_buy = interest_shown
-                code_buy = list(code_buy)
-            else:
-                code_buy = contact_buy_post +interest_shown
-                code_buy = list(set(code_buy))
+            code_buy = contact_buy_post +interest_shown
+            code_buy = list(set(code_buy))
         else:
             code_buy = []
-        if contact_buy_post == []:
-            return code_buy
-        else:
-            return reversed(code_buy)
+        final_post = Posts.objects.filter(title__in=[c for c in code_buy], buy_code=True).order_by('-created_dattetime')
+        return final_post
 
     def sell_posts(self, *args, **kwargs):
         contact_sell_post = []
-        interest_sell_code = []
-        interest_post = []
-        posts_contacted = []
         interest_shown = []
         if IpTracker.objects.filter(user=self.request.user).exists():
             posts = IpTracker.objects.get(user=self.request.user)
             for p in posts.posts.all():
                 if p.sell_code == True:
-                    # contact_sell_post = posts.posts.filter(sell_code=True)
                     if ContactsViewed.objects.filter(ip_tracker_id=posts.id).exists():
                         interest_sell_code = ContactsViewed.objects.filter(ip_tracker=posts, post_name__sell_code=True).order_by('-date')
                         for i in interest_sell_code:
                             posts_shown = Posts.objects.filter(title=i.post_name.title)
-                            posts_contacted.append(posts_shown)
-                            for p in posts_shown:                                contact_sell_post.append(p)
-                                # contact_sell_post.append(Posts.objects.get(id=p.id))
-                # posts_contacted.append(p)
-            # for i in posts.intersets.all():
-            #     if i.sell_code == True:
-            #         interest_sell_code.append(i)
-            #     interest_shown.append(i)
+                            for p in posts_shown:
+                                contact_sell_post.append(p)
 
             if InterestOfUsers.objects.filter(ip_tracker_id=posts.id).exists():
                 interest_sell_code = InterestOfUsers.objects.filter(ip_tracker=posts, post_name__sell_code=True).order_by('-date')
                 for i in interest_sell_code:
                     posts_data = Posts.objects.filter(title=i.post_name.title)
-                    interest_post.append(posts_data)
                     for p in posts_data:
                         interest_shown.append(p)
-            print "dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",posts_data
-            total_interests = interest_post + contact_sell_post
-            print "total_intereststotal_intereststotal_intereststotal_interests",total_interests
-            for t in total_interests:
-                print "ttttttttttttttttttttttttttttttttttt",t
-            if interest_shown == []:
-                code_sell = contact_sell_post
-                code_sell = list(code_sell)
-            elif contact_sell_post == []:
-                print "dsfsf"
-                code_sell = interest_shown
-                code_sell = list(code_sell)
-            else:
-                code_sell = contact_sell_post + interest_shown
-                code_sell = list(set(code_sell))
+
+            code_sell = contact_sell_post + interest_shown
+            code_sell = list(set(code_sell))
         else:
             code_sell = []
-        if contact_sell_post == []:
-            print "sdsdsd"
-            return code_sell
-        else:
-            print "sdsdd"
-            return reversed(code_sell)
+        final_post = Posts.objects.filter(title__in=[c for c in code_sell],sell_code=True).order_by('-created_dattetime')
+
+        return final_post
 
 
     def get_context_data(self, **kwargs):
