@@ -3,14 +3,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, UpdateView, DetailView
+from django.views.generic import TemplateView, UpdateView, DetailView, ListView
 from django.views.generic import View
 import json
 from django.template import RequestContext, Context
 from django.shortcuts import render_to_response, redirect
 from django.contrib import messages
 from apps.accounts.models import *
-from apps.dashboard.forms import PlanForm
+from apps.dashboard.forms import PlanForm, CategoryForm, TagForm
 
 
 class AdminLoginpage(TemplateView):
@@ -31,6 +31,7 @@ class AdminLoginpage(TemplateView):
             messages.success(request, "Invalid Username or Password")
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
 
+
 class HomePage(TemplateView):
 
     template_name = 'dashboard/adminindex.html'
@@ -45,6 +46,7 @@ class UserLists(TemplateView):
         context['users'] = UserProfiles.objects.all()
         return context
 
+
 class UserSubscriptionList(TemplateView):
     template_name = 'dashboard/user-subscriptions.html'
 
@@ -53,6 +55,7 @@ class UserSubscriptionList(TemplateView):
         context['subscriptions'] = UserSubscriptions.objects.all()
         return context
 
+
 class PlanLists(TemplateView):
     template_name = 'dashboard/plan-list.html'
 
@@ -60,6 +63,7 @@ class PlanLists(TemplateView):
         context = super(PlanLists, self).get_context_data(**kwargs)
         context['plans'] = SubscriptionPlan.objects.all()
         return context
+
 
 class AddPlan(TemplateView):
     template_name = 'dashboard/add-plan.html'
@@ -78,12 +82,14 @@ class AddPlan(TemplateView):
             print "errors",form.errors
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
+
 def delete_plan(request, id):
     template_name = 'dashboard/plan-list.html'
     if SubscriptionPlan.objects.filter(id=id).exists():
         SubscriptionPlan.objects.get(id=id).delete()
         return redirect('/dashboard/plan-lists/')
     return render_to_response(template_name, context_instance=RequestContext(request))
+
 
 class SubscriptionDetails(DetailView):
     template_name = 'dashboard/subscription-detail.html'
@@ -93,9 +99,70 @@ class SubscriptionDetails(DetailView):
         context = super(SubscriptionDetails, self).get_context_data(**kwargs)
         return context
 
+
 class UserDetails(DetailView):
     template_name = 'dashboard/user-detail.html'
     model = UserProfiles
+
+
+class CategoryLists(ListView):
+    template_name = 'dashboard/category-list.html'
+    model = Category
+
+
+class CategoryAdd(TemplateView):
+    template_name = 'dashboard/category-add.html'
+    form_class = CategoryForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/category-lists/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+def delete_view(request, id):
+    template_name = 'dashboard/category-list.html'
+    if Category.objects.filter(id=id).exists():
+        Category.objects.get(id=id).delete()
+        return redirect('/dashboard/category-lists/')
+    return render_to_response(template_name, context_instance=RequestContext(request))
+
+
+class TechnologyTagsList(ListView):
+    template_name = 'dashboard/tech-tags-list.html'
+    model = TechnologyTags
+
+
+def delete_tag(request, id):
+    template_name = 'dashboard/tech-tags-list.html'
+    if TechnologyTags.objects.filter(id=id).exists():
+        TechnologyTags.objects.get(id=id).delete()
+        return redirect('/dashboard/technology-tags/')
+    return render_to_response(template_name, context_instance=RequestContext(request))
+
+
+class AddTag(TemplateView):
+    template_name = 'dashboard/add-tag.html'
+    form_class = TagForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/technology-tags/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
 
 
 
