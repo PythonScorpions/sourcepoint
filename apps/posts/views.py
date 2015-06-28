@@ -399,8 +399,8 @@ class SendContact(TemplateView):
         c = Context({'first_name': request.user.first_name, 'last_name': request.user.last_name,
                      'email': request.user.email, 'site': site.name, 'post_first_name': post.user.first_name,
                     'post_last_name': post.user.last_name})
-        # send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
-        #           settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
+        send_mail('[%s] %s' % (site.name, 'Interest Shown to Post'), t.render(c),
+                  settings.DEFAULT_FROM_EMAIL, [post.user.email], fail_silently=False)
 
         return render_to_response(self.template_name, {'post': post, 'interest': interest, 'contact': contact,
                                                        'plan': plan}, context_instance=RequestContext(request))
