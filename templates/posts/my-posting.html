@@ -52,7 +52,7 @@
             <li class="pull-right"><i class="fa fa-list"></i> {{ post.category.name }}</li>
             <li class="pull-right"><i class="fa fa-tag"></i> {{ post.tags.all|join:", " }}</li>
           </ul>
-          <p>{{ post.description }} {% if today_date == post.expiry_date %}<span class="label label-danger "> Expired </span>{% endif %}</a>
+          <p>{{ post.description|truncatewords:30 }} {% if today_date == post.expiry_date %}<span class="label label-danger "> Expired </span>{% endif %}</a>
           <div class="posting-icon"> <a href="{% url 'edit-post' post.id %}?redirect=true" class="green pull-left"><i class="fa fa-edit"></i> Edit</a>  <a class="red" onclick="showinterest({{ post.id }})"><i class="fa fa-bitbucket"></i> Delete</a> </div>
         </div>
         {% endfor %}
