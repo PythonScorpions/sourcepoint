@@ -162,6 +162,14 @@ class AddTag(TemplateView):
             return redirect('/dashboard/technology-tags/')
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
+class PostLists(ListView):
+    template_name = 'dashboard/post-lists.html'
+    model = Posts
+
+class PostDetail(DetailView):
+    template_name = 'dashboard/post-detail.html'
+    model = Posts
+
 
 
 

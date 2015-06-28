@@ -17,5 +17,7 @@ urlpatterns = patterns("apps.dashboard.views",
                        url(r'^delete-category/(?P<id>\d+)/$', 'delete_view', name='delete-view'),
                        url(r'^technology-tags/$', TechnologyTagsList.as_view(), name='tags-list'),
                        url(r'^delete-tags/(?P<id>\d+)/$', 'delete_tag', name='delete-tags'),
-                       url(r'^add-tag/$', AddTag.as_view(), name='add-tag')
+                       url(r'^add-tag/$', AddTag.as_view(), name='add-tag'),
+                       url(r'^post-list/$', PostLists.as_view(), name='post-list'),
+                       url(r'^post-details/(?P<slug>[\w-]+)/$', PostDetail.as_view(), name='post-detail')
                        )
