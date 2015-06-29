@@ -58,11 +58,13 @@
 								  <span class="input-xlarge uneditable-input">{{ object.skypeid }}</span>
 								</div>
 							  </div>
-                                <div class="control-group">
-								<label class="control-label">Country</label>
-								<div class="controls">
-								  <span class="input-xlarge uneditable-input">{{ object.country.name }}</span>
-								</div>
+
+                                <div class="control-group hidden-phone">
+							  <label class="control-label" for="textarea2">Textarea WYSIWYG</label>
+							  <div class="controls">
+{#                                  <textarea></textarea>#}
+{#                                  {{ object.description }}#}
+								<textarea class="cleditor" id="textarea2" rows="3" value="" readonly>{{ object.description }}</textarea>
 							  </div>
 
 							  <div class="form-actions">
