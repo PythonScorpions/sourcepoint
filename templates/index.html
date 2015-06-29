@@ -67,7 +67,7 @@
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12">
                   <div class="">
-                  {% paginate 5 posts_sell %}
+                  {% paginate 2 posts_sell %}
                       {% for post in posts_sell %}
                     <div class="search-result-item">
                     <a href="{% url 'post-detail' post.slug %}">
@@ -91,7 +91,9 @@
                     </a> </div>
                       {% endfor %}
                     <div class="row margin-top-10">
-                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
+                <div class="col-md-4 col-sm-4 items-info">
+{#                    Items 1 to 9 of {{ posts_sell|length }} total{% show_current_number %}#}
+                </div>
                 <div class="col-md-8 col-sm-8">
                   <ul class="pagination pull-right">
 
@@ -149,7 +151,9 @@
 
 
                     <div class="row margin-top-10">
-                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
+                <div class="col-md-4 col-sm-4 items-info">
+{#                    Items 1 to 9 of 10 total#}
+                </div>
                 <div class="col-md-8 col-sm-8">
                   <ul class="pagination pull-right">
 {#                    <li><a href="#">«</a></li>#}
