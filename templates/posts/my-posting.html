@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load endless %}
 {% block content %}
     <div class="main">
   <div class="container ">
@@ -20,6 +21,7 @@
             <div class="tab-pane fontawesome-demo active" id="tab_1_1">
 
 <div class="content-page">
+{% paginate 5 posts_sell %}
     {% for post in posts_sell %}
         <div class="search-result-item">
           <a href="{% url 'posting-detail' post.id %}"><h4>{{ post.title }}</h4>
@@ -38,9 +40,24 @@
 
         </div>
             </div>
+           <div class="row margin-top-15">
+<div class="margin-top-10">                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
+                <div class="col-md-8 col-sm-8">
+                  <ul class="pagination pull-right">
+                       <li>{% show_pages %}</li>
+{#                    <li><a href="#">«</a></li>#}
+{#                    <li><span>1</span></li>#}
+{#                    <li><a href="#">2</a></li>#}
+{#                    <li><a href="#">3</a></li>#}
+{#                    <li><a href="#">4</a></li>#}
+{#                    <li><a href="#">5</a></li>#}
+{#                    <li><a href="#">»</a></li>#}
+                  </ul>
+                </div></div>
+              </div>
             <div class="tab-pane fontawesome-demo" id="tab_1_2"> <div class="content-page">
 
-
+            {% paginate 5 posts_buy %}
          {% for post in posts_buy %}
         <div class="search-result-item">
           <a href="{% url 'posting-detail' post.id %}"><h4>{{ post.title }}</h4>
@@ -64,13 +81,14 @@
 <div class="margin-top-10">                <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
                 <div class="col-md-8 col-sm-8">
                   <ul class="pagination pull-right">
-                    <li><a href="#">«</a></li>
-                    <li><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
+                       <li>{% show_pages %}</li>
+{#                    <li><a href="#">«</a></li>#}
+{#                    <li><span>1</span></li>#}
+{#                    <li><a href="#">2</a></li>#}
+{#                    <li><a href="#">3</a></li>#}
+{#                    <li><a href="#">4</a></li>#}
+{#                    <li><a href="#">5</a></li>#}
+{#                    <li><a href="#">»</a></li>#}
                   </ul>
                 </div></div>
               </div>
