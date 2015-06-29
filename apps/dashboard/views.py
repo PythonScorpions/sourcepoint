@@ -170,6 +170,10 @@ class PostDetail(DetailView):
     template_name = 'dashboard/post-detail.html'
     model = Posts
 
+def admin_logout(request):
+    logout(request)
+    return redirect('/dashboard/')
+
 
 
 
