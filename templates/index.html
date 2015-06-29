@@ -1,5 +1,6 @@
 
 {% extends 'base.html' %}
+{% load endless %}
 {% load category_list %}
 {% block extra_css %}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -66,6 +67,7 @@
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12">
                   <div class="">
+                  {% paginate 5 posts_sell %}
                       {% for post in posts_sell %}
                     <div class="search-result-item">
                     <a href="{% url 'post-detail' post.slug %}">
@@ -92,13 +94,14 @@
                 <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
                 <div class="col-md-8 col-sm-8">
                   <ul class="pagination pull-right">
-                    <li><a href="#">«</a></li>
-                    <li><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
+
+{#                    <li><a href="#">«</a></li>#}
+                    <li>{% show_pages %}</li>
+{#                    <li><a href="#">2</a></li>#}
+{#                    <li><a href="#">3</a></li>#}
+{#                    <li><a href="#">4</a></li>#}
+{#                    <li><a href="#">5</a></li>#}
+{#                    <li><a href="#">»</a></li>#}
                   </ul>
                 </div>
               </div>
@@ -120,6 +123,7 @@
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12">
                   <div class="">
+                  {% paginate 5 posts_buy %}
  {% for post in posts_buy %}
                     <div class="search-result-item">
                     <a href="{% url 'post-detail' post.slug %}">
@@ -148,13 +152,13 @@
                 <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
                 <div class="col-md-8 col-sm-8">
                   <ul class="pagination pull-right">
-                    <li><a href="#">«</a></li>
-                    <li><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
+{#                    <li><a href="#">«</a></li>#}
+                    <li>{% show_pages %}</li>
+{#                    <li><a href="#">2</a></li>#}
+{#                    <li><a href="#">3</a></li>#}
+{#                    <li><a href="#">4</a></li>#}
+{#                    <li><a href="#">5</a></li>#}
+{#                    <li><a href="#">»</a></li>#}
                   </ul>
                 </div>
               </div>
