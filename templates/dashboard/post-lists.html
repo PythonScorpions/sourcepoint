@@ -35,7 +35,7 @@
 						  <tbody>
                             {% for post in object_list %}
 							<tr>
-								<td><a href="{% url 'post-detail' post.slug %}">{{ post.title }}</a></td>
+								<td><a href="{% url 'user-post-detail' post.slug %}">{{ post.title }}</a></td>
 								<td class="center">{{ post.user }}</td>
 								<td class="center">{{ post.category }}</td>
 								<td class="center">
