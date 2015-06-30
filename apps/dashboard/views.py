@@ -82,6 +82,25 @@ class AddPlan(TemplateView):
             print "errors",form.errors
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
+class EditPlan(TemplateView):
+    template_name = 'dashboard/edit-plan.html'
+    form_class = PlanForm
+
+    def get(self, request, *args, **kwargs):
+        plan = SubscriptionPlan.objects.get(id=kwargs['id'])
+        form = self.form_class(instance=plan)
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        plan = SubscriptionPlan.objects.get(id=kwargs['id'])
+        form = self.form_class(request.POST, instance=plan)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/plan-lists/')
+        else:
+            print "errors",form.errors
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
 
 def delete_plan(request, id):
     template_name = 'dashboard/plan-list.html'
@@ -126,6 +145,24 @@ class CategoryAdd(TemplateView):
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
 
+class EditCategory(TemplateView):
+    template_name = 'dashboard/edit-category.html'
+    form_class = CategoryForm
+
+    def get(self, request, *args, **kwargs):
+        category = Category.objects.get(id=kwargs['id'])
+        form = self.form_class(instance=category)
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        category = Category.objects.get(id=kwargs['id'])
+        form = self.form_class(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/category-lists/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
 def delete_view(request, id):
     template_name = 'dashboard/category-list.html'
     if Category.objects.filter(id=id).exists():
@@ -162,17 +199,39 @@ class AddTag(TemplateView):
             return redirect('/dashboard/technology-tags/')
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
+class EditTags(TemplateView):
+    template_name = 'dashboard/edit-tags.html'
+    form_class = TagForm
+
+    def get(self, request, *args, **kwargs):
+        tag = TechnologyTags.objects.get(id=kwargs['id'])
+        form = self.form_class(instance=tag)
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        tag = TechnologyTags.objects.get(id=kwargs['id'])
+        form = self.form_class(request.POST, instance=tag)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/technology-tags/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
 class PostLists(ListView):
     template_name = 'dashboard/post-lists.html'
     model = Posts
+
 
 class PostDetail(DetailView):
     template_name = 'dashboard/post-detail.html'
     model = Posts
 
+
 def admin_logout(request):
     logout(request)
     return redirect('/dashboard/')
+
+
 
 
 
