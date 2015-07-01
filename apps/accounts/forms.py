@@ -1,3 +1,4 @@
+from billing.forms.stripe_forms import StripeForm
 from django import forms
 from django.contrib.auth.hashers import make_password
 from apps.accounts.models import *
@@ -36,6 +37,7 @@ class RegisterForm(forms.ModelForm):
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1",False)
         password2 = self.cleaned_data.get("password2",False)
+
         if not password1 == password2:
             raise forms.ValidationError("Two Password Field Should be Same")
         return password2
@@ -87,4 +89,15 @@ class ProfileUpdateForm(forms.ModelForm):
        proform.user = user
        proform.save()
        return proform
+
+class StripeExtendededForm(StripeForm):
+
+    def __init__(self, *args, **kwargs):
+
+        super(StripeExtendededForm, self).__init__(*args, **kwargs)
+        self.fields['credit_card_number'].widget.attrs['class'] = 'form-control'
+        self.fields['credit_card_expiration_month'].widget.attrs['class'] = 'form-control'
+        self.fields['credit_card_expiration_year'].widget.attrs['class'] = 'form-control'
+        self.fields['credit_card_cvc'].widget.attrs['class'] = 'form-control'
+
 

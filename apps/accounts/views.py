@@ -1,18 +1,26 @@
-
+from random import randint
+from billing import CreditCard, get_gateway
+from billing.forms.stripe_forms import StripeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, QueryDict
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, UpdateView
 from django.views.generic import View
 from django.template import loader
 from django_extensions.db.fields import json
 import json
+from paypal.standard.forms import PayPalPaymentsForm
+from paypal.standard.ipn.forms import PayPalIPNForm
+from paypal.standard.ipn.models import PayPalIPN
 from apps.accounts.forms import *
 from django.template import RequestContext, Context
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, render
 from django.contrib import messages
 from sourcepoint import settings
 
@@ -34,7 +42,7 @@ class Loginpage(TemplateView):
                 else:
                     messages.success(request, "Your account is not activated yet, please check your email")
             else:
-                messages.success(request, "Invalid Username or Password")
+                messages.success(request, "Invalid Email or Password")
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
 
 
@@ -95,6 +103,7 @@ def subscribe(request):
             subscribe.plan = plan
             subscribe.expiry_date = datetime.datetime.now()
             subscribe.save()
+            request.session['price'] = subscribe.price
             return redirect('/post-detail/%s'%(post))
         elif 'url' in request.session:
             url = request.session['url']
@@ -172,6 +181,50 @@ def email_verification(request, key):
 class Thankyou(TemplateView):
 
     template_name = 'accounts/thank-you.html'
+
+    def get(self, request, *args, **kwargs):
+        paypal_dict = \
+            {
+            "business": settings.PAYPAL_RECEIVER_EMAIL,
+            "a3": 10,
+            "p3": '1',
+            "t3": 'Y',
+            "src":'1',
+            "sra": "1",
+            "cmd": '_xclick-subscriptions',
+            "item_name": 'Test',
+            "invoice": int(randint(100,999)),
+            "notify_url": "http://192.168.1.5:8000" + reverse('paypal-ipn'),
+            "return_url": "http://192.168.1.5:8000",
+            "cancel_return": "http://192.168.1.5:8000" ,
+
+            }
+        # Create the instance.
+        form = PayPalPaymentsForm(initial=paypal_dict)
+        context = {"form": form}
+        # form1 = CreditCardForm()
+        # context = {"form": form,"course":course,"form1":form1,'name':name,'discount':discount,'message':message}
+        return render(request,"accounts/thank-you.html", context)
+
+
+    # def post(self, request, *args, **kwargs):
+    #     paypal_dict = {
+    #     "business": settings.PAYPAL_RECEIVER_EMAIL,
+    #     "amount": 10,
+    #     "cmd":'_xclick-subscriptions',
+    #     "item_name": 'Test',
+    #     "invoice": 111,
+    #     "notify_url": "https://192.168.1.5:8000" + reverse('paypal-ipn'),
+    #     "return_url": "192.168.1.5:8000",
+    #     "cancel_return": "http://192.168.1.5:8000" ,
+    #
+    # }
+    #     # Create the instance.
+    #     form = PayPalPaymentsForm(initial=paypal_dict)
+    #     context = {"form": form}
+    #     # form1 = CreditCardForm()
+    #     # context = {"form": form,"course":course,"form1":form1,'name':name,'discount':discount,'message':message}
+    #     return render(request,"accounts/thank-you.html", context)
 
 def user_logout(request):
     logout(request)
@@ -361,5 +414,136 @@ class About(TemplateView):
 
 class Contact(TemplateView):
     template_name = 'contact-us.html'
+
+
+@csrf_exempt
+def checkout(request):
+    print "sdsdd"
+    template_name = 'accounts/thank-you.html'
+    paypal_dict = {
+        "business": settings.PAYPAL_RECEIVER_EMAIL,
+        "amount": 10,
+        "cmd":'_xclick-subscriptions',
+        "item_name": 'Test',
+        "invoice": 111,
+        "notify_url": "https://192.168.1.5:8000" + reverse('paypal-ipn'),
+        "return_url": "192.168.1.5:8000",
+        "cancel_return": "http://192.168.1.5:8000" ,
+
+    }
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
+    # form1 = CreditCardForm()
+    # context = {"form": form,"course":course,"form1":form1,'name':name,'discount':discount,'message':message}
+    return render(request, template_name, context)
+    return render_to_response(template_name, context_instance=RequestContext(request))
+
+@require_POST
+@csrf_exempt
+def custom_ipn(request, item_check_callable=None):
+
+    '''
+    django paypal view to store the IPN . the notify url excecutes this view.
+    '''
+
+    """
+    PayPal IPN endpoint (notify_url).
+    Used by both PayPal Payments Pro and Payments Standard to confirm transactions.
+    http://tinyurl.com/d9vu9d
+
+    PayPal IPN Simulator:
+    https://developer.paypal.com/cgi-bin/devscr?cmd=_ipn-link-session
+    """
+    #TODO: Clean up code so that we don't need to set None here and have a lot
+    #      of if checks just to determine if flag is set.
+    flag = None
+    ipn_obj = None
+
+    # Clean up the data as PayPal sends some weird values such as "N/A"
+    # Also, need to cope with custom encoding, which is stored in the body (!).
+    # Assuming the tolerate parsing of QueryDict and an ASCII-like encoding,
+    # such as windows-1252, latin1 or UTF8, the following will work:
+
+    encoding = request.POST.get('charset', None)
+
+    if encoding is None:
+        flag = "Invalid form - no charset passed, can't decode"
+        data = None
+    else:
+        try:
+            data = QueryDict(request.body, encoding=encoding)
+        except LookupError:
+            data = None
+            flag = "Invalid form - invalid charset"
+
+    if data is not None:
+        date_fields = ('time_created', 'payment_date', 'next_payment_date',
+                       'subscr_date', 'subscr_effective')
+        for date_field in date_fields:
+            if data.get(date_field) == 'N/A':
+                del data[date_field]
+
+        form = PayPalIPNForm(data)
+        if form.is_valid():
+            try:
+                #When commit = False, object is returned without saving to DB.
+                ipn_obj = form.save(commit=False)
+                # ipn_obj.user_name=request.user.email
+                # ipn_obj.save()
+            except Exception as e:
+                flag = "Exception while processing. (%s)" % e
+        else:
+            flag = "Invalid form. (%s)" % form.errors
+
+    if ipn_obj is None:
+        ipn_obj = PayPalIPN()
+        # ipn_obj.user_name=request.user.email
+        # ipn_obj.save()
+    #Set query params and sender's IP address
+    ipn_obj.initialize(request)
+
+    if flag is not None:
+        #We save errors in the flag field
+        ipn_obj.set_flag(flag)
+    else:
+        # Secrets should only be used over SSL.
+        if request.is_secure() and 'secret' in request.GET:
+            ipn_obj.verify_secret(form, request.GET['secret'])
+        else:
+            ipn_obj.verify(item_check_callable)
+    ipn_obj.save()
+    return HttpResponse("OKAY")
+
+
+class CardPayment(TemplateView):
+    template_name = 'accounts/credit-payment.html'
+    form_class = StripeExtendededForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        month = request.POST.get('credit_card_expiration_month')
+        year = request.POST.get('credit_card_expiration_year')
+        cvv = request.POST.get('credit_card_cvc')
+        plan = UserSubscriptions.objects.get(user=request.user)
+        amount = int(plan.plan.price)
+        if form.is_valid():
+            stripe = get_gateway("stripe")
+            credit_card = CreditCard(first_name="Test", last_name="User", month=month, year=year,
+                             number="4242424242424242",
+                             verification_value=cvv)
+            resp = stripe.purchase(int(amount), credit_card)
+            print "resposne", resp['status']
+            return redirect('/accounts/update-profile/')
+
+        else:
+            print "error", form.errors
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
 
 
