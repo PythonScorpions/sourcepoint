@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block extra_css %}
+    <style>
+    #id_credit_card_expiration_month{
+        width: 100px;
+        float: left;
+        margin-left: 2px;
+    }
+    #id_credit_card_expiration_year{
+        width: 150px;
+    }
+    #id_credit_card_cvc{
+        width: 100px;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="main">
+  <div class="container ">
+
+  <div class="row">
+      <div class="col-md-12">
+        <div class="search-result-item">
+          <div class="row">
+            <div class="col-md-12">
+             <h2>Payment Process</h2>
+             <hr>
+<p>Put Message Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content<br>
+<br>
+</p>
+                  <form class="form-horizontal form-without-legend" role="form" method="post" action=".">
+                      {% csrf_token %}
+                    <input type="hidden" name="amount" value="10">
+                    <div class="form-group margin-top-35">
+                      <label  class="col-lg-4 control-label">Enter Card no <span class="require">*</span></label>
+                      <div class="col-lg-6">
+{#                        <input class="form-control" placeholder="Enter card no" type="text">#}
+                          {{ form.credit_card_number }}<span style="color: red">{{ form.credit_card_number.errors.as_text }}</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label  class="col-lg-4 control-label">Expire date <span class="require">*</span></label>
+                      <div class="col-lg-6">
+                        {{ form.credit_card_expiration_month }}<span style="color: red">{{ form.credit_card_expiration_month.errors.as_text }}</span>
+{{ form.credit_card_expiration_year }}<span style="color: red">{{ credit_card_expiration_year.errors.as_text }}</span>
+                      </div>
+
+                    </div>
+                    <div class="form-group">
+                      <label class="col-lg-4 control-label">CCV no <span class="require">*</span></label>
+                      <div class="col-lg-6">
+{#                        <input class="form-control" style="width:100px;" placeholder="" type="text">#}
+                          {{ form.credit_card_cvc }}<span style="color:red">{{ form.credit_card_cvc.errors.as_text }}</span>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="col-lg-6 col-md-offset-4  padding-top-20">
+                        <button type="submit" class="btn btn-primary">Pay Now</button>
+                      </div>
+                    </div>
+
+                  </form>
+
+              <p>&nbsp;</p>
+            </div>
+
+          </div>
+        </div>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+
+    <!-- BEGIN CONTENT -->
+    <div class="col-md-12 col-sm-12">
+      <div class="content-page">
+
+      </div>
+    </div>
+  </div>
+  <!-- END CONTENT -->
+
+  <!-- BEGIN SIDEBAR & CONTENT -->
+
+</div>
+</div>
+{% endblock %}
