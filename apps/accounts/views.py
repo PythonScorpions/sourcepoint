@@ -411,22 +411,36 @@ class ChangePassword(TemplateView):
 class About(TemplateView):
     template_name = 'about-us.html'
 
+
 class Contact(TemplateView):
     template_name = 'contact-us.html'
+
+    def post(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        t = loader.get_template('posts/contact.txt')
+        c = Context({'name': name, 'email': email,
+                     'site': site.name,
+                    'message': message})
+        send_mail('[%s] %s' % (site.name, 'New Contact Request'), t.render(c),
+                  settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL], fail_silently=False)
+        return render_to_response(self.template_name, context_instance=RequestContext(request))
 
 
 @csrf_exempt
 def checkout(request):
     print "sdsdd"
     template_name = 'accounts/thank-you.html'
+    plan = UserSubscriptions.objects.get(user=request.user)
     paypal_dict = {
         "business": settings.PAYPAL_RECEIVER_EMAIL,
-        "amount": 10,
-        "cmd":'_xclick-subscriptions',
-        "item_name": 'Test',
-        "invoice": 111,
+        "amount": plan.plan.price,
+        "item_name": 'Plan Purchase',
+        "invoice": int(randint(100,99999)),
         "notify_url": "https://192.168.1.5:8000" + reverse('paypal-ipn'),
-        "return_url": "192.168.1.5:8000",
+        "return_url": "http://192.168.1.5:8000/accounts/update-profile",
         "cancel_return": "http://192.168.1.5:8000" ,
 
     }
