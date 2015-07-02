@@ -17,12 +17,17 @@ from django.conf import settings
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.conf.urls.static import static
+from billing import get_integration
+
+stripe_obj = get_integration("stripe",)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^',include('apps.posts.urls')),
     url(r'^accounts/',include('apps.accounts.urls')),
-    url(r'dashboard/',include('apps.dashboard.urls'))
+    url(r'dashboard/',include('apps.dashboard.urls')),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
+    url(r'^stripe/', include(stripe_obj.urls)),
 ]
 urlpatterns += patterns('',
         (r'^static/(.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT,'show_indexes': False}),
