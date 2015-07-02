@@ -114,6 +114,16 @@ class PostDetail(TemplateView):
         return context
 
 
+    # trackers = IpTracker.objects.get(user=request.user)
+    #
+    #         if not trackers.intersets.filter(id=post.id).exists():
+    #             post_obj = Posts.objects.get(slug=kwargs['slug'])
+    #             if not InterestOfUsers.objects.filter(post_name=post_obj, ip_tracker=trackers).exists():
+    #                 trackers.interest_count += 1
+    #                 trackers.save()
+    #                 trackers_obj = IpTracker.objects.get(user=request.user)
+
+
 
 def addpost(request):
     template_name = 'posts/post-your-requarment.html'
@@ -146,6 +156,15 @@ def addpost(request):
             for s in saved_tags:
                 post.tags.add(s)
                 post_preview.tags.add(s)
+            if IpTracker.objects.filter(user=request.user).exists():
+                tracker = IpTracker.objects.get(user=request.user)
+                tracker.post_count += 1
+                tracker.save()
+            else:
+                tracker = IpTracker()
+                tracker.user = User.objects.get(username=request.user)
+                tracker.post_count +=1
+                tracker.save()
             return redirect('/posts/preview/%s' % post_preview.id)
         else:
             print "error", form.errors
