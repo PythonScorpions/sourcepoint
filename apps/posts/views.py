@@ -34,6 +34,18 @@ class Homepage(TemplateView):
         posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_dattetime')
         return posts_buy
 
+    def deactivate_post(self):
+        try:
+            tracker = IpTracker.objects.get(user=self.request.user)
+            plan = UserSubscriptions.objects.get(user=self.request.user)
+            if tracker.post_count == plan.plan.post_requirement:
+                post = 'deactivate'
+            else:
+                post = ''
+        except:
+            post = ''
+        return post
+
     def get_context_data(self, **kwargs):
         context = super(Homepage, self).get_context_data(**kwargs)
         context['posts_sell'] = self.get_sellposts()
@@ -41,6 +53,7 @@ class Homepage(TemplateView):
         context['buy'] = 'buy'
         context['posts_buy'] = self.get_buyposts()
         context['keywords'] = self.keywords()
+        context['post_activate'] = self.deactivate_post()
         return context
 
 
