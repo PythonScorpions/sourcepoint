@@ -433,15 +433,16 @@ class Contact(TemplateView):
 def checkout(request):
     print "sdsdd"
     template_name = 'accounts/thank-you.html'
+    site = Site.objects.get(pk=1)
     plan = UserSubscriptions.objects.get(user=request.user)
     paypal_dict = {
         "business": settings.PAYPAL_RECEIVER_EMAIL,
         "amount": plan.plan.price,
         "item_name": 'Plan Purchase',
         "invoice": int(randint(100,99999)),
-        "notify_url": "https://192.168.1.5:8000" + reverse('paypal-ipn'),
-        "return_url": "http://192.168.1.5:8000/accounts/update-profile",
-        "cancel_return": "http://192.168.1.5:8000" ,
+        "notify_url": "https://%s"%(site.name) + reverse('paypal-ipn'),
+        "return_url": "http://%s/accounts/update-profile"%(site.name),
+        "cancel_return": "http://%s"%(site.name) ,
 
     }
     # Create the instance.
