@@ -1,0 +1,11 @@
+Dear Admin,
+
+{{ name }} has submitted a contact Request.
+
+Following is the message and email,
+
+Email:{{ email }}
+Message:{{ message }}
+
+Regards
+{{ site }}
