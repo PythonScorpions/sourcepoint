@@ -40,7 +40,14 @@
         </form>
       </div>
       <div class="col-md-3">
-        <div class="post-requarment"><a class="btn-transparent" {% if request.user.is_authenticated %}href="{% url 'add-post' %}"{% else %}href="{% url 'login' %}" {% endif %} ><img src="/static/img/post-requarment.png" width="250" height="50" alt=""></a></div>
+        <div class="post-requarment">
+        {% if not post_activate == 'deactivate' %}
+            <a class="btn-transparent" {% if request.user.is_authenticated %}href="{% url 'add-post' %}"{% else %}href="{% url 'login' %}" {% endif %} >
+                {% else %}
+            <a class="btn-transparent" {% if request.user.is_authenticated %}href=""{% else %}href="{% url 'login' %}" {% endif %} >
+                {% endif %}
+                <img src="/static/img/post-requarment.png" width="250" height="50" alt=""></a>
+        </div>
       </div>
     </div>
     <div class="row">
