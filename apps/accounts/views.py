@@ -183,20 +183,16 @@ class Thankyou(TemplateView):
     template_name = 'accounts/thank-you.html'
 
     def get(self, request, *args, **kwargs):
+        plan = UserSubscriptions.objects.get(user=request.user)
         paypal_dict = \
             {
             "business": settings.PAYPAL_RECEIVER_EMAIL,
-            "a3": 10,
-            "p3": '1',
-            "t3": 'Y',
-            "src":'1',
-            "sra": "1",
-            "cmd": '_xclick-subscriptions',
-            "item_name": 'Test',
+            "amount": plan.plan.price,
+            "item_name": 'Plan Purchase',
             "invoice": int(randint(100,999)),
             "notify_url": "http://192.168.1.5:8000" + reverse('paypal-ipn'),
-            "return_url": "http://192.168.1.5:8000",
-            "cancel_return": "http://192.168.1.5:8000" ,
+            "return_url": "http://192.168.1.5:8000/accounts/update-profile/",
+            "cancel_return": "http://192.168.1.5:8000",
 
             }
         # Create the instance.
@@ -386,7 +382,10 @@ class ChangePlan(TemplateView):
             plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
             user.plan = plan
             user.save()
-            return redirect('/accounts/update-profile/')
+            if plan.free_plan == True:
+                return redirect('/accounts/update-profile/')
+            else:
+                return redirect('/accounts/thanku/')
         except:
             pass
         return render_to_response(self.template_name, context_instance = RequestContext(request))
@@ -526,6 +525,7 @@ class CardPayment(TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        card = request.POST.get('credit_card_number')
         month = request.POST.get('credit_card_expiration_month')
         year = request.POST.get('credit_card_expiration_year')
         cvv = request.POST.get('credit_card_cvc')
@@ -534,7 +534,7 @@ class CardPayment(TemplateView):
         if form.is_valid():
             stripe = get_gateway("stripe")
             credit_card = CreditCard(first_name="Test", last_name="User", month=month, year=year,
-                             number="4242424242424242",
+                             number=card,
                              verification_value=cvv)
             resp = stripe.purchase(int(amount), credit_card)
             print "resposne", resp['status']
