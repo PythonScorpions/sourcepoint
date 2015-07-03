@@ -438,7 +438,7 @@ def checkout(request):
     paypal_dict = {
         "business": settings.PAYPAL_RECEIVER_EMAIL,
         "amount": plan.plan.price,
-        "item_name": 'Plan Purchase',
+        "item_name": plan.plan.title,
         "invoice": int(randint(100,99999)),
         "notify_url": "https://%s"%(site.name) + reverse('paypal-ipn'),
         "return_url": "http://%s/accounts/update-profile"%(site.name),
