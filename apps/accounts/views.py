@@ -101,6 +101,10 @@ def subscribe(request):
             profile = UserProfiles.objects.get(user=request.user)
             subscribe.user = profile.user
             subscribe.plan = plan
+            subscribe.post_requirement = plan.post_requirement
+            subscribe.view_requirement = plan.view_requirement
+            subscribe.view_contact = plan.view_contact
+            subscribe.show_interest = plan.show_interest
             subscribe.expiry_date = datetime.datetime.now()
             subscribe.save()
             request.session['price'] = subscribe.price
@@ -113,6 +117,10 @@ def subscribe(request):
             profile = UserProfiles.objects.get(user=request.user)
             subscribe.user = profile.user
             subscribe.plan = plan
+            subscribe.post_requirement = plan.post_requirement
+            subscribe.view_requirement = plan.view_requirement
+            subscribe.view_contact = plan.view_contact
+            subscribe.show_interest = plan.show_interest
             subscribe.expiry_date = datetime.datetime.now()
             subscribe.save()
             return redirect(url)
@@ -122,6 +130,10 @@ def subscribe(request):
             profile = UserProfiles.objects.get(user=request.user)
             subscribe.user = profile.user
             subscribe.plan = plan
+            subscribe.post_requirement = plan.post_requirement
+            subscribe.view_requirement = plan.view_requirement
+            subscribe.view_contact = plan.view_contact
+            subscribe.show_interest = plan.show_interest
             subscribe.expiry_date = datetime.datetime.now()
             subscribe.save()
             t = loader.get_template('accounts/verify.txt')
@@ -310,8 +322,8 @@ class MyPlan(TemplateView):
 
     def get_plan(self, *args, **kwargs):
         plan = UserSubscriptions.objects.get(user=self.request.user)
-        subscribed_plan = SubscriptionPlan.objects.get(id=plan.plan.id)
-        return subscribed_plan
+        # subscribed_plan = SubscriptionPlan.objects.get(id=plan.plan.id)
+        return plan
 
     def get_context_data(self, **kwargs):
         context = super(MyPlan, self).get_context_data(**kwargs)
@@ -381,6 +393,10 @@ class ChangePlan(TemplateView):
             user = UserSubscriptions.objects.get(user=request.user)
             plan = SubscriptionPlan.objects.get(id=request.POST['plan'])
             user.plan = plan
+            user.post_requirement += plan.post_requirement
+            user.view_requirement += plan.view_requirement
+            user.view_contact += plan.view_contact
+            user.show_interest +=plan.show_interest
             user.save()
             if plan.free_plan == True:
                 return redirect('/accounts/update-profile/')

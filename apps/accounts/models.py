@@ -52,6 +52,10 @@ class SubscriptionPlan(models.Model):
 class UserSubscriptions(models.Model):
     user = models.ForeignKey(User,related_name='user_plan')
     plan = models.ForeignKey(SubscriptionPlan,related_name='subscribe_plan')
+    post_requirement = models.IntegerField('Post Requirement')
+    view_requirement = models.IntegerField('View Requirement')
+    view_contact = models.IntegerField('View Contact')
+    show_interest = models.IntegerField('Show Interest')
     start_date = models.DateTimeField('Start Date',auto_now=True)
     expiry_date = models.DateTimeField('Expiry Date',)
 
