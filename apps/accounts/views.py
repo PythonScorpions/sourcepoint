@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, QueryDict
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, UpdateView
 from django.views.generic import View
@@ -193,6 +193,11 @@ def email_verification(request, key):
 class Thankyou(TemplateView):
 
     template_name = 'accounts/thank-you.html'
+
+    @method_decorator(csrf_protect)
+    def dispatch(self, *args, **kwargs):
+        return super(Thankyou, self).dispatch(*args, **kwargs)
+
 
     def get(self, request, *args, **kwargs):
         site = Site.objects.get(pk=1)
