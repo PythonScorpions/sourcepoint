@@ -22,5 +22,6 @@ urlpatterns = patterns("apps.accounts.views",
                        url(r'^aboutus/$', About.as_view(), name='aboutus'),
                        url(r'^contact/$', Contact.as_view(), name='contact'),
                        url(r'^payment/$', 'checkout', name='payment'),
-                       url(r'^card-pay/$', CardPayment.as_view(), name='card-pay')
+                       url(r'^card-pay/$', CardPayment.as_view(), name='card-pay'),
+                       url(r'^custom_ipn/','custom_ipn', name = 'custom_ipn'),
                        )
