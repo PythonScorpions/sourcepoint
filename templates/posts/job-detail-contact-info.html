@@ -58,7 +58,7 @@
                   information of usre
 
                   (Email ID, Mobile number & Skype ID) </p>
-                {% if tracker.view_count == plan.plan.view_contact %}
+                {% if tracker.view_count == plan.view_contact %}
                           <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
                       {% else %}
                     <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
@@ -138,7 +138,7 @@ Contact Request Sent, user will soon contact you
                   information of usre
 
                   (Email ID, Mobile number & Skype ID) </p>
-                {% if tracker.view_count == plan.plan.view_contact %}
+                {% if tracker.view_count == plan.view_contact %}
                           <a href="" class="btn btn-primary">You Have Reached Your View Limit</a>
                       {% else %}
                     <a href="{% url 'post-contact' post.slug %}" class="btn btn-primary">Get Contact Detail</a>
