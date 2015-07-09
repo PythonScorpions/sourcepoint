@@ -36,14 +36,14 @@
 						  <tbody>
                             {% for plan in object_list %}
 							<tr>
-								<td>{{ plan.title }}</td>
+								<td>{{ plan.txn_id }}</td>
                                 <td class="center">
-                                {{ payer_email }}
+                                {{ plan.payer_email }}
 								</td>
 								<td>
-                                    {{ auth_amount }}
+                                    {{ plan.mc_gross }}
 								</td>
-                            <td>{{ payment_status }}</td>
+                            <td>{{ plan.payment_status }}</td>
                             <td>{{ plan.payment_date }}</td>
 							</tr>
 							{% endfor %}
