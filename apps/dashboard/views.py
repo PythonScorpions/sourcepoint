@@ -9,6 +9,7 @@ import json
 from django.template import RequestContext, Context
 from django.shortcuts import render_to_response, redirect
 from django.contrib import messages
+from paypal.standard.ipn.models import PayPalIPN
 from apps.accounts.models import *
 from apps.dashboard.forms import PlanForm, CategoryForm, TagForm
 
@@ -230,6 +231,10 @@ class PostDetail(DetailView):
 def admin_logout(request):
     logout(request)
     return redirect('/dashboard/')
+
+class PaymentLists(ListView):
+    template_name = 'dashboard/paypal-lists.html'
+    model = PayPalIPN
 
 
 
