@@ -195,7 +195,7 @@ class Thankyou(TemplateView):
     template_name = 'accounts/thank-you.html'
 
     def get(self, request, *args, **kwargs):
-        site = Site.objects.get(plk=1)
+        site = Site.objects.get(pk=1)
         plan = UserSubscriptions.objects.get(user=request.user)
         paypal_dict = \
             {
