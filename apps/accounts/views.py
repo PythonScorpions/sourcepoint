@@ -456,7 +456,7 @@ def checkout(request):
         "amount": plan.plan.price,
         "item_name": plan.plan.title,
         "invoice": int(randint(100,99999)),
-        "notify_url": "https://%s"%(site.name) + reverse('paypal-ipn'),
+        "notify_url": "https://%s"%(site.name) + reverse('custom_ipn'),
         "return_url": "http://%s/accounts/update-profile"%(site.name),
         "cancel_return": "http://%s"%(site.name) ,
 
