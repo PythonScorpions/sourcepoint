@@ -29,6 +29,7 @@
 								  <th>Transaction ID</th>
 								  <th>User</th>
                                   <th>Amount</th>
+                                  <th>Invioice</th>
                                   <th>Status</th>
                                   <th>Data</th>
 							  </tr>
@@ -42,6 +43,9 @@
 								</td>
 								<td>
                                     {{ plan.mc_gross }}
+								</td>
+                                <td>
+                                    {{ plan.invoice }}
 								</td>
                             <td>{{ plan.payment_status }}</td>
                             <td>{{ plan.payment_date }}</td>
