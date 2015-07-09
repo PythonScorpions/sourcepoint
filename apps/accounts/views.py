@@ -195,6 +195,7 @@ class Thankyou(TemplateView):
     template_name = 'accounts/thank-you.html'
 
     def get(self, request, *args, **kwargs):
+        site = Site.objects.get(plk=1)
         plan = UserSubscriptions.objects.get(user=request.user)
         paypal_dict = \
             {
@@ -202,9 +203,9 @@ class Thankyou(TemplateView):
             "amount": plan.plan.price,
             "item_name": 'Plan Purchase',
             "invoice": int(randint(100,999)),
-            "notify_url": "http://192.168.1.5:8000" + reverse('paypal-ipn'),
-            "return_url": "http://192.168.1.5:8000/accounts/update-profile/",
-            "cancel_return": "http://192.168.1.5:8000",
+            "notify_url": "https://%s"%(site.name) + reverse('custom_ipn'),
+            "return_url": "http://%s/accounts/update-profile"%(site.name),
+            "cancel_return": "http://%s"%(site.name) ,
 
             }
         # Create the instance.
