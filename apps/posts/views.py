@@ -572,6 +572,49 @@ class SearchResults(TemplateView):
         return context
 
 
+class PostsBuy(TemplateView):
+    template_name = 'posts/posts-buy.html'
+
+    def keywords(self, *args, **kwargs):
+        keywords = []
+        for cat in Category.objects.all():
+            keywords.append(str(cat.name))
+        for tag in TechnologyTags.objects.all():
+            keywords.append(str(tag.tag))
+        return keywords
+
+    def get_sellposts(self, *args, **kwargs):
+        posts_sell = Posts.objects.filter(publish=True, sell_code=True).order_by('-created_dattetime')
+        return posts_sell
+
+    def get_buyposts(self, *args, **kwargs):
+        posts_buy = Posts.objects.filter(publish=True, buy_code=True).order_by('-created_dattetime')
+        return posts_buy
+
+    def deactivate_post(self):
+        try:
+            tracker = IpTracker.objects.get(user=self.request.user)
+            plan = UserSubscriptions.objects.get(user=self.request.user)
+            if tracker.post_count == plan.plan.post_requirement:
+                post = 'deactivate'
+            else:
+                post = ''
+        except:
+            post = ''
+        return post
+
+    def get_context_data(self, **kwargs):
+        context = super(PostsBuy, self).get_context_data(**kwargs)
+        context['posts_sell'] = self.get_sellposts()
+        context['sell'] = 'sell'
+        context['buy'] = 'buy'
+        context['posts_buy'] = self.get_buyposts()
+        context['keywords'] = self.keywords()
+        context['post_activate'] = self.deactivate_post()
+        return context
+
+
+
 
 
 

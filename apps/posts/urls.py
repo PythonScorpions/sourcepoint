@@ -18,4 +18,5 @@ urlpatterns = patterns("apps.posts.views",
                        url(r'^my-interest-detail/(?P<slug>[\w-]+)/$', MyInterestDetail.as_view(), name='interest-detail'),
                        url(r'^delete-interest/(?P<slug>[\w-]+)/$', 'delete_interest',name='delete-interest'),
                        url(r'^search/$', SearchResults.as_view(), name='search'),
+                       url(r'^posts/buy/$', PostsBuy.as_view(), name='posts-buy'),
                        )
