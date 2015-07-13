@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load endless %}
+{% load category_list %}
+{% block extra_css %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+{% endblock %}
+{% block extra_scripts %}
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        data = {{ keywords|safe }}
+        var data = data;
+  $(function() {
+    var availableTags =  data;
+    $( "#search" ).autocomplete({
+      source: availableTags
+    });
+  });
+  </script>
+{% endblock %}
+{% block content %}
+    <!-- Header END -->
+    {% if messages  %}
+        {% for message in messages %}
+            <span style="color: green;margin-left: 110px">{{ message }}</span>
+        {% endfor %}
+    {% endif %}
+{% list_category as categories %}
+<div class="main">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <form class="content-search-view2" action="{% url 'search' %}" method="get">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search..." id="search" name="search">
+            <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">Search</button>
+            </span> </div>
+        </form>
+      </div>
+      <div class="col-md-3">
+        <div class="post-requarment">
+        {% if not post_activate == 'deactivate' %}
+            <a class="btn-transparent" {% if request.user.is_authenticated %}href="{% url 'add-post' %}"{% else %}href="{% url 'login' %}" {% endif %} >
+                {% else %}
+            <a class="btn-transparent" {% if request.user.is_authenticated %}href=""{% else %}href="{% url 'login' %}" {% endif %} >
+                {% endif %}
+                <img src="/static/img/post-requarment.png" width="250" height="50" alt=""></a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <div class="main-tab">
+            <ul class="nav nav-tabs">
+              <li class=""> <a href="/"> Source Code On Sell </a> </li>
+              <li class="active"> <a href="#tab_1_2" data-toggle="tab" aria-expanded="false"> Soure Code On Buy </a> </li>
+            </ul>
+          </div>
+
+            <div class="tab-pane fontawesome-demo" id="tab_1_2"> <div class="sub-menu-tab">
+                <ul class="nav nav-tabs">
+                  <li class="active"> <a href="#" >All</a></li>
+                    {% for category in categories %}
+                  <li class=""> <a href="{% url 'category-post' category.slug buy %}" >{{ category.name }}</a></li>
+                    {% endfor %}
+                  <li class=""><a href="{% url 'category-post' 'other' buy %}" >Other</a></li>
+                </ul>
+              </div>
+              <div class="row ">
+                <!-- BEGIN CONTENT -->
+                <div class="col-md-12">
+                  <div class="">
+                  {% paginate 10 posts_buy %}
+ {% for post in posts_buy %}
+                    <div class="search-result-item">
+                    <a href="{% url 'post-detail' post.slug %}">
+                      <h4>{{ post.title }}</h4>
+                      <ul class="blog-info"><li><i class="fa fa-calendar"></i> {{ post.created_date }}</li> <li><i class="fa fa-dollar"></i> {{ post.get_prices_display }}</li>
+                          {% if post.user.user_profiles.email_verify == True %}
+                          <li><i class="fa fa-envelope"></i> Verified </li>
+                          {% else %}
+                              <li><i class="fa fa-envelope"></i> Not Verified </li>
+                          {% endif %}
+                        {% if post.user.user_profiles.mobile_verify == True %}
+                        <li><i class="fa fa-phone"></i> Verified </li>
+                      {% else %}
+                          <li><i class="fa fa-phone"></i> Not Verified </li>
+                      {% endif %}
+                        <li class="pull-right"><i class="fa fa-list"></i> {{ post.category }}</li>
+                        <li class="pull-right"><i class="fa fa-tag"></i>{{ post.tags.all|join:", " }}</li>
+                      </ul>
+                      <p>{{ post.description|truncatewords:30 }}
+
+                    </a> </div>
+                      {% endfor %}
+
+
+                    <div class="row margin-top-10">
+                <div class="col-md-4 col-sm-4 items-info">
+{#                    Items 1 to 9 of 10 total#}
+                </div>
+                <div class="col-md-8 col-sm-8">
+                  <ul class="pagination pull-right">
+{#                    <li><a href="#">«</a></li>#}
+                    <li>{% show_pages %}</li>
+{#                    <li><a href="#">2</a></li>#}
+{#                    <li><a href="#">3</a></li>#}
+{#                    <li><a href="#">4</a></li>#}
+{#                    <li><a href="#">5</a></li>#}
+{#                    <li><a href="#">»</a></li>#}
+                  </ul>
+                </div>
+              </div>
+                    </div>
+                </div>
+                <!-- END CONTENT -->
+              </div> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEGIN SIDEBAR & CONTENT -->
+
+  </div>
+</div>
+{% endblock %}

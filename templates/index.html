@@ -56,7 +56,7 @@
           <div class="main-tab">
             <ul class="nav nav-tabs">
               <li class="active"> <a href="#tab_1_1" data-toggle="tab" aria-expanded="true"> Source Code On Sell </a> </li>
-              <li class=""> <a href="#tab_1_2" data-toggle="tab" aria-expanded="false"> Soure Code On Buy </a> </li>
+              <li class=""> <a href="{% url 'posts-buy' %}" > Soure Code On Buy </a> </li>
             </ul>
           </div>
           <div class="tab-content">
@@ -74,7 +74,7 @@
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12">
                   <div class="">
-                  {% paginate 2 posts_sell %}
+                  {% paginate 10 posts_sell %}
                       {% for post in posts_sell %}
                     <div class="search-result-item">
                     <a href="{% url 'post-detail' post.slug %}">
