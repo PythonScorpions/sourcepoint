@@ -277,10 +277,14 @@ class ResetPassword(TemplateView):
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
 
 
-@csrf_exempt
+
 class UpdateProfile(UpdateView):
     template_name = 'accounts/my-profile.html'
     form_class = ProfileUpdateForm
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super(UpdateProfile, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         user = User.objects.get(username=request.user)
