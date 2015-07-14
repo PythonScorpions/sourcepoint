@@ -469,7 +469,7 @@ def checkout(request):
         "item_name": plan.plan.title,
         "invoice": int(randint(100,99999)),
         "notify_url": "https://%s"%(site.name) + reverse('custom_ipn'),
-        "return_url": "http://%s/accounts/update-profile"%(site.name),
+        "return_url": "http://%s/accounts/myplan/"%(site.name),
         "cancel_return": "http://%s"%(site.name) ,
 
     }
