@@ -326,7 +326,7 @@ class MyPlan(TemplateView):
 
     template_name = 'accounts/my-plan.html'
 
-    @method_decorator(csrf_protect)
+    @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
         return super(MyPlan, self).dispatch(*args, **kwargs)
 
@@ -346,6 +346,10 @@ class MyPlan(TemplateView):
         context = super(MyPlan, self).get_context_data(**kwargs)
         context['plan'] = self.get_plan()
         return context
+
+    def post(self, request, *args, **kwargs):
+        plan = self.get_plan()
+        return render_to_response(self.template_name, {'plan':plan}, context_instance=RequestContext(request))
 
 
 class Settings(TemplateView):
