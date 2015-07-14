@@ -331,11 +331,11 @@ class MyPlan(TemplateView):
         return super(MyPlan, self).dispatch(*args, **kwargs)
 
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        if not UserSubscriptions.objects.filter(user=self.request.user).exists():
-            return redirect('/accounts/subscribe/?profile=true')
-        return super(MyPlan, self).dispatch(*args, **kwargs)
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs):
+    #     if not UserSubscriptions.objects.filter(user=self.request.user).exists():
+    #         return redirect('/accounts/subscribe/?profile=true')
+    #     return super(MyPlan, self).dispatch(*args, **kwargs)
 
     def get_plan(self, *args, **kwargs):
         plan = UserSubscriptions.objects.get(user=self.request.user)
