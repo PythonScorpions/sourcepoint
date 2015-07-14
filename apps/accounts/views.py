@@ -209,7 +209,7 @@ class Thankyou(TemplateView):
             "item_name": 'Plan Purchase',
             "invoice": int(randint(100,999)),
             "notify_url": "https://%s"%(site.name) + reverse('custom_ipn'),
-            "return_url": "http://%s/accounts/update-profile/"%(site.name),
+            "return_url": "http://%s/accounts/myplan/"%(site.name),
             "cancel_return": "http://%s"%(site.name) ,
 
             }
@@ -325,6 +325,11 @@ class UpdateProfile(UpdateView):
 class MyPlan(TemplateView):
 
     template_name = 'accounts/my-plan.html'
+
+    @method_decorator(csrf_protect)
+    def dispatch(self, *args, **kwargs):
+        return super(MyPlan, self).dispatch(*args, **kwargs)
+
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
