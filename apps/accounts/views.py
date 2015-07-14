@@ -276,6 +276,8 @@ class ResetPassword(TemplateView):
             messages.success(request, 'Please Make Sure Two password Fields are Same')
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
 
+
+@csrf_exempt
 class UpdateProfile(UpdateView):
     template_name = 'accounts/my-profile.html'
     form_class = ProfileUpdateForm
