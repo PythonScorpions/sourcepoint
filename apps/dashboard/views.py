@@ -48,6 +48,39 @@ class UserLists(TemplateView):
         return context
 
 
+
+def deactivate_user(request, pk):
+    template_name = 'dashboard/users.html'
+    user = User.objects.get(id=pk)
+    if user.is_active == True:
+        user.is_active = False
+        user.save()
+    elif user.is_active == False:
+        print "sdvsfsffsdfs", user.is_active
+        user.is_active = True
+        user.save()
+    else:
+        pass
+    return redirect('/dashboard/user-profiles/')
+    return render_to_response(self.template_name, content_instance=RequestContext(request),)
+
+# class DeactivateUser(TemplateView):
+#     template_name = 'dashboard/users.html'
+#
+#     def post(self, request, *args, **kwargs):
+#         user = User.objects.get(id=kwargs['id'])
+#         if user.is_active == True:
+#             user.is_active == False
+#             user.save()
+#             return redirect('/user-profiles/')
+#         elif user.is_active == False:
+#             user.is_active == True
+#             user.save()
+#             return redirect('/user-profiles/')
+#         else:
+#             pass
+#             return redirect('/user-profiles/')
+
 class UserSubscriptionList(TemplateView):
     template_name = 'dashboard/user-subscriptions.html'
 
