@@ -39,9 +39,11 @@
 								<td class="center">Member</td>
 								<td class="center">
                                     {% if user.user.is_active == True%}
-                                        <span class="label label-success">Active</span>
-                                        {% else %}
-									<span class="label label-warning">Pending</span>
+                                    <a href="{% url 'deactivate-user' user.user.id %}" >
+                                        <span class="label label-success" href="{% url 'deactivate-user' user.user.id %}">Active</span>
+                                    </a>
+                                    {% else %}
+									<a href="{% url 'deactivate-user' user.user.id %}" ><span class="label label-warning">Deactivated</span></a>
                                     {% endif %}
 								</td>
 								<td class="center">
