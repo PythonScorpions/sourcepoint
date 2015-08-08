@@ -1,6 +1,7 @@
 import random
 import string
 import datetime
+from django.contrib.sites.models import Site
 from django.db import models
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
@@ -45,6 +46,7 @@ class SubscriptionPlan(models.Model):
     contact = models.BooleanField('Displays Contact Detail of Person who Showed Interest', default=False)
     price = models.IntegerField('Price', default=0)
     free_plan = models.BooleanField(default=False)
+    active = models.BooleanField('Active', default=True)
 
     def __unicode__(self):
         return self.title
@@ -100,3 +102,24 @@ class ContactsViewed(models.Model):
 
     def __unicode__(self):
         return u'%s'%(self.post_name)
+
+
+
+class AboutUs(models.Model):
+    site = models.OneToOneField(Site)
+    banner = models.ImageField(upload_to='banners/')
+    description = models.TextField(('Company Overview'))
+    testimonial = models.TextField(('Client Testimonial'))
+
+    def __unicode__(self):
+        return u'%s' % self.site
+
+
+class OurTema(models.Model):
+    avatar = models.ImageField(upload_to='images/')
+    name = models.CharField(('Name'), max_length=150)
+    title = models.CharField(('Title'), max_length=150)
+    description = models.TextField('Description')
+
+    def __unicode__(self):
+        return self.name
