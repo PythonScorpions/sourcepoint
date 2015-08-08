@@ -65,6 +65,32 @@ class AboutForm(forms.ModelForm):
         self.fields['testimonial'].widget.attrs['class'] = 'cleditor'
 
 
+class OurTemaForm(forms.ModelForm):
+
+    class Meta:
+        model = OurTema
+        fields = ['title', 'avatar', 'name', 'description']
+
+    def __init__(self, *args, **kwargs):
+
+        super(OurTemaForm, self).__init__(*args, **kwargs)
+        self.fields['description'].widget.attrs['class'] = 'cleditor'
+
+
+class WebSiteContentsForm(forms.ModelForm):
+
+    class Meta:
+        model = WebSiteContents
+        fields = ['site', 'signin', 'signup']
+
+
+    def __init__(self, *args, **kwargs):
+
+        super(WebSiteContentsForm, self).__init__(*args, **kwargs)
+        self.fields['signin'].widget.attrs['class'] = 'cleditor'
+        self.fields['signup'].widget.attrs['class'] = 'cleditor'
+
+
 
 
 

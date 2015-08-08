@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib import messages
 from paypal.standard.ipn.models import PayPalIPN
 from apps.accounts.models import *
-from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm
+from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm, OurTemaForm, WebSiteContentsForm
 
 
 class AdminLoginpage(TemplateView):
@@ -300,7 +300,7 @@ class About(TemplateView):
 
 def plan_status(request, id):
     template_name = 'dashboard/plan-list.html'
-    plan =  SubscriptionPlan.objects.get(id=id)
+    plan = SubscriptionPlan.objects.get(id=id)
     if plan.active == True:
         plan.active = False
         plan.save()
@@ -312,6 +312,88 @@ def plan_status(request, id):
     else:
         pass
     return render_to_response(template_name, context_instance=RequestContext(request))
+
+
+def post_status(request, id):
+    template_name = 'dashboard/post-lists.html'
+    post = Posts.objects.get(id=id)
+    if post.publish == True:
+        post.publish = False
+        post.save()
+        return redirect('/dashboard/post-list/')
+    elif post.publish == False:
+        post.publish = True
+        post.save()
+        return redirect('/dashboard/post-list/')
+    else:
+        pass
+    return render_to_response(template_name, context_instance=RequestContext(request))
+
+class TeamLists(ListView):
+    template_name = 'dashboard/team-lists.html'
+    model = OurTema
+
+class TeamMember(TemplateView):
+    template_name = 'dashboard/add-team-member.html'
+    form_class = OurTemaForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/team-lists/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+class MemberDetail(TemplateView):
+    template_name = 'dashboard/member-detail.html'
+    form_class = OurTemaForm
+
+    def get(self, request, *args, **kwargs):
+        member = OurTema.objects.get(id=kwargs['id'])
+        form = self.form_class(instance=member)
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        member = OurTema.objects.get(id=kwargs['id'])
+        form = self.form_class(request.POST, request.FILES, instance=member)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/team-lists/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+class WebContent(TemplateView):
+    template_name = 'dashboard/web-content.html'
+    form_class = WebSiteContentsForm
+
+    def get(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        if WebSiteContents.objects.filter(site=site).exists():
+            content = WebSiteContents.objects.get(site=site)
+            form = self.form_class(instance=content)
+        else:
+            form = self.form_class()
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        if WebSiteContents.objects.filter(site=site).exists():
+            content = WebSiteContents.objects.get(site=site)
+            form = self.form_class(request.POST, instance=content)
+            if form.is_valid():
+                form.save()
+                return redirect('/dashboard/web-contents/')
+        else:
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/dashboard/web-contents/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
 
 
