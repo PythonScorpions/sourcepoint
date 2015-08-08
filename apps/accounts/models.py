@@ -123,3 +123,12 @@ class OurTema(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class WebSiteContents(models.Model):
+    site = models.OneToOneField(Site)
+    signin = models.TextField('Signin', max_length=150)
+    signup = models.TextField('Signup', max_length=150)
+
+    def __unicode__(self):
+        return u'%s' % self.site
