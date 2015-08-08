@@ -1,0 +1,82 @@
+{% extends 'admin_base.html' %}
+{% block admin_content %}
+    <div class="container-fluid-full">
+
+			<!-- end: Main Menu -->
+			<div id="content" class="span10">
+
+
+			<ul class="breadcrumb">
+				<li>
+					<i class="icon-home"></i>
+					<a href="index.html">Home</a>
+					<i class="icon-angle-right"></i>
+				</li>
+				<li>
+					<i class="icon-edit"></i>
+					<a href="#">Forms</a>
+				</li>
+			</ul>
+
+			<div class="row-fluid sortable">
+				<div class="box span12">
+					<div class="box-header" data-original-title>
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>About Us</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<form class="form-horizontal" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+						  <fieldset>
+
+							<div class="control-group">
+							  <label class="control-label" for="date01">Site</label>
+							  <div class="controls">
+								{{ form.site }}<span style="color: #ff0000" >{{ form.site.errors.as_text }}</span>
+							  </div>
+							</div>
+
+							<div class="control-group">
+							  <label class="control-label" for="fileInput">Banner</label>
+							  <div class="controls">
+								{{ form.banner }}<span style="color: #ff0000" >{{ form.banner.errors.as_text }}</span>
+							  </div>
+							</div>
+							<div class="control-group hidden-phone">
+							  <label class="control-label" for="textarea2">Company Overview</label>
+							  <div class="controls">
+                                  {{ form.description }}<span style="color: #ff0000" >{{ form.description.errors.as_text }}</span>
+							  </div>
+							</div>
+                              <div class="control-group hidden-phone">
+							  <label class="control-label" for="textarea2">Client Testimonial</label>
+							  <div class="controls">
+                                  {{ form.testimonial }}<span style="color: #ff0000" >{{ form.testimonial.errors.as_text }}</span>
+							  </div>
+							</div>
+							<div class="form-actions">
+							  <button type="submit" class="btn btn-primary">Save changes</button>
+							  <button type="reset" class="btn">Cancel</button>
+							</div>
+						  </fieldset>
+						</form>
+
+					</div>
+				</div><!--/span-->
+
+			</div><!--/row-->
+
+
+
+
+
+
+	</div><!--/.fluid-container-->
+
+			<!-- end: Content -->
+		</div><!--/#content.span10-->
+		</div>
+{% endblock %}

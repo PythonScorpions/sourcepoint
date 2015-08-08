@@ -28,6 +28,7 @@
 							  <tr>
 								  <th>Plan</th>
 								  <th>Plan Type</th>
+                                  <th>Status</th>
 							  </tr>
 						  </thead>
 						  <tbody>
@@ -39,6 +40,15 @@
                                     <span class="label label-success">Free</span>
                                     {% else %}
                                         <span class="label label-warning">Paid</span>
+                                    {% endif %}
+								</td>
+                            <td class="center">
+                                    {% if plan.active == True %}
+                                    <a href="{% url 'plan-status' plan.id %}" >
+                                        <span class="label label-success" href="">Active</span>
+                                    </a>
+                                    {% else %}
+									<a href="{% url 'plan-status' plan.id %}" ><span class="label label-warning">Deactivated</span></a>
                                     {% endif %}
 								</td>
 								<td class="center">
