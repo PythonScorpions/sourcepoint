@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib import messages
 from paypal.standard.ipn.models import PayPalIPN
 from apps.accounts.models import *
-from apps.dashboard.forms import PlanForm, CategoryForm, TagForm
+from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm
 
 
 class AdminLoginpage(TemplateView):
@@ -268,6 +268,50 @@ def admin_logout(request):
 class PaymentLists(ListView):
     template_name = 'dashboard/paypal-lists.html'
     model = PayPalIPN
+
+class About(TemplateView):
+    template_name = 'dashboard/aboutus.html'
+    form_class = AboutForm
+
+    def get(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        if AboutUs.objects.filter(site=site).exists():
+            about = AboutUs.objects.get(site=site)
+            form = self.form_class(instance=about)
+        else:
+            form = self.form_class
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        if AboutUs.objects.filter(site=site).exists():
+            about = AboutUs.objects.get(site=site)
+            form = self.form_class(request.POST, request.FILES, instance=about)
+            if form.is_valid():
+                form.save()
+            else:
+                print "error", form.errors
+        else:
+            form = self.form_class(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+def plan_status(request, id):
+    template_name = 'dashboard/plan-list.html'
+    plan =  SubscriptionPlan.objects.get(id=id)
+    if plan.active == True:
+        plan.active = False
+        plan.save()
+        return redirect('/dashboard/plan-lists/')
+    elif plan.active == False:
+        plan.active = True
+        plan.save()
+        return redirect('/dashboard/plan-lists/')
+    else:
+        pass
+    return render_to_response(template_name, context_instance=RequestContext(request))
 
 
 

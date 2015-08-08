@@ -51,3 +51,20 @@ class TagForm(forms.ModelForm):
             raise forms.ValidationError("Tag with the name already Exists")
         return tags
 
+
+class AboutForm(forms.ModelForm):
+
+    class Meta:
+        model = AboutUs
+        fields = ['site', 'banner', 'description', 'testimonial']
+
+    def __init__(self, *args, **kwargs):
+
+        super(AboutForm, self).__init__(*args, **kwargs)
+        self.fields['description'].widget.attrs['class'] = 'cleditor'
+        self.fields['testimonial'].widget.attrs['class'] = 'cleditor'
+
+
+
+
+

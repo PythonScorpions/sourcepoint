@@ -25,5 +25,7 @@ urlpatterns = patterns("apps.dashboard.views",
                        url(r'^post-list/$', PostLists.as_view(), name='post-list'),
                        url(r'^user-post-details/(?P<slug>[\w-]+)/$', PostDetail.as_view(), name='user-post-detail'),
                        url(r'admin-logout/$', 'admin_logout', name='admin-logout'),
-                       url('^payment-details/$', PaymentLists.as_view(), name='paypal-lists')
+                       url(r'^payment-details/$', PaymentLists.as_view(), name='paypal-lists'),
+                       url(r'^add-about/$', About.as_view(), name='about-us'),
+                       url(r'^status-plan/(?P<id>\d+)/$', 'plan_status', name='plan-status')
                        )
