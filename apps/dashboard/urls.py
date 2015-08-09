@@ -33,5 +33,5 @@ urlpatterns = patterns("apps.dashboard.views",
                        url(r'^add-team-member/$', TeamMember.as_view(), name='add-member'),
                        url(r'^team-member-detail/(?P<id>\d+)/$', MemberDetail.as_view(), name='member-detail'),
                        url(r'^web-contents/$', WebContent.as_view(), name='web-content'),
-                       url(r'^contact/$', ContactData.as_view(), name='contact')
+                       url(r'^contactus/$', ContactData.as_view(), name='contact-us')
                        )
