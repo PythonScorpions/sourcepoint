@@ -29,7 +29,14 @@ class Loginpage(TemplateView):
 
     template_name = 'accounts/login.html'
 
+    def get(self, request):
+        site = Site.objects.get(pk=1)
+        content = WebSiteContents.objects.get(site=site)
+        return render_to_response(self.template_name, {'content': content}, context_instance=RequestContext(request),)
+
     def post(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        content = WebSiteContents.objects.get(site=site)
         if request.method == "POST":
             # message = ''
             email = request.POST['email']
@@ -43,12 +50,14 @@ class Loginpage(TemplateView):
                     messages.success(request, "Your account is not activated yet, please check your email")
             else:
                 messages.success(request, "Invalid Email or Password")
-        return render_to_response(self.template_name, context_instance=RequestContext(request),)
+        return render_to_response(self.template_name, {'content': content}, context_instance=RequestContext(request),)
 
 
 def register(request):
     template_name = 'accounts/sign-up.html'
     form = RegisterForm()
+    site = Site.objects.get(pk=1)
+    content = WebSiteContents.objects.get(site=site)
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -69,7 +78,7 @@ def register(request):
                     messages.success(request, 'OTP has send to number')
         else:
             print "errors", form.errors
-    return render_to_response(template_name, {'form': form}, context_instance=RequestContext(request),)
+    return render_to_response(template_name, {'form': form, 'content': content}, context_instance=RequestContext(request),)
 
 def mail_sent(request):
     template_name= 'accounts/my-profile.html'
@@ -449,11 +458,17 @@ class About(TemplateView):
     template_name = 'about-us.html'
 
 
-class Contact(TemplateView):
+class ContactUs(TemplateView):
     template_name = 'contact-us.html'
+
+    def get(self, request):
+        site = Site.objects.get(pk=1)
+        contact = Contact.objects.get(site=site)
+        return render_to_response(self.template_name, {'contact': contact}, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
         site = Site.objects.get(pk=1)
+        contact = Contact.objects.get(site=site)
         name = request.POST.get('name')
         email = request.POST.get('email')
         message = request.POST.get('message')
@@ -463,7 +478,7 @@ class Contact(TemplateView):
                     'message': message})
         send_mail('[%s] %s' % (site.name, 'New Contact Request'), t.render(c),
                   settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL], fail_silently=False)
-        return render_to_response(self.template_name, context_instance=RequestContext(request))
+        return render_to_response(self.template_name, {'contact': contact}, context_instance=RequestContext(request))
 
 
 @csrf_exempt

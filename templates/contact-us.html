@@ -1,4 +1,4 @@
-{% extends 'admin_base.html' %}
+{% extends 'base.html' %}
 {% block content %}
     <div class="main">
   <div class="container ">
@@ -9,29 +9,29 @@
                 <div class="col-md-3 col-sm-3 sidebar2">
                   <h2>Contact Details</h2>
                   <address>
-                    <strong>Scalable Application</strong><br>
-                    795 Park ,address loram ipsum<br>
-                    demo address<br>
+                    <strong>{{ contact.address|linebreaks }}</strong><br>
+{#                    795 Park ,address loram ipsum<br>#}
+{#                    demo address<br>#}
 
 <p> <strong>Email</strong><br>
-                    <a href="mailto:info@scalable-app.com">info@scalable-app.com</a><br>
-                    <a href="mailto:arpit.harsola@gmail.com">arpit.harsola@gmail.com</a></p>
+                    <a href="mailto:{{ contact.email1 }}">{{ contact.email1 }}</a><br>
+                    <a href="mailto:{{ contact.email2 }}">{{ contact.email2 }}</a></p>
 <p>                    <strong>Phone</strong><br>
 +91-7878288663 <br>
 </p>
 
 <p>                <strong>Skype ID</strong><br>
-                    <a href="scalableapp">scalableapp</a><br></p>
+                    <a href="scalableapp">{{ contact.skype }}</a><br></p>
 
 <p>
 <strong>Social Links</strong><br>
 
 <ul class="social-icons margin-bottom-40">
-                    <li><a href="#" data-original-title="facebook" class="facebook"></a></li>
-                    <li><a href="#" data-original-title="twitter" class="twitter"></a></li>
-                    <li><a href="#" data-original-title="Goole Plus" class="googleplus"></a></li>
-                    <li><a href="#" data-original-title="linkedin" class="linkedin"></a></li>
-                    <li><a href="#" data-original-title="youtube" class="youtube"></a></li>
+                    <li><a href="{{ contact.fb_link }}" data-original-title="facebook" class="facebook" target="_blank"></a></li>
+                    <li><a href="{{ contact.tw_link }}" data-original-title="twitter" class="twitter" target="_blank"></a></li>
+                    <li><a href="{{ contact.ln_link }}" data-original-title="Goole Plus" class="googleplus" target="_blank"></a></li>
+                    <li><a href="{{ contact.ln_link }}" data-original-title="linkedin" class="linkedin" target="_blank"></a></li>
+                    <li><a href="{{ contact.youtube_link }}" data-original-title="youtube" class="youtube" target="_blank"></a></li>
                   </ul></p>
                   </address>
 
