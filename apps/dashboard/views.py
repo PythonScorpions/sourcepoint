@@ -420,12 +420,12 @@ class ContactData(TemplateView):
             form = self.form_class(request.POST, instance=content)
             if form.is_valid():
                 form.save()
-                return redirect('/dashboard/contact/')
+                return redirect('/dashboard/contactus/')
         else:
             form = self.form_class(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('/dashboard/contact/')
+                return redirect('/dashboard/contactus/')
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
 
