@@ -22,7 +22,7 @@ from apps.accounts.forms import *
 from django.template import RequestContext, Context
 from django.shortcuts import render_to_response, redirect, render
 from django.contrib import messages
-from sourcepoint import settings
+from django.conf import settings
 
 
 class Loginpage(TemplateView):

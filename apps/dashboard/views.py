@@ -1,6 +1,7 @@
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, UpdateView, DetailView, ListView
@@ -13,6 +14,8 @@ from paypal.standard.ipn.models import PayPalIPN
 from apps.accounts.models import *
 from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm, OurTemaForm, WebSiteContentsForm, \
     ContactForm
+from django.template import loader
+from django.conf import settings
 
 
 class AdminLoginpage(TemplateView):
@@ -424,6 +427,105 @@ class ContactData(TemplateView):
                 form.save()
                 return redirect('/dashboard/contact/')
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+class StatusChange(TemplateView):
+    template_name = 'dashboard/status-change.html'
+
+    def get(self, request, *args, **kwargs):
+        request.session['type'] = request.GET.get('type')
+        # if request.GET['type'] == 'user':
+        #     user = User.objects.get(id=kwargs['id'])
+        #     if user.is_active == True:
+        #         user.is_active = False
+        #         user.save()
+        #         return redirect('/dashboard/user-profiles/')
+        #     elif user.is_active == False:
+        #         user.is_active = True
+        #         user.save()
+        #         return redirect('/dashboard/user-profiles/')
+        #     else:
+        #         pass
+        # elif request.GET['type'] == 'post':
+        #     post = Posts.objects.get(id=kwargs['id'])
+        #     if post.publish == True:
+        #         post.publish = False
+        #         post.save()
+        #         return redirect('/dashboard/post-list/')
+        #     elif post.publish == False:
+        #         post.publish = True
+        #         post.save()
+        #         return redirect('/dashboard/post-list/')
+        #     else:
+        #         pass
+        # else:
+        #     pass
+        return render_to_response(self.template_name, context_instance=RequestContext(request))
+
+
+    def post(self, request, *args, **kwargs):
+        print "request", request.session['type']
+        if request.session['type'] == 'user':
+            user = User.objects.get(id=kwargs['id'])
+            if user.is_active == True:
+                user.is_active = False
+                user.save()
+                type = 'disabled'
+                t = loader.get_template('accounts/deactivate')
+                user = UserProfiles.objects.get(user=user)
+                site = Site.objects.get(pk=1)
+                reason = request.POST.get('reason')
+                c = Context({'name': user.user.first_name, 'email': user.user.email, 'site': site.name,
+                             'token': user.token, 'type': type, 'reason': reason})
+                send_mail('[%s] %s' % (site.name, 'Account Disabled'), t.render(c), settings.DEFAULT_FROM_EMAIL,
+                          [user.user.email], fail_silently=False)
+                return redirect('/dashboard/user-profiles/')
+            elif user.is_active == False:
+                user.is_active = True
+                user.save()
+                type = 'enabled'
+                reason = request.POST.get('reason')
+                t = loader.get_template('accounts/deactivate')
+                user = UserProfiles.objects.get(user=user)
+                site = Site.objects.get(pk=1)
+                c = Context({'name': user.user.first_name, 'email': user.user.email, 'site': site.name,
+                             'token': user.token, 'type': type, 'reason': reason})
+                send_mail('[%s] %s' % (site.name, 'Account Enabled'), t.render(c), settings.DEFAULT_FROM_EMAIL,
+                          [user.user.email], fail_silently=False)
+                return redirect('/dashboard/user-profiles/')
+            else:
+                pass
+        elif request.session['type'] == 'post':
+            post = Posts.objects.get(id=kwargs['id'])
+            if post.publish == True:
+                post.publish = False
+                post.save()
+                type = 'deactivated'
+                t = loader.get_template('accounts/post_status')
+                site = Site.objects.get(pk=1)
+                reason = request.POST.get('reason')
+                c = Context({'name': post.user.first_name, 'email': post.user.email, 'site': site.name,
+                             'type': type, 'reason': reason})
+                send_mail('[%s] %s' % (site.name, 'Post disabled'), t.render(c), settings.DEFAULT_FROM_EMAIL,
+                          [post.user.email], fail_silently=False)
+                return redirect('/dashboard/post-list/')
+            elif post.publish == False:
+                post.publish = True
+                post.save()
+                t = loader.get_template('accounts/post_status')
+                type = 'activated'
+                reason = request.POST.get('reason')
+                site = Site.objects.get(pk=1)
+                c = Context({'name': post.user.first_name, 'email': post.user.email, 'site': site.name,
+                             'type': type, 'reason': reason})
+                send_mail('[%s] %s' % (site.name, 'Post Enabled'), t.render(c), settings.DEFAULT_FROM_EMAIL,
+                          [post.user.email], fail_silently=False)
+                return redirect('/dashboard/post-list/')
+            else:
+                pass
+        else:
+            pass
+        return render_to_response(self.template_name, context_instance=RequestContext(request))
 
 
 
