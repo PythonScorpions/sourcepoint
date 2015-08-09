@@ -11,7 +11,8 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib import messages
 from paypal.standard.ipn.models import PayPalIPN
 from apps.accounts.models import *
-from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm, OurTemaForm, WebSiteContentsForm
+from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm, OurTemaForm, WebSiteContentsForm, \
+    ContactForm
 
 
 class AdminLoginpage(TemplateView):
@@ -394,6 +395,36 @@ class WebContent(TemplateView):
                 form.save()
                 return redirect('/dashboard/web-contents/')
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+class ContactData(TemplateView):
+    template_name = 'dashboard/contact.html'
+    form_class = ContactForm
+
+    def get(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        if Contact.objects.filter(site=site).exists():
+            content = Contact.objects.get(site=site)
+            form = self.form_class(instance=content)
+        else:
+            form = self.form_class()
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        site = Site.objects.get(pk=1)
+        if Contact.objects.filter(site=site).exists():
+            content = Contact.objects.get(site=site)
+            form = self.form_class(request.POST, instance=content)
+            if form.is_valid():
+                form.save()
+                return redirect('/dashboard/contact/')
+        else:
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/dashboard/contact/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
 
 
 

@@ -91,6 +91,13 @@ class WebSiteContentsForm(forms.ModelForm):
         self.fields['signup'].widget.attrs['class'] = 'cleditor'
 
 
+class ContactForm(forms.ModelForm):
+
+    class Meta:
+        model = Contact
+        exclude = ['']
+
+
 
 
 
