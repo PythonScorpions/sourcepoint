@@ -39,11 +39,11 @@
 								<td class="center">Member</td>
 								<td class="center">
                                     {% if user.user.is_active == True%}
-                                    <a href="{% url 'deactivate-user' user.user.id %}" >
-                                        <span class="label label-success" data-toggle="modal" data-target="#myModal">Active</span>
+                                    <a href="{% url 'status-change' user.user.id %}?type=user">
+                                        <span class="label label-success" >Active</span>
                                     </a>
                                     {% else %}
-									<a href="{% url 'deactivate-user' user.user.id %}" ><span class="label label-warning">Deactivated</span></a>
+									<a href="{% url 'status-change' user.user.id %}?type=user" ><span class="label label-warning">Deactivated</span></a>
                                     {% endif %}
 								</td>
 								<td class="center">

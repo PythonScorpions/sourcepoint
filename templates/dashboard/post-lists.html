@@ -40,9 +40,9 @@
 								<td class="center">{{ post.category }}</td>
 								<td class="center">
                                     {% if post.publish == True %}
-                                        <a href="{% url 'post-status' post.id %}"> <span class="label label-success">Published</span></a>
+                                        <a href="{% url 'status-change' post.id %}?type=post"> <span class="label label-success">Published</span></a>
                                         {% else %}
-									<a href="{% url 'post-status' post.id %}"> <span class="label label-warning">Unpublished</span></a>
+									<a href="{% url 'status-change' post.id %}?type=post"> <span class="label label-warning">Unpublished</span></a>
                                     {% endif %}
 								</td>
 								<td class="center">

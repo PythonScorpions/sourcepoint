@@ -1,0 +1,8 @@
+Dear {{ name }},
+
+Your Post with email {{ email }} has been {{ type }},
+
+Reason {{ reason }}, Please contact Admin for more Queries
+
+Regards,
+{{ site }}
