@@ -132,3 +132,21 @@ class WebSiteContents(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.site
+
+class Contact(models.Model):
+    site = models.OneToOneField(Site)
+    phone = models.BigIntegerField(('Phone'))
+    email1 = models.EmailField('Email1')
+    email2 = models.EmailField('Email2')
+    address = models.TextField('Address')
+    skype = models.CharField(('Skype'), max_length=150)
+    fb_link = models.CharField(('FB Link'), max_length=150)
+    tw_link = models.CharField(('FB Link'), max_length=150)
+    ln_link = models.CharField(('FB Link'), max_length=150)
+    youtube_link = models.CharField(('FB Link'), max_length=150)
+    googleplus_link = models.CharField(('FB Link'), max_length=150)
+
+
+    def __unicode__(self):
+        return u'%s' % self.site
+
