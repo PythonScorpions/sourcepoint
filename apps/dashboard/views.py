@@ -50,14 +50,20 @@ class HomePage(TemplateView):
         payments = Payment.objects.order_by('date')
         for pay in payments:
             category_lists.append(str(pay.date.strftime('%b')))
+
             if pay.payment_type == '1':
                 paypal_lists.append(int(pay.amount))
             elif pay.payment_type == '0':
                 credit_list.append(int(pay.amount))
             else:
                 pass
+        category = reversed(list(set(category_lists)))
+        list_category = []
+        for c in category:
+            list_category.append(c)
+        print "dgfdgg", list_category
         return render_to_response(self.template_name, {'paypal_lists': paypal_lists, 'credit_list': credit_list,
-                                                       'category_lists': category_lists},
+                                                       'category_lists': list_category},
                                   context_instance=RequestContext(request),)
 
 
