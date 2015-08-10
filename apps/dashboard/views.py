@@ -16,6 +16,7 @@ from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm, Our
     ContactForm
 from django.template import loader
 from django.conf import settings
+from apps.payment.models import Payment
 
 
 class AdminLoginpage(TemplateView):
@@ -523,6 +524,37 @@ class StatusChange(TemplateView):
                 return redirect('/dashboard/post-list/')
             else:
                 pass
+        else:
+            pass
+        return render_to_response(self.template_name, context_instance=RequestContext(request))
+
+
+import csv
+class GenerateReport(TemplateView):
+    template_name = 'dashboard/adminindex.html'
+
+    def get(self, request):
+        if request.GET.get('type') == 'daily':
+            with open('DailyReport.csv', 'w') as csvfile:
+                payments = Payment.objects.filter(date=datetime.date.today())
+                fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
+                doc = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                doc.writeheader()
+                for pay in payments:
+                    doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
+                                  'Amount': pay.amount, 'Date': pay.date})
+            return redirect('/dashboard/home/')
+        elif request.GET.get('type') == 'monthly':
+            payments = Payment.objects.filter(date__month=datetime.datetime.now().month)
+            with open('MonthlyReport.csv', 'w') as csvfile:
+                payments = Payment.objects.filter(date=datetime.date.today())
+                fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
+                doc = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                doc.writeheader()
+                for pay in payments:
+                    doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
+                                  'Amount': pay.amount, 'Date': pay.date})
+            return redirect('/dashboard/home/')
         else:
             pass
         return render_to_response(self.template_name, context_instance=RequestContext(request))
