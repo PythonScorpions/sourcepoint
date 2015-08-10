@@ -23,6 +23,7 @@ class AdminLoginpage(TemplateView):
 
     template_name = 'dashboard/login.html'
 
+
     def post(self, request, *args, **kwargs):
         email = request.POST['email']
         password = request.POST['password']
@@ -41,6 +42,23 @@ class AdminLoginpage(TemplateView):
 class HomePage(TemplateView):
 
     template_name = 'dashboard/adminindex.html'
+
+    def get(self, request):
+        paypal_lists = []
+        credit_list = []
+        category_lists = []
+        payments = Payment.objects.order_by('date')
+        for pay in payments:
+            category_lists.append(str(pay.date.strftime('%b')))
+            if pay.payment_type == '1':
+                paypal_lists.append(int(pay.amount))
+            elif pay.payment_type == '0':
+                credit_list.append(int(pay.amount))
+            else:
+                pass
+        return render_to_response(self.template_name, {'paypal_lists': paypal_lists, 'credit_list': credit_list,
+                                                       'category_lists': category_lists},
+                                  context_instance=RequestContext(request),)
 
 
 class UserLists(TemplateView):
