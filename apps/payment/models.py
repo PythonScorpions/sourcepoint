@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 class Payment(models.Model):
 
     TYPES = (
-        ('0','Credit Card'),
-        ('1','Paypal')
+        ('0', 'Credit Card'),
+        ('1', 'Paypal')
     )
 
     user = models.OneToOneField(User, related_name='user_payment')
