@@ -457,6 +457,23 @@ class ChangePassword(TemplateView):
 class About(TemplateView):
     template_name = 'about-us.html'
 
+    def get_about(self):
+        site = Site.objects.get(pk=1)
+        if AboutUs.objects.filter(site=site).exists():
+            about = AboutUs.objects.get(site=site)
+        else:
+            about = ''
+        return about
+
+
+    def get_context_data(self, **kwargs):
+        context = super(About, self).get_context_data(**kwargs)
+        context['about'] = self.get_about()
+        context['teams'] = OurTema.objects.all()
+        context['testimonials'] = Testimonials.objects.all()
+        return context
+
+
 
 class ContactUs(TemplateView):
     template_name = 'contact-us.html'

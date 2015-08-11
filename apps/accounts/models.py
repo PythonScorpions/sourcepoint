@@ -109,7 +109,6 @@ class AboutUs(models.Model):
     site = models.OneToOneField(Site)
     banner = models.ImageField(upload_to='banners/')
     description = models.TextField(('Company Overview'))
-    testimonial = models.TextField(('Client Testimonial'))
 
     def __unicode__(self):
         return u'%s' % self.site
@@ -120,6 +119,16 @@ class OurTema(models.Model):
     name = models.CharField(('Name'), max_length=150)
     title = models.CharField(('Title'), max_length=150)
     description = models.TextField('Description')
+    testimonial = models.TextField(('Client Testimonial1'))
+
+    def __unicode__(self):
+        return self.name
+
+class Testimonials(models.Model):
+    name = models.CharField('Name', max_length=100)
+    title = models.CharField('Title', max_length=100)
+    avatar = models.ImageField('Avatar', upload_to='banners/')
+    testimonial = models.TextField('Testimonial')
 
     def __unicode__(self):
         return self.name
