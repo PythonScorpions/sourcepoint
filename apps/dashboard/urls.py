@@ -35,5 +35,9 @@ urlpatterns = patterns("apps.dashboard.views",
                        url(r'^web-contents/$', WebContent.as_view(), name='web-content'),
                        url(r'^contactus/$', ContactData.as_view(), name='contact-us'),
                        url(r'^status-change/(?P<id>\d+)/$', StatusChange.as_view(), name='status-change'),
-                       url(r'^generate-report/$', GenerateReport.as_view(), name='generate-report')
+                       url(r'^generate-report/$', GenerateReport.as_view(), name='generate-report'),
+                       url(r'^list-testimonial/$', TestimonialsList.as_view(), name='testimonials'),
+                       url(r'^add-testimonial/$', AddTestimonial.as_view(), name='add-testimonial'),
+                       url(r'^edit-testimonial/(?P<id>\d+)/$', EditTestimonial.as_view(), name='edit-testimonial'),
+                       url(r'^delete-testimonial/(?P<id>\d+)/$', 'delete_testimonial', name='delete-testimonial' )
                        )

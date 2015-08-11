@@ -56,13 +56,12 @@ class AboutForm(forms.ModelForm):
 
     class Meta:
         model = AboutUs
-        fields = ['site', 'banner', 'description', 'testimonial']
+        fields = ['site', 'banner', 'description', ]
 
     def __init__(self, *args, **kwargs):
 
         super(AboutForm, self).__init__(*args, **kwargs)
         self.fields['description'].widget.attrs['class'] = 'cleditor'
-        self.fields['testimonial'].widget.attrs['class'] = 'cleditor'
 
 
 class OurTemaForm(forms.ModelForm):
@@ -75,6 +74,17 @@ class OurTemaForm(forms.ModelForm):
 
         super(OurTemaForm, self).__init__(*args, **kwargs)
         self.fields['description'].widget.attrs['class'] = 'cleditor'
+
+class TestimonialsForm(forms.ModelForm):
+
+    class Meta:
+        model = Testimonials
+        fields = ['name', 'title', 'testimonial', 'avatar']
+
+    def __init__(self, *args, **kwargs):
+
+        super(TestimonialsForm, self).__init__(*args, **kwargs)
+        self.fields['testimonial'].widget.attrs['class'] = 'cleditor'
 
 
 class WebSiteContentsForm(forms.ModelForm):

@@ -13,7 +13,7 @@ from django.contrib import messages
 from paypal.standard.ipn.models import PayPalIPN
 from apps.accounts.models import *
 from apps.dashboard.forms import PlanForm, CategoryForm, TagForm, AboutForm, OurTemaForm, WebSiteContentsForm, \
-    ContactForm
+    ContactForm, TestimonialsForm
 from django.template import loader
 from django.conf import settings
 from apps.payment.models import Payment
@@ -298,6 +298,26 @@ class PaymentLists(ListView):
     template_name = 'dashboard/paypal-lists.html'
     model = PayPalIPN
 
+
+class TestimonialsList(ListView):
+    template_name = 'dashboard/testimonial-list.html'
+    model = Testimonials
+
+class AddTestimonial(TemplateView):
+    template_name = 'dashboard/add-testimonial.html'
+    form_class = TestimonialsForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/list-testimonial/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
 class About(TemplateView):
     template_name = 'dashboard/aboutus.html'
     form_class = AboutForm
@@ -325,6 +345,33 @@ class About(TemplateView):
             if form.is_valid():
                 form.save()
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+class EditTestimonial(TemplateView):
+    template_name = 'dashboard/edit-testimonial.html'
+    form_class = TestimonialsForm
+
+    def get(self, request, *args, **kwargs):
+        testimonial = Testimonials.objects.get(id=kwargs['id'])
+        form = self.form_class(instance=testimonial)
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+    def post(self, request, *args, **kwargs):
+        testimonial = Testimonials.objects.get(id=kwargs['id'])
+        form = self.form_class(request.POST, request.FILES, instance=testimonial)
+        if form.is_valid():
+            form.save()
+            return redirect('/dashboard/list-testimonial/')
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
+
+
+def delete_testimonial(request, id):
+    template_name = 'dashboard/testimonial-list.html'
+    if Testimonials.objects.filter(id=id).exists():
+        Testimonials.objects.filter(id=id).delete()
+        return redirect('/dashboard/testimonial-lists/')
+    return render_to_response(template_name, context_instance=RequestContext(request))
+
 
 
 def plan_status(request, id):
