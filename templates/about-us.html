@@ -30,7 +30,7 @@
                     <!-- Carousel items -->
                     <div class="carousel-inner">
                       {% for testimonial in testimonials %}
-                        <div class="{% cycle 'active' 'item' 'item' 'item'%}">
+                        <div class="{% cycle 'active item' 'item' 'item' 'item'%}">
                         <blockquote><p>{{ testimonial.testimonial|safe }}</p></blockquote>
                         <div class="carousel-info">
                           <img class="pull-left" src="{{ testimonial.avatar.url }}" alt="">
