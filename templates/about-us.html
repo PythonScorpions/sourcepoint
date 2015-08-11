@@ -12,11 +12,9 @@
               <div class="row margin-bottom-30">
                 <!-- BEGIN INFO BLOCK -->
                 <div class="col-md-12">
-<p> <img src="/static/img/about-img.jpg" class="img-responsive" alt=""></p>
+<p> <img src="{{ about.banner.url }}" class="img-responsive" alt=""></p>
                   <h2 class="">Company Overview</h2>
-                  <p>Lorem Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Lorem Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Lorem Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content</p>
-                  <p>Lorem Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Lorem Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Lorem Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Lorem Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content Ipsum dolor site demo content</p>
-                  <!-- BEGIN LISTS -->
+                  <p>{{ about.description|safe }}</p>
 
                   <!-- END LISTS -->
                 </div>
@@ -31,36 +29,19 @@
                   <div id="myCarousel1" class="carousel slide">
                     <!-- Carousel items -->
                     <div class="carousel-inner">
-                      <div class="active item">
-                        <blockquote><p>Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content</p></blockquote>
+                      {% for testimonial in testimonials %}
+                        <div class="{% cycle 'active' 'item' 'item' 'item'%}">
+                        <blockquote><p>{{ testimonial.testimonial|safe }}</p></blockquote>
                         <div class="carousel-info">
-                          <img class="pull-left" src="/static/img/client-img.jpg" alt="">
+                          <img class="pull-left" src="{{ testimonial.avatar.url }}" alt="">
                           <div class="pull-left">
-                            <span class="testimonials-name">Arpit Harsola</span>
-                            <span class="testimonials-post">Director</span>
+                            <span class="testimonials-name">{{ testimonial.name }}</span>
+                            <span class="testimonials-post">{{ testimonial.title }}</span>
                           </div>
                         </div>
                       </div>
-                      <div class="item">
-                         <blockquote><p>Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content</p></blockquote>
-                        <div class="carousel-info">
-                          <img class="pull-left" src="/static/img/client-img.jpg" alt="">
-                          <div class="pull-left">
-                            <span class="testimonials-name">Arpit Harsola</span>
-                            <span class="testimonials-post">Director</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="item">
-                         <blockquote><p>Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content</p></blockquote>
-                        <div class="carousel-info">
-                          <img class="pull-left" src="/static/img/client-img.jpg" alt="">
-                          <div class="pull-left">
-                            <span class="testimonials-name">Arpit Harsola</span>
-                            <span class="testimonials-post">Director</span>
-                          </div>
-                        </div>
-                      </div>
+                    {% endfor %}
+
                     </div>
                     <!-- Carousel nav -->
                     <a class="left-btn" href="#myCarousel1" data-slide="prev"></a>
@@ -77,50 +58,19 @@
                                 <h2>Our Team</h2>
 
                 <ul class="list-unstyled">
+                    {% for team in teams %}
                   <li class="col-md-3">
                     <div class="thumbnail">
-                      <img alt="" src="/static/img/team-img.jpg">
+                      <img alt="" src="{{ team.avatar.url }}">
                       <h3>
-                        <strong>Arpit Harsola</strong>
-                        <small>Chief Executive Officer</small>
+                        <strong>{{ team.name }}</strong>
+                        <small>{{ team.title }}</small>
                       </h3>
-                      <p>Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor.</p>
+                      <p>{{ team.description }}</p>
 
                     </div>
                   </li>
-                  <li class="col-md-3">
-                    <div class="thumbnail">
-                      <img alt="" src="/static/img/team-img.jpg">
-                      <h3>
-                        <strong>Arpit Harsola</strong>
-                        <small>Chief Executive Officer</small>
-                      </h3>
-                      <p>Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor.</p>
-
-                    </div>
-                  </li>
-                  <li class="col-md-3">
-                    <div class="thumbnail">
-                      <img alt="" src="/static/img/team-img.jpg">
-                      <h3>
-                        <strong>Arpit Harsola</strong>
-                        <small>Chief Executive Officer</small>
-                      </h3>
-                      <p>Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor.</p>
-
-                    </div>
-                  </li>
-                  <li class="col-md-3">
-                    <div class="thumbnail">
-                      <img alt="" src="/static/img/team-img.jpg">
-                      <h3>
-                        <strong>Arpit Harsola</strong>
-                        <small>Chief Executive Officer</small>
-                      </h3>
-                      <p>Lorem ipsum dolor site demo content Lorem ipsum dolor site demo content Lorem ipsum dolor.</p>
-
-                    </div>
-                  </li>
+                    {% endfor %}
                 </ul>
               </div>
 
