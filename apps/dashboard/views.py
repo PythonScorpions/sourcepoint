@@ -1,9 +1,11 @@
-
+import os
+import django
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
+from django.utils.encoding import smart_str
 from django.views.generic import TemplateView, UpdateView, DetailView, ListView
 from django.views.generic import View
 import json
@@ -39,6 +41,8 @@ class AdminLoginpage(TemplateView):
         return render_to_response(self.template_name, context_instance=RequestContext(request),)
 
 
+from django.core.files import File
+
 class HomePage(TemplateView):
 
     template_name = 'dashboard/adminindex.html'
@@ -61,9 +65,35 @@ class HomePage(TemplateView):
         list_category = []
         for c in category:
             list_category.append(c)
-        print "dgfdgg", list_category
+        with open(os.path.join(settings.BASE_DIR + '/media/files/DailyReport.csv'), 'w') as csvfile:
+            print "csvfile", csvfile
+            payments = Payment.objects.filter(date=datetime.date.today())
+            fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
+            doc = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            doc.writeheader()
+            for pay in payments:
+                doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
+                              'Amount': pay.amount, 'Date': pay.date})
+            site = Site.objects.get(pk=1)
+            report = Reports.objects.get(site=site)
+            file = open(settings.BASE_DIR + '/DailyReport.csv', "rb")
+            daily_report = File(file)
+            report.daily_report.save("daily.csv", daily_report, save=True)
+
+        payments = Payment.objects.filter(date__month=datetime.datetime.now().month)
+        with open(os.path.join(settings.BASE_DIR + '/media/files/MonthlyReport.csv'), 'w') as csvfile:
+            payments = Payment.objects.filter(date=datetime.date.today())
+            fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
+            doc = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            doc.writeheader()
+            for pay in payments:
+                doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
+                              'Amount': pay.amount, 'Date': pay.date})
+            file = open(settings.BASE_DIR + '/MonthlyReport.csv', "rb")
+            monthly_report = File(file)
+            report.monthly_report.save("monthly.csv", monthly_report, save=True)
         return render_to_response(self.template_name, {'paypal_lists': paypal_lists, 'credit_list': credit_list,
-                                                       'category_lists': list_category},
+                                                       'category_lists': list_category, 'report': report},
                                   context_instance=RequestContext(request),)
 
 
@@ -614,6 +644,7 @@ class GenerateReport(TemplateView):
                 for pay in payments:
                     doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
                                   'Amount': pay.amount, 'Date': pay.date})
+                print "docccccccccccccc", doc
             return redirect('/dashboard/home/')
         elif request.GET.get('type') == 'monthly':
             payments = Payment.objects.filter(date__month=datetime.datetime.now().month)
@@ -625,7 +656,15 @@ class GenerateReport(TemplateView):
                 for pay in payments:
                     doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
                                   'Amount': pay.amount, 'Date': pay.date})
-            return redirect('/dashboard/home/')
+                print settings.BASE_DIR
+                # return redirect(settings.BASE_DIR + 'MonthlyReport.csv')
+                data = open(os.path.join(settings.BASE_DIR + '/MonthlyReport.csv'),'r').read()
+                print settings.BASE_DIR + '/MonthlyReport.csv'
+                resp = django.http.HttpResponse(data, content_type='application/x-download')
+                resp['Content-Disposition'] = 'attachment;filename=table.csv'
+                return resp
+                # return render_to_response(self.template_name, {'url': settings.BASE_DIR + 'MonthlyReport.csv'},
+                #                           context_instance=RequestContext(request))
         else:
             pass
         return render_to_response(self.template_name, context_instance=RequestContext(request))
