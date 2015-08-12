@@ -76,7 +76,7 @@ class HomePage(TemplateView):
                               'Amount': pay.amount, 'Date': pay.date})
             site = Site.objects.get(pk=1)
             report = Reports.objects.get(site=site)
-            file = open(settings.BASE_DIR + '/DailyReport.csv', "rb")
+            file = open(os.path.join(settings.BASE_DIR + '/media/files/DailyReport.csv'), "rb")
             daily_report = File(file)
             report.daily_report.save("daily.csv", daily_report, save=True)
 
@@ -89,7 +89,7 @@ class HomePage(TemplateView):
             for pay in payments:
                 doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
                               'Amount': pay.amount, 'Date': pay.date})
-            file = open(settings.BASE_DIR + '/MonthlyReport.csv', "rb")
+            file = open(os.path.join(settings.BASE_DIR + '/media/files/MonthlyReport.csv'), "rb")
             monthly_report = File(file)
             report.monthly_report.save("monthly.csv", monthly_report, save=True)
         return render_to_response(self.template_name, {'paypal_lists': paypal_lists, 'credit_list': credit_list,
