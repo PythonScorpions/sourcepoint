@@ -23,6 +23,7 @@ from django.template import RequestContext, Context
 from django.shortcuts import render_to_response, redirect, render
 from django.contrib import messages
 from django.conf import settings
+from apps.payment.models import Payment
 
 
 class Loginpage(TemplateView):
@@ -504,19 +505,27 @@ def checkout(request):
     template_name = 'accounts/thank-you.html'
     site = Site.objects.get(pk=1)
     plan = UserSubscriptions.objects.get(user=request.user)
+    payment = Payment()
+    payment.user = request.user
+    payment.payment_type = "1"
+    payment.amount = plan.plan.price
+    payment.plan = plan.plan.title
+    payment.date = datetime.date.today()
+    payment.save()
     paypal_dict = {
         "business": settings.PAYPAL_RECEIVER_EMAIL,
         "amount": plan.plan.price,
         "item_name": plan.plan.title,
         "invoice": int(randint(100,99999)),
         "notify_url": "https://%s"%(site.name) + reverse('custom_ipn'),
-        "return_url": "http://%s/accounts/myplan/"%(site.name),
+        "return_url": "http://192.168.43.148:8000/accounts/myplan/",
         "cancel_return": "http://%s"%(site.name) ,
 
     }
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
     context = {"form": form}
+
     # form1 = CreditCardForm()
     # context = {"form": form,"course":course,"form1":form1,'name':name,'discount':discount,'message':message}
     return render(request, template_name, context)
@@ -622,6 +631,13 @@ class CardPayment(TemplateView):
                              verification_value=cvv)
             resp = stripe.purchase(int(amount), credit_card)
             print "resposne", resp['status']
+            payment = Payment()
+            payment.user = request.user
+            payment.payment_type = "0"
+            payment.amount = amount
+            payment.plan = plan.plan.title
+            payment.date = datetime.date.today()
+            payment.save()
             return redirect('/accounts/update-profile/')
 
         else:
