@@ -66,6 +66,19 @@ class UserSubscriptions(models.Model):
         return u'%s'%(self.user)
 
 
+class TermsandCondition(models.Model):
+    site = models.OneToOneField(Site)
+    description = models.TextField('Description1')
+    description2 = models.TextField('Description2')
+
+    def __unicode__(self):
+        return u'%s' % self.site
+
+class Reports(models.Model):
+    site = models.OneToOneField(Site)
+    daily_report = models.FileField(upload_to='files/', null=True, blank=True)
+    monthly_report = models.FileField(upload_to='files/', null=True, blank=True)
+
 class IpTracker(models.Model):
     ip = models.IPAddressField()
     user = models.ForeignKey(User, related_name='user_track')
