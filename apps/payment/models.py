@@ -8,12 +8,12 @@ class Payment(models.Model):
         ('1', 'Paypal')
     )
 
-    user = models.OneToOneField(User, related_name='user_payment')
+    user = models.ForeignKey(User, related_name='user_payment')
     payment_type = models.CharField('Payment Type', choices=TYPES, max_length=150, null=True, blank=True)
     plan = models.CharField('Plans', max_length=150)
     amount = models.IntegerField('Amount Payed')
     date = models.DateField('Date')
-    time = models.TimeField('Time')
+    time = models.TimeField('Time', auto_now_add=True)
 
     def __unicode__(self):
         return u'%s' % self.user
