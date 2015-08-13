@@ -65,33 +65,40 @@ class HomePage(TemplateView):
         list_category = []
         for c in category:
             list_category.append(c)
+        site = Site.objects.get(pk=1)
+        report = Reports.objects.get(site=site)
         with open(os.path.join(settings.BASE_DIR + '/media/files/DailyReport.csv'), 'w') as csvfile:
-            print "csvfile", csvfile
-            payments = Payment.objects.filter(date=datetime.date.today())
-            fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
-            doc = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            doc.writeheader()
-            for pay in payments:
-                doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
-                              'Amount': pay.amount, 'Date': pay.date})
-            site = Site.objects.get(pk=1)
-            report = Reports.objects.get(site=site)
-            file = open(os.path.join(settings.BASE_DIR + '/media/files/DailyReport.csv'), "rb")
-            daily_report = File(file)
-            report.daily_report.save("daily.csv", daily_report, save=True)
 
-        payments = Payment.objects.filter(date__month=datetime.datetime.now().month)
-        with open(os.path.join(settings.BASE_DIR + '/media/files/MonthlyReport.csv'), 'w') as csvfile:
-            payments = Payment.objects.filter(date=datetime.date.today())
-            fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
-            doc = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            doc.writeheader()
-            for pay in payments:
-                doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
-                              'Amount': pay.amount, 'Date': pay.date})
-            file = open(os.path.join(settings.BASE_DIR + '/media/files/MonthlyReport.csv'), "rb")
-            monthly_report = File(file)
-            report.monthly_report.save("monthly.csv", monthly_report, save=True)
+            file_report = open('DailyReport.csv', "rb")
+            daily_report = File(file_report)
+            report.daily_report = daily_report
+            report.save()
+            with open(os.path.join(settings.BASE_DIR + report.daily_report.url), 'w') as xlfile:
+                payments = Payment.objects.filter(date=datetime.date.today())
+                print "dailyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", payments
+                fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
+                doc = csv.DictWriter(xlfile, fieldnames=fieldnames)
+                doc.writeheader()
+                for pay in payments:
+                    doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
+                                  'Amount': pay.amount, 'Date': pay.date})
+
+
+
+        with open(os.path.join(settings.BASE_DIR + '/media/files/MonthlyReport.csv'), 'w') as csvfile1:
+            file_report1 = open('MonthlyReport.csv', "rb")
+            monthly_report = File(file_report1)
+            report.monthly_report = monthly_report
+            report.save()
+            with open(os.path.join(settings.BASE_DIR + report.daily_report.url), 'w') as xlfile1:
+                payment_monthly = Payment.objects.filter(date__month=datetime.datetime.now().month)
+                print "monthlyyyyyyyyyyyyyyyyyy", payment_monthly
+                fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
+                doc = csv.DictWriter(xlfile1, fieldnames=fieldnames)
+                doc.writeheader()
+                for pay in payment_monthly:
+                    doc.writerow({'User': pay.user, 'Plan': pay.plan, "Payment Type": pay.get_payment_type_display(),
+                                  'Amount': pay.amount, 'Date': pay.date})
         return render_to_response(self.template_name, {'paypal_lists': paypal_lists, 'credit_list': credit_list,
                                                        'category_lists': list_category, 'report': report},
                                   context_instance=RequestContext(request),)
