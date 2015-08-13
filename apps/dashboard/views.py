@@ -61,7 +61,7 @@ class HomePage(TemplateView):
                 credit_list.append(int(pay.amount))
             else:
                 pass
-        category = reversed(list(set(category_lists)))
+        category = category_lists
         list_category = []
         for c in category:
             list_category.append(c)
@@ -76,7 +76,6 @@ class HomePage(TemplateView):
             report.save()
             with open(os.path.join(settings.BASE_DIR + report.daily_report.url), 'w') as xlfile:
                 payments = Payment.objects.filter(date=datetime.date.today())
-                print "dailyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", payments
                 fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
                 doc = csv.DictWriter(xlfile, fieldnames=fieldnames)
                 doc.writeheader()
@@ -91,7 +90,6 @@ class HomePage(TemplateView):
             report.save()
             with open(os.path.join(settings.BASE_DIR + report.monthly_report.url), 'w') as xlfile1:
                 payment_monthly = Payment.objects.filter(date__month=datetime.datetime.now().month)
-                print "monthlyyyyyyyyyyyyyyyyyy", payment_monthly
                 fieldnames = ["User", "Plan", "Payment Type", "Amount", "Date"]
                 doc = csv.DictWriter(xlfile1, fieldnames=fieldnames)
                 doc.writeheader()
