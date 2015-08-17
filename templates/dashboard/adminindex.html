@@ -243,17 +243,19 @@
             text: 'Source: sourcecodepoint.com'
         },
         xAxis: {
-            categories: {{ category_lists|safe }}
+            categories:['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
         yAxis: {
             title: {
-                text: 'Days'
+                text: 'Amount'
             },
             labels: {
                 formatter: function () {
-                    return this.value ;
+                    return (this.value) ;
                 }
-            }
+            },
+            min:0
         },
         tooltip: {
             crosshairs: true,
@@ -269,25 +271,13 @@
             }
         },
         series: [{
-            name: 'Paypal',
+            name: 'Amount',
             marker: {
                 symbol: 'square'
             },
             data: {{ paypal_lists|safe }}
-                    //[7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, {
-                //y: 26.5
-                //marker: {
-                //    symbol: 'url(http://www.highcharts.com/demo/gfx/sun.png)'
-                //}
-            //}, 23.3, 18.3, 13.9, 9.6]6
 
-        }, {
-            name: 'CreditCard',
-            marker: {
-                symbol: 'diamond'
-            },
-            data: {{ credit_list|safe }}
-        }]
+        }, ]
     });
 });
     </script>
