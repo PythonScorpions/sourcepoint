@@ -48,23 +48,101 @@ class HomePage(TemplateView):
     template_name = 'dashboard/adminindex.html'
 
     def get(self, request):
-        paypal_lists = []
-        credit_list = []
-        category_lists = []
+        amount_list = ['', '', '', '', '', '', '', '', '', '', '' , '']
+        jan = []
+        feb = []
+        mar = []
+        april = []
+        may = []
+        june = []
+        july = []
+        aug = []
+        sept = []
+        oct = []
+        nov = []
+        dec = []
+        jan_total = 0
+        feb_total = 0
+        mar_total = 0
+        april_total = 0
+        may_total = 0
+        june_total = 0
+        july_total = 0
+        aug_total = 0
+        sept_total = 0
+        oct_total = 0
+        nov_total = 0
+        dec_total = 0
         payments = Payment.objects.order_by('date')
         for pay in payments:
-            category_lists.append(str(pay.date.strftime('%b')))
 
-            if pay.payment_type == '1':
-                paypal_lists.append(int(pay.amount))
-            elif pay.payment_type == '0':
-                credit_list.append(int(pay.amount))
-            else:
-                pass
-        category = category_lists
-        list_category = []
-        for c in category:
-            list_category.append(c)
+
+
+            print "month", pay.date.strftime('%b')
+            if str(pay.date.strftime('%b')) == 'Jan':
+                jan.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Feb':
+                feb.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Mar':
+                print "marrrrrrrrrrrrrrrrrrr", mar
+                mar.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Apr':
+                april.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'May':
+                may.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Jun':
+                june.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Jul':
+                july.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Aug':
+                aug.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Sep':
+                sept.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Oct':
+                oct.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Nov':
+                nov.append(int(pay.amount))
+
+            if str(pay.date.strftime('%b')) == 'Dec':
+                dec.append(int(pay.amount))
+
+        jan_total = sum(jan)
+        feb_total = sum(feb)
+        mar_total = sum(mar)
+        april_total = sum(april)
+        may_total = sum(may)
+        june_total = sum(june)
+        july_total = sum(july)
+        aug_total = sum(aug)
+        sept_total = sum(sept)
+        oct_total = sum(oct)
+        nov_total = sum(nov)
+        dec_total = sum(dec)
+        amount_list[0] = jan_total
+        amount_list[1] = feb_total
+        amount_list[2] = mar_total
+        amount_list[3] = april_total
+        amount_list[4] = may_total
+        amount_list[5] = june_total
+        amount_list[6] = july_total
+        amount_list[7] = aug_total
+        amount_list[8] = sept_total
+        amount_list[9] = oct_total
+        amount_list[10] = nov_total
+        amount_list[11] = dec_total
+
+
+
         site = Site.objects.get(pk=1)
         report = Reports.objects.get(site=site)
 
@@ -97,8 +175,7 @@ class HomePage(TemplateView):
                     doc.writerow({'User': pay2.user, 'Plan': pay2.plan, "Payment Type": pay2.get_payment_type_display(),
                                   'Amount': pay2.amount, 'Date': pay2.date})
 
-        return render_to_response(self.template_name, {'paypal_lists': paypal_lists, 'credit_list': credit_list,
-                                                       'category_lists': list_category, 'report': report},
+        return render_to_response(self.template_name, {'paypal_lists': amount_list, 'report': report},
                                   context_instance=RequestContext(request),)
 
 class MonthlyReport(TemplateView):
