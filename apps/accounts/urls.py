@@ -24,4 +24,5 @@ urlpatterns = patterns("apps.accounts.views",
                        url(r'^payment/$', 'checkout', name='payment'),
                        url(r'^card-pay/$', CardPayment.as_view(), name='card-pay'),
                        url(r'^custom_ipn/', 'custom_ipn', name = 'custom_ipn'),
+                       url(r'^citrus-pay/$', CitrusPay.as_view(), name='citrus-pay')
                        )

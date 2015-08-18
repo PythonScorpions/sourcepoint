@@ -645,5 +645,34 @@ class CardPayment(TemplateView):
         return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
 
+from hashlib import sha1
+import hashlib
+import hmac
+import binascii
+
+class CitrusPay(TemplateView):
+    template_name = 'accounts/citrus-pay.html'
+
+    def get(self, request):
+        vanity_url = 'https://sandbox.citruspay.com/s4pfffj6gg'
+        access_key = settings.ACCESS_KEY
+        print "access_keyyyyyyyyyyyyyyyyyyyyy", access_key
+        currency = "INR"
+        amount = 10.00
+        order_id = 12345
+        data = 's4pfffj6gg' + str(10.00) + str(12345) + currency
+        data1 = access_key + data
+        raw = "BASE_STRING"
+        # raw_data = hashlib.pbkdf2_hmac('sha256', b'password', b'salt', 100000)
+        # binascii.hexlify(raw_data)
+        hashed = hmac.new(access_key, data, sha1)
+        password = hashed.digest().encode("base64").rstrip('\n')
+        print "passworddddddddddddddddddddddddddd", password
+        password1 = sha1(data1).hexdigest()
+        print "11111111111111111111111111111111", password1
+        return render_to_response(self.template_name, {'amount': amount, 'currency': currency, 'order_id': order_id,
+                                  'password': password1}, context_instance=RequestContext(request))
+
+
 
 
