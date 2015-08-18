@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form align="center" method="post" action="https://sandbox.citruspay.com/s4pfffj6gg">
+             <input type="hidden" id="merchantTxnId" name="merchantTxnId" value="{{ order_id }}" />
+             <input type="hidden" id="orderAmount" name="orderAmount" value="{{ amount }}" />
+             <input type="hidden" id="currency" name="currency" value="{{ currency }}" />
+             <input type="hidden" name="returnUrl" value="http://192.168.43.148:8000/" />
+             <input type="hidden" id="secSignature" name="secSignature" value="{{ password }}" />
+             <input type="Submit" value="Pay Now"/>
+         </form>
+{% endblock %}
