@@ -12,7 +12,7 @@ from apps.posts.forms import PostForm, PostPreviewForm
 from apps.posts.models import *
 import json
 from django.contrib.auth.decorators import login_required
-from sourcepoint import settings
+from django.conf import settings
 
 
 class Homepage(TemplateView):
