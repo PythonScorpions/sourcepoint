@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
+     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,8 +42,12 @@ INSTALLED_APPS = (
     'apps.accounts',
     'apps.posts',
     'apps.payment',
-    'pygraphviz',
-    'django_extensions'
+    'django_extensions',
+    'endless_pagination',
+    'paypal.standard.ipn',
+    'billing',
+    'stripe',
+    'braintree'
 )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -104,10 +108,10 @@ SITE_ID=1
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sourcecodepoint$source_point',
-        'USER': 'sourcecodepoint',                      # Not used with sqlite3.
+        'NAME': 'source_point',
+        'USER': 'root',                      # Not used with sqlite3.
         'PASSWORD': 'root',                  # Not used with sqlite3.
-        'HOST': 'mysql.server',                      # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',
     }
 }
@@ -139,9 +143,36 @@ STATIC_ROOT = 'os.path.join(SUPER_DIR, "static")'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),'static')
 
 EMAIL_HOST          = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'vishnuarj1234'
-EMAIL_HOST_USER     = 'vishnucherumadathil@gmail.com'
+EMAIL_HOST_PASSWORD = 'Pawanwithsuits99@@'
+EMAIL_HOST_USER     = 'scorpionspython@gmail.com'
 EMAIL_PORT          = 587
 EMAIL_USE_TLS       = True
 ADMIN_EMAIL='vishnucherumadathil@gmail.com'
 DEFAULT_FROM_EMAIL  = 'vishnucherumadathil@gmail.com'
+
+PAYPAL_RECEIVER_EMAIL = 'scorpionspython-facilitator@gmail.com'
+PAYPAL_TEST = True
+PAYPAL_USERNAME = 'scorpionspython-facilitator_api1.gmail.com'
+PAYPAL_PASSWORD = '76JWEXXYWHDE4CMP'
+PAYPAL_SIGNATURE = 'AJoVQN6NdjMC-JiaepQpRKpKYOY8A9hx5wr.r1PsWX7gaCT6rhZtDzLF'
+API_VERSION = '60.0'
+PAYPAL_CURRENCY = 'USD'
+
+MERCHANT_TEST_MODE = True # Toggle for live
+MERCHANT_SETTINGS = {
+    "stripe": {
+        "API_KEY": "sk_test_ydnfGMehn94SxNbBc3XuMkgm",
+        "PUBLISHABLE_KEY": "pk_test_8K2xIcRf7Z6FCKxzhJsOA1UC", # Used for stripe integration
+    },
+    "braintree_payments": {
+        "MERCHANT_ACCOUNT_ID": "btpm5bjmw2c8h4gs",
+        "PUBLIC_KEY": "fz63869ym8pf7q5j",
+        "PRIVATE_KEY": "55cdaee9c6ab108b0297f7c37afdf3dd"
+    }
+}
+
+ACCESS_KEY = 'UUJ7O9IEM6UJHJNWBEOT'
+
+SECRET_KEY = '2be5276db57980e25efc9f36c473e6b3f16a6dd2'
+
+

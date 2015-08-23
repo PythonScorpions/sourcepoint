@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from billing import get_integration
 
 stripe_obj = get_integration("stripe",)
+braintree = get_integration("braintree_payments")
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'dashboard/',include('apps.dashboard.urls')),
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
     url(r'^stripe/', include(stripe_obj.urls)),
+    url(r'^braintree/', include(braintree.urls)),
 ]
 urlpatterns += patterns('',
         (r'^static/(.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT,'show_indexes': False}),
