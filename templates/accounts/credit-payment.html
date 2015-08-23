@@ -31,6 +31,21 @@
                   <form class="form-horizontal form-without-legend" role="form" method="post" action=".">
                       {% csrf_token %}
                     <input type="hidden" name="amount" value="10">
+                      <div class="form-group margin-top-35">
+                      <label  class="col-lg-4 control-label">First Name <span class="require">*</span></label>
+                      <div class="col-lg-6">
+{#                        <input class="form-control" placeholder="Enter card no" type="text">#}
+                          {{ form.first_name }}<span style="color: red">{{ form.first_name.errors.as_text }}</span>
+                      </div>
+                    </div>
+                      <div class="form-group margin-top-35">
+                      <label  class="col-lg-4 control-label">Last Name <span class="require"></span></label>
+                      <div class="col-lg-6">
+{#                        <input class="form-control" placeholder="Enter card no" type="text">#}
+                          {{ form.last_name }}<span style="color: red">{{ form.last_name.errors.as_text }}</span>
+                      </div>
+                    </div>
+
                     <div class="form-group margin-top-35">
                       <label  class="col-lg-4 control-label">Enter Card no <span class="require">*</span></label>
                       <div class="col-lg-6">
