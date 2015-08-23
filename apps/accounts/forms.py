@@ -77,13 +77,13 @@ class ProfileUpdateForm(forms.ModelForm):
         self.fields['country'].widget.attrs['class'] = 'form-control'
 
     def save(self,**kwargs):
-       proform = super(ProfileUpdateForm, self).save(commit = False, **kwargs)
-       user = User.objects.get(email=self.cleaned_data.get("email",False))
-       user.first_name = self.cleaned_data.get("first_name",False)
-       user.last_name = self.cleaned_data.get("last_name",False)
-       user.username = self.cleaned_data.get("email",False)
-       user.email = self.cleaned_data.get("email",False)
-       password = self.cleaned_data.get("password",False)
+       proform = super(ProfileUpdateForm, self).save(commit=False, **kwargs)
+       user = User.objects.get(email=self.cleaned_data.get("email", False))
+       user.first_name = self.cleaned_data.get("first_name", False)
+       user.last_name = self.cleaned_data.get("last_name", False)
+       user.username = self.cleaned_data.get("email", False)
+       user.email = self.cleaned_data.get("email", False)
+       password = self.cleaned_data.get("password", False)
        user.is_active = True
        user.save()
        proform.user = user
@@ -91,10 +91,14 @@ class ProfileUpdateForm(forms.ModelForm):
        return proform
 
 class StripeExtendededForm(StripeForm):
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
 
         super(StripeExtendededForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control'
         self.fields['credit_card_number'].widget.attrs['class'] = 'form-control'
         self.fields['credit_card_expiration_month'].widget.attrs['class'] = 'form-control'
         self.fields['credit_card_expiration_year'].widget.attrs['class'] = 'form-control'
