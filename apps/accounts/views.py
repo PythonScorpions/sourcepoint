@@ -622,14 +622,18 @@ class CardPayment(TemplateView):
         month = request.POST.get('credit_card_expiration_month')
         year = request.POST.get('credit_card_expiration_year')
         cvv = request.POST.get('credit_card_cvc')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         plan = UserSubscriptions.objects.get(user=request.user)
         amount = int(plan.plan.price)
         if form.is_valid():
-            stripe = get_gateway("stripe")
-            credit_card = CreditCard(first_name="Test", last_name="User", month=month, year=year,
+            # stripe = get_gateway("stripe")
+            braintree = get_gateway("braintree_payments")
+            credit_card = CreditCard(first_name=first_name, last_name=last_name, month=month, year=year,
                              number=card,
                              verification_value=cvv)
-            resp = stripe.purchase(int(amount), credit_card)
+            # resp = stripe.purchase(int(amount), credit_card)
+            resp = braintree.purchase(10, credit_card)
             print "resposne", resp['status']
             payment = Payment()
             payment.user = request.user
@@ -659,8 +663,8 @@ class CitrusPay(TemplateView):
         print "access_keyyyyyyyyyyyyyyyyyyyyy", access_key
         currency = "INR"
         amount = 10.00
-        order_id = 12345
-        data = 's4pfffj6gg' + str(10.00) + str(12345) + currency
+        order_id = int(randint(100,99999))
+        data = 's4pfffj6gg' + str(10.00) + str(int(randint(100, 99999))) + currency
         data1 = access_key + data
         raw = "BASE_STRING"
         # raw_data = hashlib.pbkdf2_hmac('sha256', b'password', b'salt', 100000)
@@ -669,9 +673,9 @@ class CitrusPay(TemplateView):
         password = hashed.digest().encode("base64").rstrip('\n')
         print "passworddddddddddddddddddddddddddd", password
         password1 = sha1(data1).hexdigest()
-        print "11111111111111111111111111111111", password1
+        print "11111111111111111111111111111111", hashlib.pbkdf2_hmac('sha256', data, access_key, 100000)
         return render_to_response(self.template_name, {'amount': amount, 'currency': currency, 'order_id': order_id,
-                                  'password': password1}, context_instance=RequestContext(request))
+                                  'password': password}, context_instance=RequestContext(request))
 
 
 
