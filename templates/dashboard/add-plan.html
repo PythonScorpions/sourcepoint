@@ -77,7 +77,12 @@
 									{{ form.free_plan }}								  </label>
 								</div>
 							  </div>
-
+                            <div class="control-group">
+								<label class="control-label" for="focusedInput">Price</label>
+								<div class="controls">
+								  {{ form.price }}<span style="color: red">{{ form.price.errors.as_text }}</span>
+								</div>
+							  </div>
 
 
 							  <div class="form-actions">
