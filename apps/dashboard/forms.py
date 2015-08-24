@@ -6,7 +6,7 @@ class PlanForm(forms.ModelForm):
     class Meta:
         model = SubscriptionPlan
         fields = ['title', 'post_requirement', 'view_requirement', 'view_contact', 'show_interest',
-                  'contact', 'free_plan']
+                  'contact', 'free_plan', 'price']
 
     def __init__(self, *args, **kwargs):
 
